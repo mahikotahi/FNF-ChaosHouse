@@ -95,7 +95,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	public static function getPath(file:String, ?type:AssetType = TEXT, ?library:Null<String> = null, ?modsAllowed:Bool = false):String
+	public static function getPath(file:String, ?type:AssetType = TEXT, ?library:Null<String> = null, ?modsAllowed:Bool = false)
 	{
 		#if MODS_ALLOWED
 		if(modsAllowed)
@@ -121,6 +121,8 @@ class Paths
 					return levelPath;
 			}
 		}
+
+		if (getSharedPath(file).contains('songs'))trace(getSharedPath(file));
 
 		return getSharedPath(file);
 	}
@@ -181,41 +183,52 @@ class Paths
 		return 'assets/videos/$key.$VIDEO_EXT';
 	}
 
-	static public function sound(key:String, ?library:String):Sound
+	static public function sound(key:String, ?library:String)
 	{
 		var sound:Sound = returnSound('sounds', key, library);
-		return sound;
+		//return sound;
+
+		return getPath('sounds/$key.${SOUND_EXT}', TEXT, library);
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 	{
-		return sound(key + FlxG.random.int(min, max), library);
+		//return sound(key + FlxG.random.int(min, max), library);
+
+		key = key  + FlxG.random.int(min, max);
+
+		return getPath('sounds/$key.${SOUND_EXT}', TEXT, library);
 	}
 
-	inline static public function music(key:String, ?library:String):Sound
+	inline static public function music(key:String, ?library:String)
 	{
 		var file:Sound = returnSound('music', key, library);
-		return file;
+		//return file;
+		
+		return getPath('music/$key.${SOUND_EXT}', TEXT, library);
 	}
 
-	inline static public function voices(song:String, postfix:String = null):Any
+	inline static public function voices(song:String, postfix:String = null)
 	{
 		var songKey:String = '${formatToSongPath(song)}/Voices';
 		if(postfix != null) songKey += '-' + postfix;
 		//trace('songKey test: $songKey');
 		var voices = returnSound(null, songKey, 'songs');
-		return voices;
+		//return voices;
+		return getPath('songs/${songKey}.${SOUND_EXT}', TEXT);
 	}
 
-	inline static public function inst(song:String):Any
+	inline static public function inst(song:String)
 	{
 		var songKey:String = '${formatToSongPath(song)}/Inst';
 		var inst = returnSound(null, songKey, 'songs');
-		return inst;
+		//return inst;
+		
+		return getPath('songs/${songKey}.${SOUND_EXT}', TEXT);
 	}
 
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
-	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxGraphic
+	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true)
 	{
 		var bitmap:BitmapData = null;
 		var file:String = null;
@@ -286,7 +299,7 @@ class Paths
 		return newGraphic;
 	}
 
-	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
+	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false)
 	{
 		#if sys
 		#if MODS_ALLOWED
@@ -346,7 +359,7 @@ class Paths
 		return false;
 	}
 
-	static public function getAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
+	static public function getAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true)
 	{
 		var useMod = false;
 		var imageLoaded:FlxGraphic = image(key, library, allowGPU);
@@ -375,7 +388,7 @@ class Paths
 		return getPackerAtlas(key, library);
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
+	inline static public function getSparrowAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true)
 	{
 		var imageLoaded:FlxGraphic = image(key, library, allowGPU);
 		#if MODS_ALLOWED
@@ -390,7 +403,7 @@ class Paths
 		#end
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
+	inline static public function getPackerAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true)
 	{
 		var imageLoaded:FlxGraphic = image(key, library, allowGPU);
 		#if MODS_ALLOWED
@@ -405,7 +418,7 @@ class Paths
 		#end
 	}
 
-	inline static public function getAsepriteAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
+	inline static public function getAsepriteAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true)
 	{
 		var imageLoaded:FlxGraphic = image(key, library, allowGPU);
 		#if MODS_ALLOWED
@@ -468,6 +481,8 @@ class Paths
 			}
 		}
 		localTrackedAssets.push(gottenPath);
+
+		trace(currentTrackedSounds.get(gottenPath));
 		return currentTrackedSounds.get(gottenPath);
 	}
 
