@@ -24,6 +24,8 @@ class SystemName extends MusicBeatState
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
+
+		if (FlxG.save.data.censorSysName == null) FlxG.save.data.censorSysName = false;
 	}
 
 	override function update(elapsed:Float)
@@ -46,7 +48,8 @@ class SystemName extends MusicBeatState
 							MusicBeatState.switchState(new TitleState());
 						});
 					});
-				} else {
+				} else {FlxG.save.data.censorSysName = false;
+					FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					warnText.text = "That's what i'm talking about "+ Sys.environment()["USERNAME"];
 					warnText.screenCenter(Y);

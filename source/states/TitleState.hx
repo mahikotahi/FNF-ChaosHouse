@@ -89,7 +89,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.playername == null) FlxG.save.data.playername = '';
 		if (FlxG.save.data.cheater == null) FlxG.save.data.cheater = false;
 		if (FlxG.save.data.playedMod == null) FlxG.save.data.playedMod = false;
-		if (FlxG.save.data.pussyName == null) FlxG.save.data.pussyName = false;
+		if (FlxG.save.data.pussyName == null) FlxG.save.data.pussyName = false; else if (FlxG.save.data.censorSysName != null)FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 		
 		if (FlxG.save.data.firstTimePlaying == null) 
 			FlxG.save.data.firstTimePlaying = true; 
@@ -173,7 +173,7 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if (FlxG.save.data.censorSysName == null || !SystemName.leftState) {
+		if (FlxG.save.data.censorSysName == null) {
 			//FlxG.save.data.censorSysName = false;
 			MusicBeatState.switchState(new SystemName());
 		}
