@@ -6,22 +6,24 @@ import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
+import backend.Song;
+import backend.Highscore;
 
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
-
-	var menuItems:FlxTypedGroup<FlxSprite>;
-
-	var optionShit:Array<String> = [
-		#if FINALGAME'story_mode', #end
-		'freeplay',
-		'options'
-	];
+	public static var currentSelection:String = '';
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+	
+	var desktop:FlxSprite;
+	var terminal:FlxSprite;
+	
+	var mouse:FlxSprite;
+
+	var game:PlayState = PlayState.instance;
 
 	override function create()
 	{
@@ -32,63 +34,50 @@ class MainMenuState extends MusicBeatState
 
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("Desktop", null);
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
-
-		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menuBG'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.scrollFactor.set(0, yScroll);
+		bg.scrollFactor.set(0, 0);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 		bg.screenCenter();
-		add(bg);
+		//add(bg);
 
-		camFollow = new FlxObject(0, 0, 1, 1);
-		add(camFollow);
-
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		magenta = new FlxSprite(0).loadGraphic(Paths.image('menuDesat'));
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
-		magenta.scrollFactor.set(0, yScroll);
+		magenta.scrollFactor.set(0, 0);
 		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
 		magenta.updateHitbox();
 		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.color = 0xFFfd719b;
+		magenta.visible = true;
+		magenta.color = 0xff21d9ee;
 		add(magenta);
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
-		add(menuItems);
+		terminal = new FlxSprite(80, 70);
+		terminal.antialiasing = ClientPrefs.data.antialiasing;
+		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		terminal.animation.addByPrefix('termina', "Terminal", 24);
+		terminal.animation.play('termina');
+		add(terminal);
 
-		for (i in 0...optionShit.length)
-		{
-			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			menuItem.antialiasing = ClientPrefs.data.antialiasing;
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-			menuItem.animation.play('idle');
-			menuItems.add(menuItem);
-			var scr:Float = (optionShit.length - 4) * 0.135;
-			if (optionShit.length < 6)
-				scr = 0;
-			menuItem.scrollFactor.set(0, scr);
-			menuItem.updateHitbox();
-			menuItem.screenCenter(X);
-		}
+		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
+		desktop.antialiasing = ClientPrefs.data.antialiasing;
+		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		desktop.animation.addByPrefix('desktop', "Animate", 24);
+		desktop.animation.play('desktop');
+		add(desktop);
+
 
 		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Chaos House" + Application.current.meta.get('version'), 12);
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
-
-		changeItem();
 
 		#if ACHIEVEMENTS_ALLOWED
 		// Unlocks "Freaky on a Friday Night" achievement if it's a Friday and between 18:00 PM and 23:59 PM
@@ -100,16 +89,40 @@ class MainMenuState extends MusicBeatState
 		Achievements.reloadList();
 		#end
 		#end
+		
+		mouse = new FlxSprite(0, 0);
+		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');
+		mouse.animation.addByPrefix('white', "white", 24);
+		mouse.animation.addByPrefix('gray', "gray", 24);
+		mouse.animation.addByPrefix('black', "black", 24);
+		mouse.animation.addByPrefix('red', "red", 24);
+		mouse.animation.addByPrefix('orange', "orange", 24);
+		mouse.animation.addByPrefix('yellow', "yellow", 24);
+		mouse.animation.addByPrefix('green', "green", 24);
+		mouse.animation.addByPrefix('lime', "lime", 24);
+		mouse.animation.addByPrefix('cyan', "cyan", 24);
+		mouse.animation.addByPrefix('blue', "blue", 24);
+		mouse.animation.addByPrefix('purple', "purple", 24);
+		mouse.animation.addByPrefix('pink', "pink", 24);
+		mouse.animation.addByPrefix('brown', "brown", 24);
+		mouse.animation.play(ClientPrefs.data.cursorColor);
+		add(mouse);
+		
+		//FlxG.mouse.visible = true;
 
 		super.create();
 
-		FlxG.camera.follow(camFollow, null, 9);
+		//FlxG.camera.follow(camFollow, null, 9);
 	}
 
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		var realMouse:Dynamic = FlxG.mouse;
+		
+		mouse.setPosition(realMouse.x, realMouse.y);
+		
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * elapsed;
@@ -117,9 +130,46 @@ class MainMenuState extends MusicBeatState
 				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
 
+		if (mouse.overlaps(terminal))
+		{
+			currentSelection = 'terminal';
+		}
+		else if (mouse.overlaps(desktop))
+		{
+			currentSelection = 'desktop';
+		}
+		else
+		{
+			currentSelection = '';
+		}
+
+		if (FlxG.mouse.justReleased)
+		{
+			switch(currentSelection)
+			{
+				case 'terminal':
+					trace('terminal');
+
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Terminal", null);
+					#end
+				case 'desktop':
+					trace('desktop');
+
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Adobe Animate 2021", null);
+					#end
+					loadSong('Stick');
+				default:
+					trace('nun');
+			}
+		}
+
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P)
+			/*if (controls.UI_UP_P)
 				changeItem(-1);
 
 			if (controls.UI_DOWN_P)
@@ -192,7 +242,8 @@ class MainMenuState extends MusicBeatState
 						});
 					}
 				}
-			}
+			}*/
+			
 			#if desktop
 			if (controls.justPressed('debug_1'))
 			{
@@ -200,30 +251,34 @@ class MainMenuState extends MusicBeatState
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
 			#end
+
 		}
 
 		super.update(elapsed);
 	}
 
-	function changeItem(huh:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'));
-		menuItems.members[curSelected].animation.play('idle');
-		menuItems.members[curSelected].updateHitbox();
-		menuItems.members[curSelected].screenCenter(X);
+	function loadSong(?name:String = null, ?difficultyNum:Int = 1) {
+		
+	
+		var game:PlayState = PlayState.instance;
+	
+		if(name == null || name.length < 1)
+			name = 'Sticks';
+		if (difficultyNum == -1)
+			difficultyNum = 1;
 
-		curSelected += huh;
+		var poop = Highscore.formatSong(name, 1);
+		PlayState.SONG = Song.loadFromJson(poop, name);
+		PlayState.storyDifficulty = 1;
+		LoadingState.loadAndSwitchState(new PlayState());
 
-		if (curSelected >= menuItems.length)
-			curSelected = 0;
-		if (curSelected < 0)
-			curSelected = menuItems.length - 1;
-
-		menuItems.members[curSelected].animation.play('selected');
-		menuItems.members[curSelected].centerOffsets();
-		menuItems.members[curSelected].screenCenter(X);
-
-		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x,
-			menuItems.members[curSelected].getGraphicMidpoint().y - (menuItems.length > 4 ? menuItems.length * 8 : 0));
+		FlxG.sound.music.pause();
+		FlxG.sound.music.volume = 0;
+		if(game.vocals != null)
+		{
+			game.vocals.pause();
+			game.vocals.volume = 0;
+		}
+		FlxG.camera.followLerp = 0;
 	}
 }

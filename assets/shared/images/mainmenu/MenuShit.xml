@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="MenuShit.png">
+	<!-- Created with Adobe Animate version 21.0.6.41649 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Animate0000" x="4" y="4" width="99" height="100"/>
+	<SubTexture name="Animate0001" x="4" y="4" width="99" height="100"/>
+	<SubTexture name="Animate0002" x="119" y="4" width="99" height="100"/>
+	<SubTexture name="Animate0003" x="119" y="4" width="99" height="100"/>
+	<SubTexture name="Animate0004" x="234" y="4" width="99" height="100"/>
+	<SubTexture name="Animate0005" x="234" y="4" width="99" height="100"/>
+	<SubTexture name="Terminal0000" x="349" y="4" width="108" height="78"/>
+	<SubTexture name="Terminal0001" x="349" y="4" width="108" height="78"/>
+	<SubTexture name="Terminal0002" x="4" y="120" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0003" x="4" y="120" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0004" x="127" y="120" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0005" x="127" y="120" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+</TextureAtlas>

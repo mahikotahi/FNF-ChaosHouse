@@ -425,7 +425,11 @@ class Paths
 		var hideChars = ~/[.,'"%?!]/;
 
 		var path = invalidChars.split(path.replace(' ', '-')).join("-");
-		return hideChars.split(path).join("").toLowerCase();
+		trace(hideChars.split(path).join("").toLowerCase());
+
+		var returnString:Dynamic = hideChars.split(path).join("").toLowerCase();
+
+		return returnString;
 	}
 
 	public static var currentTrackedSounds:Map<String, Sound> = [];

@@ -90,6 +90,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.cheater == null) FlxG.save.data.cheater = false;
 		if (FlxG.save.data.playedMod == null) FlxG.save.data.playedMod = false;
 		if (FlxG.save.data.pussyName == null) FlxG.save.data.pussyName = false; else if (FlxG.save.data.censorSysName != null)FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
+		if (FlxG.save.data.pussyName != null && FlxG.save.data.censorSysName != null) FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 		
 		if (FlxG.save.data.firstTimePlaying == null) 
 			FlxG.save.data.firstTimePlaying = true; 
@@ -100,7 +101,7 @@ class TitleState extends MusicBeatState
 		FlxG.save.data.playedMod = true;
 
 
-		FlxG.save.bind('chaoshouse', CoolUtil.getSavePath());
+		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());
 		trace(Sys.environment()["USERNAME"]);
 		//FlxG.save.data.flashing = null;
 		

@@ -32,7 +32,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		};
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
+		DiscordClient.changePresence("Sublime Text");
 		#end
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();

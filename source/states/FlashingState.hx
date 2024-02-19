@@ -18,7 +18,7 @@ class FlashingState extends MusicBeatState
 
 		name = Sys.environment()["USERNAME"];
 
-		if (FlxG.save.data.pussyName) name = "Pussy";
+		if (FlxG.save.data.pussyName && FlxG.save.data.censorSysName) name = "Pussy";
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
@@ -53,6 +53,7 @@ class FlashingState extends MusicBeatState
 						});
 					});
 				} else {
+					FlxG.save.data.flashing = false;
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
 						onComplete: function (twn:FlxTween) {
