@@ -274,11 +274,6 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.sound.music.pause();
 		FlxG.sound.music.volume = 0;
-		if(game.vocals != null)
-		{
-			game.vocals.pause();
-			game.vocals.volume = 0;
-		}
 		FlxG.camera.followLerp = 0;
 	}
 }
