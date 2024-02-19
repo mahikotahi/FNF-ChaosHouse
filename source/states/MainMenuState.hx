@@ -24,6 +24,7 @@ class MainMenuState extends MusicBeatState
 	var mouse:FlxSprite;
 
 	var game:PlayState = PlayState.instance;
+	var coolwindow:FlxSprite;
 
 	override function create()
 	{
@@ -110,6 +111,11 @@ class MainMenuState extends MusicBeatState
 		
 		//FlxG.mouse.visible = true;
 
+		coolwindow = new FlxSprite(0,0);
+		coolwindow.loadGraphic(Paths.image('mainmenu/dawindow'));
+		coolwindow.alpha = 0;
+		add(coolwindow);
+
 		super.create();
 
 		//FlxG.camera.follow(camFollow, null, 9);
@@ -154,6 +160,15 @@ class MainMenuState extends MusicBeatState
 					// Updating Discord Rich Presence
 					DiscordClient.changePresence("Terminal", null);
 					#end
+
+					MusicBeatState.switchState(new OptionsState());
+					if(ClientPrefs.data.pauseMusic != 'None')
+					{
+						FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)), 0.5);
+						FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
+					}
+					OptionsState.onPlayState = false;
+
 				case 'desktop':
 					trace('desktop');
 
