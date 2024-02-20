@@ -40,6 +40,12 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
+		var port:FlxSprite;
+
+		port = new FlxSprite(0,0).loadGraphic('coolcreds/Portilizen');
+		port.screenCenter();
+		add(port);
+
 		descBox = new AttachedSprite();
 		descBox.makeGraphic(1, 1, FlxColor.BLACK);
 		descBox.xAdd = -10;
