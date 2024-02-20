@@ -18,6 +18,23 @@ class CreditsState extends MusicBeatState
 
 	var offsetThing:Float = -75;
 
+	var mouse:FlxSprite;
+
+	var game:PlayState = PlayState.instance;
+	var coolwindow:FlxSprite;
+
+	var mouseClickAmount:Int = 0;
+
+	public static var currentSelection:String = '';
+
+	var port:FlxSprite;
+	var portText:FlxText = new FlxText(0,0,0, "Portilizen", 16);
+
+	var desktop:FlxSprite;
+	var terminal:FlxSprite;
+	var notepad:FlxSprite;
+	var tubeyou:FlxSprite;
+
 	override function create()
 	{
 		#if DISCORD_ALLOWED
@@ -36,15 +53,26 @@ class CreditsState extends MusicBeatState
 		magenta.visible = true;
 		// magenta.color = 0xff21d9ee;
 		add(magenta);
+		
+		createCoolIcons();
+
+		coolwindow = new FlxSprite(0, 0);
+		coolwindow.loadGraphic(Paths.image('mainmenu/dawindow'));
+		coolwindow.screenCenter(XY);
+		coolwindow.alpha = 1;
+		coolwindow.scale.x = coolwindow.alpha * 2;
+		coolwindow.scale.y = coolwindow.alpha * 2;
+		add(coolwindow);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
-		var port:FlxSprite;
-
-		port = new FlxSprite(0,0).loadGraphic('coolcreds/Portilizen');
+		port = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/Portilizen'));
 		port.screenCenter();
 		add(port);
+
+		portText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(portText);
 
 		descBox = new AttachedSprite();
 		descBox.makeGraphic(1, 1, FlxColor.BLACK);
@@ -63,6 +91,26 @@ class CreditsState extends MusicBeatState
 
 		// bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		// intendedColor = bg.color;
+
+		mouse = new FlxSprite(0, 0);
+		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');
+		mouse.animation.addByPrefix('white', "white", 24);
+		mouse.animation.addByPrefix('gray', "gray", 24);
+		mouse.animation.addByPrefix('black', "black", 24);
+		mouse.animation.addByPrefix('red', "red", 24);
+		mouse.animation.addByPrefix('orange', "orange", 24);
+		mouse.animation.addByPrefix('yellow', "yellow", 24);
+		mouse.animation.addByPrefix('green', "green", 24);
+		mouse.animation.addByPrefix('lime', "lime", 24);
+		mouse.animation.addByPrefix('cyan', "cyan", 24);
+		mouse.animation.addByPrefix('blue', "blue", 24);
+		mouse.animation.addByPrefix('purple', "purple", 24);
+		mouse.animation.addByPrefix('pink', "pink", 24);
+		mouse.animation.addByPrefix('brown', "brown", 24);
+		// mouse.scale.set(0.85, 0.85);
+		mouse.animation.play(ClientPrefs.data.cursorColor);
+		add(mouse);
+
 		changeSelection();
 		super.create();
 	}
@@ -72,6 +120,34 @@ class CreditsState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		portText.setPosition(port.x + 16,port.y + port.height + 16);
+		var realMouse:Dynamic = FlxG.mouse;
+
+		mouse.setPosition(realMouse.x, realMouse.y);
+
+		var prevCurSel:String = currentSelection;
+
+		currentSelection = '';
+
+		if (mouse.overlaps(port))
+		{
+			currentSelection = 'port';
+		}
+		/*if (prevCurSel != currentSelection)
+			mouseClickAmount = 0;
+
+		if (FlxG.mouse.justReleased && mouseClickAmount != 3)
+			mouseClickAmount++;*/
+
+		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed)
+		{
+			switch (currentSelection)
+			{
+				case 'port':
+					port.setPosition(realMouse.x - (port.width / 2), realMouse.y - (port.height / 2));
+			}
+		}
+
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -125,6 +201,17 @@ class CreditsState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
+					FlxTween.tween(coolwindow, {alpha: 0}, 0.5, {
+						onUpdate: function(twn:FlxTween)
+						{
+							coolwindow.scale.x = coolwindow.alpha * 2;
+							coolwindow.scale.y = coolwindow.alpha * 2;
+							port.scale.x = coolwindow.alpha * 2;
+							port.scale.y = coolwindow.alpha * 2;
+							portText.scale.x = coolwindow.alpha * 2;
+							portText.scale.y = coolwindow.alpha * 2;
+						}
+					});
 			}
 		}
 
@@ -135,7 +222,10 @@ class CreditsState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		if (change > 0){FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);}
+		if (change > 0)
+		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		}
 		curSelected += change;
 		if (curSelected < 0)
 			curSelected = creditsStuff.length - 1;
@@ -153,5 +243,36 @@ class CreditsState extends MusicBeatState
 
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
+	}
+
+	function createCoolIcons()
+	{
+		terminal = new FlxSprite(20, 70);
+		terminal.antialiasing = ClientPrefs.data.antialiasing;
+		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		terminal.animation.addByPrefix('termina', "Terminal", 24);
+		terminal.animation.play('termina');
+		add(terminal);
+
+		notepad = new FlxSprite(20, 70 + terminal.height + 20);
+		notepad.antialiasing = ClientPrefs.data.antialiasing;
+		notepad.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		notepad.animation.addByPrefix('nopa', "Notepad", 24);
+		notepad.animation.play('nopa');
+		add(notepad);
+
+		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
+		desktop.antialiasing = ClientPrefs.data.antialiasing;
+		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		desktop.animation.addByPrefix('desktop', "Animate", 24);
+		desktop.animation.play('desktop');
+		add(desktop);
+
+		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
+		tubeyou.antialiasing = ClientPrefs.data.antialiasing;
+		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
+		tubeyou.animation.play('yout');
+		add(tubeyou);
 	}
 }

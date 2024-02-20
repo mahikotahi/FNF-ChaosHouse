@@ -30,6 +30,8 @@ class MainMenuState extends MusicBeatState
 
 	var mouseClickAmount:Int = 0;
 
+	public static var timePassedOnState:Float = 0;
+
 	override function create()
 	{
 		StatusShit.status = '';
@@ -44,8 +46,8 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("Desktop", null);
 		#end
 
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		//transIn = FlxTransitionableState.defaultTransIn;
+		//transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
 		var bg:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menuBG'));
@@ -67,33 +69,7 @@ class MainMenuState extends MusicBeatState
 		// magenta.color = 0xff21d9ee;
 		add(magenta);
 
-		terminal = new FlxSprite(20, 70);
-		terminal.antialiasing = ClientPrefs.data.antialiasing;
-		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
-		terminal.animation.addByPrefix('termina', "Terminal", 24);
-		terminal.animation.play('termina');
-		add(terminal);
-
-		notepad = new FlxSprite(20, 70 + terminal.height + 20);
-		notepad.antialiasing = ClientPrefs.data.antialiasing;
-		notepad.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
-		notepad.animation.addByPrefix('nopa', "Notepad", 24);
-		notepad.animation.play('nopa');
-		add(notepad);
-
-		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
-		desktop.antialiasing = ClientPrefs.data.antialiasing;
-		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
-		desktop.animation.addByPrefix('desktop', "Animate", 24);
-		desktop.animation.play('desktop');
-		add(desktop);
-
-		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
-		tubeyou.antialiasing = ClientPrefs.data.antialiasing;
-		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
-		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
-		tubeyou.animation.play('yout');
-		//add(tubeyou);
+		createCoolIcons();
 
 		var desktopIcon:FlxSprite = new FlxSprite(12, FlxG.height - 64);
 		desktopIcon.frames = Paths.getSparrowAtlas('mainmenu/desktopIcon');
@@ -151,6 +127,7 @@ class MainMenuState extends MusicBeatState
 	}
 
 	var selectedSomethin:Bool = false;
+	var division:Float = 3;
 
 	override function update(elapsed:Float)
 	{
@@ -192,25 +169,25 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.mouse.justReleased && mouseClickAmount != 3)
 			mouseClickAmount++;
 
-		if (FlxG.mouse.pressed && mouseClickAmount == 1)
+		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed)
 		{
 			switch (currentSelection)
 			{
 				case 'terminal':
-					terminal.setPosition(realMouse.x - (terminal.width / 2), realMouse.y - (terminal.height / 2));
+					terminal.setPosition(realMouse.x - (terminal.width / division), realMouse.y - (terminal.height / division));
 
 				case 'desktop':
-					desktop.setPosition(realMouse.x - (desktop.width / 2), realMouse.y - (desktop.height / 2));
+					desktop.setPosition(realMouse.x - (desktop.width / division), realMouse.y - (desktop.height / division));
 
 				case 'youtube':
-					tubeyou.setPosition(realMouse.x - (tubeyou.width / 2), realMouse.y - (tubeyou.height / 2));
+					tubeyou.setPosition(realMouse.x - (tubeyou.width / division), realMouse.y - (tubeyou.height / division));
 
 				case 'notepad':
-					notepad.setPosition(realMouse.x - (notepad.width / 2), realMouse.y - (notepad.height / 2));
+					notepad.setPosition(realMouse.x - (notepad.width / division), realMouse.y - (notepad.height / division));
 			}
 		}
 
-		if (FlxG.mouse.justReleased && mouseClickAmount == 3)
+		if (FlxG.mouse.justReleased && mouseClickAmount == 2)
 		{
 			StatusShit.status = '';
 			var WindowAnimate:Bool = true;
@@ -240,7 +217,6 @@ class MainMenuState extends MusicBeatState
 					DiscordClient.changePresence("Notepad", null);
 					#end
 
-					
 					MusicBeatState.switchState(new CreditsState());
 
 				case 'desktop':
@@ -386,5 +362,36 @@ class MainMenuState extends MusicBeatState
 		FlxG.sound.music.pause();
 		FlxG.sound.music.volume = 0;
 		FlxG.camera.followLerp = 0;
+	}
+
+	function createCoolIcons()
+	{
+		terminal = new FlxSprite(20, 70);
+		terminal.antialiasing = ClientPrefs.data.antialiasing;
+		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		terminal.animation.addByPrefix('termina', "Terminal", 24);
+		terminal.animation.play('termina');
+		add(terminal);
+
+		notepad = new FlxSprite(20, 70 + terminal.height + 20);
+		notepad.antialiasing = ClientPrefs.data.antialiasing;
+		notepad.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		notepad.animation.addByPrefix('nopa', "Notepad", 24);
+		notepad.animation.play('nopa');
+		add(notepad);
+
+		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
+		desktop.antialiasing = ClientPrefs.data.antialiasing;
+		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		desktop.animation.addByPrefix('desktop', "Animate", 24);
+		desktop.animation.play('desktop');
+		add(desktop);
+
+		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
+		tubeyou.antialiasing = ClientPrefs.data.antialiasing;
+		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
+		tubeyou.animation.play('yout');
+		add(tubeyou);
 	}
 }
