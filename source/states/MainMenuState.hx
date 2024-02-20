@@ -32,6 +32,8 @@ class MainMenuState extends MusicBeatState
 
 	public static var timePassedOnState:Float = 0;
 
+	var appPos:Array<Array<Int>> = [[0,0]];
+
 	override function create()
 	{
 		StatusShit.status = '';

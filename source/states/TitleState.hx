@@ -96,6 +96,8 @@ class TitleState extends MusicBeatState
 			FlxG.save.data.firstTimePlaying = true; 
 		else 
 			FlxG.save.data.firstTimePlaying = false;
+
+		//if (FlxG.save.data.appPositions == null) FlxG.save.data.appPositions = []; 
 		
 		FlxG.save.data.playername = Sys.environment()["USERNAME"];
 		FlxG.save.data.playedMod = true;
