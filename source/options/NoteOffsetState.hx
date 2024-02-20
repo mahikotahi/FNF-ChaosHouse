@@ -37,9 +37,6 @@ class NoteOffsetState extends MusicBeatState
 
 	override public function create()
 	{
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("Delay/Combo Offset Menu", null);
-		#end
 
 		// Cameras
 		camGame = initPsychCamera();
@@ -405,7 +402,7 @@ class NoteOffsetState extends MusicBeatState
 			if(beatTween != null) beatTween.cancel();
 
 			persistentUpdate = false;
-			MusicBeatState.switchState(new options.OptionsState());
+			MusicBeatState.switchState(new options.Funkin());
 			if(OptionsState.onPlayState)
 			{
 				if(ClientPrefs.data.pauseMusic != 'None')

@@ -28,6 +28,8 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		StatusShit.status = '';
+
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
 		#end
@@ -75,7 +77,7 @@ class MainMenuState extends MusicBeatState
 		add(desktop);
 
 
-		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Chaos House" + Application.current.meta.get('version'), 12);
+		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Chaos House " + Application.current.meta.get('version'), 12);
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
@@ -160,6 +162,7 @@ class MainMenuState extends MusicBeatState
 					// Updating Discord Rich Presence
 					DiscordClient.changePresence("Terminal", null);
 					#end
+					StatusShit.status = 'Terminal';
 
 					MusicBeatState.switchState(new OptionsState());
 					if(ClientPrefs.data.pauseMusic != 'None')
@@ -176,7 +179,9 @@ class MainMenuState extends MusicBeatState
 					// Updating Discord Rich Presence
 					DiscordClient.changePresence("Adobe Animate 2021", null);
 					#end
+					StatusShit.status = 'Adobe Animate 2021';
 					loadSong('Stick');
+					
 				default:
 					trace('nun');
 			}

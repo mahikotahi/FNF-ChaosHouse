@@ -225,11 +225,6 @@ class MenuCharacterEditorState extends MusicBeatState
 		char.updateHitbox();
 		char.animation.play('idle');
 		updateOffset();
-		
-		#if DISCORD_ALLOWED
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
-		#end
 	}
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {

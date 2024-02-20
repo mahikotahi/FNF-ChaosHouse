@@ -3,9 +3,9 @@ package options;
 import states.MainMenuState;
 import backend.StageData;
 
-class OptionsState extends MusicBeatState
+class Funkin extends MusicBeatState
 {
-	var options:Array<String> = ['Desktop Settings', 'Funkin Settings'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -13,10 +13,18 @@ class OptionsState extends MusicBeatState
 
 	function openSelectedSubstate(label:String) {
 		switch(label) {
-			case 'Desktop Settings':
-				openSubState(new options.Desktop());
-			case 'Funkin Settings':
-				MusicBeatState.switchState(new options.Funkin());
+			case 'Note Colors':
+				openSubState(new options.NotesSubState());
+			case 'Controls':
+				openSubState(new options.ControlsSubState());
+			case 'Graphics':
+				openSubState(new options.GraphicsSettingsSubState());
+			case 'Visuals and UI':
+				openSubState(new options.VisualsUISubState());
+			case 'Gameplay':
+				openSubState(new options.GameplaySettingsSubState());
+			case 'Adjust Delay and Combo':
+				MusicBeatState.switchState(new options.NoteOffsetState());
 		}
 	}
 
@@ -25,9 +33,14 @@ class OptionsState extends MusicBeatState
 
 	override function create() {
 
+		
+		#if DISCORD_ALLOWED
+		DiscordClient.changePresence("Terminal", null);
+		#end
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.color = 0xff0bcce2;
+		bg.color = 0xFFea71fd;
 		bg.updateHitbox();
 
 		bg.screenCenter();
@@ -45,9 +58,8 @@ class OptionsState extends MusicBeatState
 		}
 
 		selectorLeft = new Alphabet(0, 0, '>', true);
-		add(selectorLeft);
+		//add(selectorLeft);
 		selectorRight = new Alphabet(0, 0, '<', true);
-		selectorRight.visible = false;
 		add(selectorRight);
 
 		changeSelection();
@@ -59,9 +71,6 @@ class OptionsState extends MusicBeatState
 	override function closeSubState() {
 		super.closeSubState();
 		ClientPrefs.saveSettings();
-		#if DISCORD_ALLOWED
-		DiscordClient.changePresence("Terminal", null);
-		#end
 	}
 
 	override function update(elapsed:Float) {
@@ -76,13 +85,13 @@ class OptionsState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			if(onPlayState)
+			if(OptionsState.onPlayState)
 			{
 				StageData.loadDirectory(PlayState.SONG);
 				LoadingState.loadAndSwitchState(new PlayState());
 				FlxG.sound.music.volume = 0;
 			}
-			else MusicBeatState.switchState(new MainMenuState());
+			else MusicBeatState.switchState(new OptionsState());
 		}
 		else if (controls.ACCEPT) openSelectedSubstate(options[curSelected]);
 	}

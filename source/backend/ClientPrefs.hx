@@ -10,6 +10,7 @@ import states.TitleState;
 @:structInit class SaveVariables {
 
 	public var cursorColor:String = 'white';
+	public var songSpecificNoteColors:Bool = false;
 
 	public var downScroll:Bool = false;
 	public var middleScroll:Bool = false;

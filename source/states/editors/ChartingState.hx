@@ -1495,11 +1495,6 @@ class ChartingState extends MusicBeatState
 				if (voicesOppVolume != null) opponentVocals.volume = voicesOppVolume.value;
 				if (check_mute_vocals_opponent != null && check_mute_vocals_opponent.checked) opponentVocals.volume = 0;
 			}
-
-			#if DISCORD_ALLOWED
-			// Updating Discord Rich Presence
-			DiscordClient.changePresence("Chart Editor", StringTools.replace(_song.song, '-', ' '));
-			#end
 		}
 		super.closeSubState();
 	}
