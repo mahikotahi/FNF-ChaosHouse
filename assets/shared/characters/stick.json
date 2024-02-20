@@ -1,59 +1,70 @@
 {
 	"animations": [
 		{
-			"loop": false,
 			"offsets": [
 				0,
 				0
 			],
-			"anim": "idle",
+			"loop": false,
 			"fps": 24,
-			"name": "stickIdle",
-			"indices": []
+			"anim": "idle",
+			"indices": [],
+			"name": "stickIdle"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				145,
 				-7
 			],
-			"anim": "singLEFT",
+			"loop": false,
 			"fps": 24,
-			"name": "stickLeft",
-			"indices": []
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "stickLeft"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				105,
 				-180
 			],
-			"anim": "singDOWN",
+			"loop": false,
 			"fps": 24,
-			"name": "stickDown",
-			"indices": []
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "stickDown"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				150,
 				-5
 			],
-			"anim": "singUP",
+			"loop": false,
 			"fps": 24,
-			"name": "stickUp",
-			"indices": []
+			"anim": "singUP",
+			"indices": [],
+			"name": "stickUp"
 		},
 		{
-			"loop": false,
 			"offsets": [
 				148,
 				-112
 			],
-			"anim": "singRIGHT",
+			"loop": false,
 			"fps": 24,
-			"name": "stickRight",
-			"indices": []
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "stickRight"
+		},
+		{
+			"offsets": [
+				0,
+				6
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "pausebruh",
+			"loop": false,
+			"name": "stickPause"
 		}
 	],
 	"vocals_file": "",

@@ -52,18 +52,28 @@ class GameOverSubstate extends MusicBeatSubstate
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);
 		boyfriend.x += boyfriend.positionArray[0] - PlayState.instance.boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1] - PlayState.instance.boyfriend.positionArray[1];
-		add(boyfriend);
+		//add(boyfriend);
+
+		var death:FlxSprite = new FlxSprite(0,0);
+		death.loadGraphic(Paths.image('die'));
+		death.scale.set(5,5);
+		death.screenCenter();
+		add(death);
+
 
 		FlxG.sound.play(Paths.sound(deathSoundName));
-		FlxG.camera.scroll.set();
-		FlxG.camera.target = null;
+		//FlxG.camera.scroll.set();
+		//FlxG.camera.target = null;
 
 		boyfriend.playAnim('firstDeath');
 
 		camFollow = new FlxObject(0, 0, 1, 1);
-		camFollow.setPosition(boyfriend.getGraphicMidpoint().x + boyfriend.cameraPosition[0], boyfriend.getGraphicMidpoint().y + boyfriend.cameraPosition[1]);
-		FlxG.camera.focusOn(new FlxPoint(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2)));
+		//camFollow.setPosition(boyfriend.getGraphicMidpoint().x + boyfriend.cameraPosition[0], boyfriend.getGraphicMidpoint().y + boyfriend.cameraPosition[1]);
+		//camFollow.setPosition(death.getGraphicMidpoint().x, death.getGraphicMidpoint().y);
+		//FlxG.camera.focusOn(new FlxPoint(FlxG.camera.scroll.x, FlxG.camera.scroll.y));
 		add(camFollow);
+
+		FlxG.camera.target = death;
 		
 		PlayState.instance.setOnScripts('inGameOver', true);
 		PlayState.instance.callOnScripts('onGameOverStart', []);

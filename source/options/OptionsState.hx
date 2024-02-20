@@ -25,9 +25,11 @@ class OptionsState extends MusicBeatState
 
 	override function create() {
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		//var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/background'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.color = 0xff0bcce2;
+		//bg.color = 0xff00ff00;
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
 
 		bg.screenCenter();
@@ -48,7 +50,7 @@ class OptionsState extends MusicBeatState
 		add(selectorLeft);
 		selectorRight = new Alphabet(0, 0, '<', true);
 		selectorRight.visible = false;
-		add(selectorRight);
+		//add(selectorRight);
 
 		changeSelection();
 		ClientPrefs.saveSettings();

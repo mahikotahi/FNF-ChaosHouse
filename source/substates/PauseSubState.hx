@@ -266,6 +266,9 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					close();
+
+					if (PlayState.instance.dad.curCharacter == 'stick')
+						PlayState.instance.dad.playAnim('pausebruh', false, true);
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					deleteSkipTimeText();

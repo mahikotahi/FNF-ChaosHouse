@@ -1644,6 +1644,10 @@ class PlayState extends MusicBeatState
 		{
 			var ret:Dynamic = callOnScripts('onPause', null, true);
 			if(ret != LuaUtils.Function_Stop) {
+
+				if (dad.curCharacter == 'stick')
+					dad.playAnim('pausebruh', false, false, 13);
+
 				openPauseMenu();
 			}
 		}
@@ -1859,6 +1863,7 @@ class PlayState extends MusicBeatState
 					note.resetAnim = 0;
 				}
 		}
+
 		openSubState(new PauseSubState());
 
 	}
