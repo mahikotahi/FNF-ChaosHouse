@@ -12,7 +12,7 @@ class Desktop extends BaseOptionsMenu
 	var noteY:Float = 90;
 	public function new()
 	{
-		title = 'Desktop';
+		title = 'Window';
 		rpcTitle = 'Desktop Menu'; //for Discord Rich Presence
 
 		var option:Option = new Option('Cursor Color',

@@ -48,6 +48,17 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			bg.antialiasing = ClientPrefs.data.antialiasing;
 			add(bg);
 		}
+		else if (title == 'window')
+		{
+			var coolwindow:FlxSprite;
+			coolwindow = new FlxSprite(0, 0);
+			coolwindow.loadGraphic(Paths.image('mainmenu/dawindow'));
+			coolwindow.screenCenter(XY);
+			coolwindow.alpha = 1;
+			coolwindow.scale.x = coolwindow.alpha * 2;
+			coolwindow.scale.y = coolwindow.alpha * 2;
+			add(coolwindow);
+		}
 		else
 		{
 			var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/background'));

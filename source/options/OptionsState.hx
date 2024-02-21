@@ -35,6 +35,15 @@ class OptionsState extends MusicBeatState
 		bg.screenCenter();
 		add(bg);
 
+		var coolwindow:FlxSprite;
+		coolwindow = new FlxSprite(0, 0);
+		coolwindow.loadGraphic(Paths.image('mainmenu/dawindow'));
+		coolwindow.screenCenter(XY);
+		coolwindow.alpha = 1;
+		coolwindow.scale.x = coolwindow.alpha * 2;
+		coolwindow.scale.y = coolwindow.alpha * 2;
+		add(coolwindow);
+
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
