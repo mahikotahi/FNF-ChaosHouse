@@ -252,12 +252,12 @@ class MainMenuState extends MusicBeatState
 						attempts++;
 
 						if (attempts >= 4)
-							virusPIC.animation.play('warn');
+							//virusPIC.animation.play('warn');
 
 						if (attempts >= 12 || FlxG.save.data.pissedDad)
 						{
-							FlxG.sound.music.stop();
-							virusPIC.animation.play('ipaddress');
+							//FlxG.sound.music.stop();
+							//virusPIC.animation.play('ipaddress');
 						}
 
 						// virusTEXT
@@ -272,15 +272,15 @@ class MainMenuState extends MusicBeatState
 											{
 												if (attempts >= 12 || FlxG.save.data.pissedDad)
 												{
-													FlxG.save.data.pissedDad = true;
-													virusTEXT.alpha = virusPIC.alpha;
+													//FlxG.save.data.pissedDad = true;
+													//virusTEXT.alpha = virusPIC.alpha;
 												}
 											},onComplete: function(twn:FlxTween)
 												{
 													if (attempts >= 12 || FlxG.save.data.pissedDad)
 													{
-														FlxG.save.data.pissedDad = true;
-														virusTEXT.alpha = virusPIC.alpha;
+														//FlxG.save.data.pissedDad = true;
+														//virusTEXT.alpha = virusPIC.alpha;
 													}
 												}
 									});
@@ -290,8 +290,8 @@ class MainMenuState extends MusicBeatState
 							{
 								if (attempts >= 12 || FlxG.save.data.pissedDad)
 								{
-									FlxG.save.data.pissedDad = true;
-									virusTEXT.alpha = virusPIC.alpha;
+									//FlxG.save.data.pissedDad = true;
+									//virusTEXT.alpha = virusPIC.alpha;
 								}
 							}
 						});
