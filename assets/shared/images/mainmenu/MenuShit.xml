@@ -10,20 +10,26 @@
 	<SubTexture name="Animate0005" x="234" y="4" width="99" height="100"/>
 	<SubTexture name="Notepad0000" x="349" y="4" width="134" height="136"/>
 	<SubTexture name="Notepad0001" x="349" y="4" width="134" height="136"/>
-	<SubTexture name="Notepad0002" x="4" y="156" width="134" height="136"/>
-	<SubTexture name="Notepad0003" x="4" y="156" width="134" height="136"/>
-	<SubTexture name="Notepad0004" x="154" y="156" width="133" height="136" frameX="0" frameY="0" frameWidth="134" frameHeight="136"/>
-	<SubTexture name="Notepad0005" x="154" y="156" width="133" height="136" frameX="0" frameY="0" frameWidth="134" frameHeight="136"/>
-	<SubTexture name="Terminal0000" x="303" y="156" width="108" height="78"/>
-	<SubTexture name="Terminal0001" x="303" y="156" width="108" height="78"/>
-	<SubTexture name="Terminal0002" x="4" y="308" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
-	<SubTexture name="Terminal0003" x="4" y="308" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
-	<SubTexture name="Terminal0004" x="127" y="308" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
-	<SubTexture name="Terminal0005" x="127" y="308" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
-	<SubTexture name="Youtube0000" x="250" y="308" width="145" height="77"/>
-	<SubTexture name="Youtube0001" x="250" y="308" width="145" height="77"/>
-	<SubTexture name="Youtube0002" x="4" y="402" width="145" height="77"/>
-	<SubTexture name="Youtube0003" x="4" y="402" width="145" height="77"/>
-	<SubTexture name="Youtube0004" x="165" y="402" width="145" height="77"/>
-	<SubTexture name="Youtube0005" x="165" y="402" width="145" height="77"/>
+	<SubTexture name="Notepad0002" x="499" y="4" width="134" height="136"/>
+	<SubTexture name="Notepad0003" x="499" y="4" width="134" height="136"/>
+	<SubTexture name="Notepad0004" x="649" y="4" width="133" height="136" frameX="0" frameY="0" frameWidth="134" frameHeight="136"/>
+	<SubTexture name="Notepad0005" x="649" y="4" width="133" height="136" frameX="0" frameY="0" frameWidth="134" frameHeight="136"/>
+	<SubTexture name="Terminal0000" x="798" y="4" width="108" height="78"/>
+	<SubTexture name="Terminal0001" x="798" y="4" width="108" height="78"/>
+	<SubTexture name="Terminal0002" x="4" y="156" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0003" x="4" y="156" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0004" x="127" y="156" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="Terminal0005" x="127" y="156" width="107" height="78" frameX="0" frameY="0" frameWidth="108" frameHeight="78"/>
+	<SubTexture name="VSC0000" x="250" y="156" width="79" height="98"/>
+	<SubTexture name="VSC0001" x="250" y="156" width="79" height="98"/>
+	<SubTexture name="VSC0002" x="345" y="156" width="79" height="98"/>
+	<SubTexture name="VSC0003" x="345" y="156" width="79" height="98"/>
+	<SubTexture name="VSC0004" x="440" y="156" width="79" height="98"/>
+	<SubTexture name="VSC0005" x="440" y="156" width="79" height="98"/>
+	<SubTexture name="Youtube0000" x="535" y="156" width="145" height="77"/>
+	<SubTexture name="Youtube0001" x="535" y="156" width="145" height="77"/>
+	<SubTexture name="Youtube0002" x="696" y="156" width="145" height="77"/>
+	<SubTexture name="Youtube0003" x="696" y="156" width="145" height="77"/>
+	<SubTexture name="Youtube0004" x="857" y="156" width="145" height="77"/>
+	<SubTexture name="Youtube0005" x="857" y="156" width="145" height="77"/>
 </TextureAtlas>

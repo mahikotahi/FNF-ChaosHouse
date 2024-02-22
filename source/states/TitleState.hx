@@ -297,8 +297,9 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = ClientPrefs.data.antialiasing;
 
-		if (initialized)
-			skipIntro();
+		if (initialized){
+			FlxG.camera.flash(FlxColor.BLACK, 2);
+			skipIntro();}
 		else
 			initialized = true;
 
@@ -460,6 +461,7 @@ class TitleState extends MusicBeatState
 
 		if (initialized && pressedEnter && !skippedIntro)
 		{
+			FlxG.camera.flash(FlxColor.BLACK, 2);
 			skipIntro();
 		}
 
@@ -571,6 +573,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
+			MusicBeatState.switchState(new MainMenuState());
 			if (playJingle) //Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
@@ -590,7 +593,7 @@ class TitleState extends MusicBeatState
 					default: //Go back to normal ugly ass boring GF
 						remove(ngSpr);
 						remove(credGroup);
-						FlxG.camera.flash(FlxColor.WHITE, 2);
+						//FlxG.camera.flash(FlxColor.WHITE, 2);
 						skippedIntro = true;
 						playJingle = false;
 
@@ -606,7 +609,7 @@ class TitleState extends MusicBeatState
 					{
 						remove(ngSpr);
 						remove(credGroup);
-						FlxG.camera.flash(FlxColor.WHITE, 0.6);
+						//FlxG.camera.flash(FlxColor.WHITE, 0.6);
 						transitioning = false;
 					});
 				}
@@ -614,7 +617,7 @@ class TitleState extends MusicBeatState
 				{
 					remove(ngSpr);
 					remove(credGroup);
-					FlxG.camera.flash(FlxColor.WHITE, 3);
+					//FlxG.camera.flash(FlxColor.WHITE, 3);
 					sound.onComplete = function() {
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 						FlxG.sound.music.fadeIn(4, 0, 0.7);
@@ -627,7 +630,7 @@ class TitleState extends MusicBeatState
 			{
 				remove(ngSpr);
 				remove(credGroup);
-				FlxG.camera.flash(FlxColor.WHITE, 4);
+				//FlxG.camera.flash(FlxColor.WHITE, 4);
 
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
@@ -644,7 +647,6 @@ class TitleState extends MusicBeatState
 				#end
 			}
 
-			MusicBeatState.switchState(new MainMenuState());
 
 			skippedIntro = true;
 		}

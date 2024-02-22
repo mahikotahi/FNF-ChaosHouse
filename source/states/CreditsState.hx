@@ -209,7 +209,7 @@ class CreditsState extends FlxState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
-					FlxTween.tween(coolwindow, {alpha: 0}, 0.5, {
+					FlxTween.tween(coolwindow, {alpha: 0}, 1, {
 						onUpdate: function(twn:FlxTween)
 						{
 							coolwindow.scale.x = coolwindow.alpha * 2;
@@ -260,27 +260,27 @@ class CreditsState extends FlxState
 		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		terminal.animation.addByPrefix('termina', "Terminal", 24);
 		terminal.animation.play('termina');
-		add(terminal);
+		//add(terminal);
 
 		notepad = new FlxSprite(20, 70 + terminal.height + 20);
 		notepad.antialiasing = ClientPrefs.data.antialiasing;
 		notepad.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		notepad.animation.addByPrefix('nopa', "Notepad", 24);
 		notepad.animation.play('nopa');
-		add(notepad);
+		//add(notepad);
 
 		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
 		desktop.antialiasing = ClientPrefs.data.antialiasing;
 		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		desktop.animation.addByPrefix('desktop', "Animate", 24);
 		desktop.animation.play('desktop');
-		add(desktop);
+		//add(desktop);
 
 		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
 		tubeyou.antialiasing = ClientPrefs.data.antialiasing;
 		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
 		tubeyou.animation.play('yout');
-		add(tubeyou);
+		//add(tubeyou);
 	}
 }

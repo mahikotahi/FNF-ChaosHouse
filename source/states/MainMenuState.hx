@@ -22,6 +22,7 @@ class MainMenuState extends MusicBeatState
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
 	var tubeyou:FlxSprite;
+	var vsc:FlxSprite;
 
 	var mouse:FlxSprite;
 
@@ -164,7 +165,11 @@ class MainMenuState extends MusicBeatState
 		{
 			currentSelection = 'notepad';
 		}
-
+		else if (mouse.overlaps(vsc))
+			{
+				currentSelection = 'visul';
+			}
+	
 		if (prevCurSel != currentSelection)
 			mouseClickAmount = 0;
 
@@ -186,6 +191,9 @@ class MainMenuState extends MusicBeatState
 
 				case 'notepad':
 					notepad.setPosition(realMouse.x - (notepad.width / division), realMouse.y - (notepad.height / division));
+
+				case 'visul':
+					vsc.setPosition(realMouse.x - (vsc.width / division), realMouse.y - (vsc.height / division));
 			}
 		}
 
@@ -241,8 +249,21 @@ class MainMenuState extends MusicBeatState
 					StatusShit.status = 'Youtube';
 					loadSong('Stick');
 
+				case 'visul':
+					trace('visual');
+
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Visual Studio Code", null);
+					#end
+
+					coolwindow.loadGraphic(Paths.image('Achievementa'));
+					coolwindow.screenCenter();
+
+					MusicBeatState.switchState(new AchievementDesk());
+
 				default:
-					trace('nun');
+					trace(currentSelection);
 					WindowAnimate = false;
 			}
 
@@ -395,5 +416,12 @@ class MainMenuState extends MusicBeatState
 		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
 		tubeyou.animation.play('yout');
 		add(tubeyou);
+
+		vsc = new FlxSprite(notepad.x + notepad.width + 60, notepad.y + 15);
+		vsc.antialiasing = ClientPrefs.data.antialiasing;
+		vsc.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		vsc.animation.addByPrefix('vc', "VSC", 24);
+		vsc.animation.play('vc');
+		add(vsc);
 	}
 }
