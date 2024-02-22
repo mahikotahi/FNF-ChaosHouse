@@ -44,7 +44,6 @@ class CreditsState extends FlxState
 
 	override function create()
 	{
-		if (!FlxG.save.data.exploredReigions.contains('credits')){FlxG.save.data.exploredReigions.push('credits');}
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Notepad++", null);

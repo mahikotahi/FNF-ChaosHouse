@@ -24,6 +24,7 @@ class MusicBeatState extends FlxUIState
 	var _psychCameraInitialized:Bool = false;
 
 	override function create() {
+		if (FlxG.save.data.exploredReigions != null)trace(FlxG.save.data.exploredReigions);
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 

@@ -37,7 +37,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		if (!FlxG.save.data.exploredReigions.contains('desktop')){FlxG.save.data.exploredReigions.push('desktop');}
 		attempts = 0;
 
 		StatusShit.status = '';

@@ -49,7 +49,6 @@ class AchievementDesk extends MusicBeatState
 
 	public function new()
 	{
-		if (!FlxG.save.data.exploredReigions.contains('achievements')){FlxG.save.data.exploredReigions.push('achievements');}
 		if (FlxG.save.data.achieves != null)
 		{
 			achievementToggles = FlxG.save.data.achieves;
