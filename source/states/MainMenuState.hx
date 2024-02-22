@@ -334,91 +334,13 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (!selectedSomethin)
+		#if debug
+		if (controls.justPressed('debug_1'))
 		{
-			/*if (controls.UI_UP_P)
-					changeItem(-1);
-
-				if (controls.UI_DOWN_P)
-					changeItem(1);
-
-				if (controls.BACK)
-				{
-					selectedSomethin = true;
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					MusicBeatState.switchState(new TitleState());
-				}
-
-				if (controls.ACCEPT)
-				{
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-					if (optionShit[curSelected] == 'donate')
-					{
-						CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
-					}
-					else
-					{
-						selectedSomethin = true;
-
-						if (ClientPrefs.data.flashing)
-							FlxFlicker.flicker(magenta, 1.1, 0.15, false);
-
-						FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, false, false, function(flick:FlxFlicker)
-						{
-							switch (optionShit[curSelected])
-							{
-								case 'story_mode':
-									MusicBeatState.switchState(new StoryMenuState());
-								case 'freeplay':
-									MusicBeatState.switchState(new FreeplayState());
-
-								#if MODS_ALLOWED
-								case 'mods':
-									MusicBeatState.switchState(new ModsMenuState());
-								#end
-
-								#if ACHIEVEMENTS_ALLOWED
-								case 'awards':
-									MusicBeatState.switchState(new AchievementsMenuState());
-								#end
-
-								case 'credits':
-									MusicBeatState.switchState(new CreditsState());
-								case 'options':
-									MusicBeatState.switchState(new OptionsState());
-									OptionsState.onPlayState = false;
-									if (PlayState.SONG != null)
-									{
-										PlayState.SONG.arrowSkin = null;
-										PlayState.SONG.splashSkin = null;
-										PlayState.stageUI = 'normal';
-									}
-							}
-						});
-
-						for (i in 0...menuItems.members.length)
-						{
-							if (i == curSelected)
-								continue;
-							FlxTween.tween(menuItems.members[i], {alpha: 0}, 0.4, {
-								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
-									menuItems.members[i].kill();
-								}
-							});
-						}
-					}
-			}*/
-
-			#if desktop
-			if (controls.justPressed('debug_1'))
-			{
-				selectedSomethin = true;
-				MusicBeatState.switchState(new MasterEditorMenu());
-			}
-			#end
+			selectedSomethin = true;
+			MusicBeatState.switchState(new MasterEditorMenu());
 		}
+		#end
 
 		if (controls.BACK)
 		{
@@ -478,7 +400,7 @@ class MainMenuState extends MusicBeatState
 		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
 		tubeyou.animation.play('yout');
-		add(tubeyou);
+		//add(tubeyou);
 
 		vsc = new FlxSprite(notepad.x + notepad.width + 60, notepad.y + 15);
 		vsc.antialiasing = ClientPrefs.data.antialiasing;
