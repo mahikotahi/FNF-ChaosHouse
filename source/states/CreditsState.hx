@@ -1,8 +1,9 @@
 package states;
 
+import flixel.FlxState;
 import objects.AttachedSprite;
 
-class CreditsState extends MusicBeatState
+class CreditsState extends FlxState
 {
 	var curSelected:Int = -1;
 
@@ -34,6 +35,12 @@ class CreditsState extends MusicBeatState
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
 	var tubeyou:FlxSprite;
+	
+	public var controls(get, never):Controls;
+	private function get_controls()
+	{
+		return Controls.instance;
+	}
 
 	override function create()
 	{
@@ -192,6 +199,7 @@ class CreditsState extends MusicBeatState
 			{
 				// CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
+			
 			if (controls.BACK)
 			{
 				if (colorTween != null)
