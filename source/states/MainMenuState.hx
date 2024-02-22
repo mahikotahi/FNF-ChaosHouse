@@ -33,10 +33,12 @@ class MainMenuState extends MusicBeatState
 
 	public static var timePassedOnState:Float = 0;
 
-	var appPos:Array<Array<Int>> = [[0,0]];
+	var appPos:Array<Array<Int>> = [[0, 0]];
 
 	override function create()
 	{
+		attempts = 0;
+
 		StatusShit.status = '';
 
 		#if MODS_ALLOWED
@@ -49,8 +51,8 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("Desktop", null);
 		#end
 
-		//transIn = FlxTransitionableState.defaultTransIn;
-		//transOut = FlxTransitionableState.defaultTransOut;
+		// transIn = FlxTransitionableState.defaultTransIn;
+		// transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
 		var bg:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menuBG'));
@@ -124,6 +126,8 @@ class MainMenuState extends MusicBeatState
 		coolwindow.alpha = 0;
 		add(coolwindow);
 
+		initVirusPIC();
+
 		super.create();
 
 		// FlxG.camera.follow(camFollow, null, 9);
@@ -166,17 +170,17 @@ class MainMenuState extends MusicBeatState
 			currentSelection = 'notepad';
 		}
 		else if (mouse.overlaps(vsc))
-			{
-				currentSelection = 'visul';
-			}
-	
+		{
+			currentSelection = 'visul';
+		}
+
 		if (prevCurSel != currentSelection)
 			mouseClickAmount = 0;
 
-		if (FlxG.mouse.justReleased && mouseClickAmount != 3)
+		if (FlxG.mouse.justReleased && mouseClickAmount != 3 && virusPIC.alpha < 1)
 			mouseClickAmount++;
 
-		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed)
+		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed && virusPIC.alpha < 1)
 		{
 			switch (currentSelection)
 			{
@@ -197,7 +201,7 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.mouse.justReleased && mouseClickAmount == 2)
+		if (FlxG.mouse.justReleased && mouseClickAmount == 2 && virusPIC.alpha < 1)
 		{
 			StatusShit.status = '';
 			var WindowAnimate:Bool = true;
@@ -241,13 +245,57 @@ class MainMenuState extends MusicBeatState
 
 				case 'youtube':
 					trace('youtube');
+					if (Application.current.meta.get('version') == '[DEMO]')
+					{
+						WindowAnimate = false;
+						virusPIC.animation.play('stop');
+						attempts++;
+
+						if (attempts >= 4)
+							virusPIC.animation.play('warn');
+
+						if (attempts >= 12 || FlxG.save.data.pissedDad)
+						{
+							FlxG.sound.music.stop();
+							virusPIC.animation.play('ipaddress');
+						}
+
+						// virusTEXT
+
+						FlxTween.tween(virusPIC, {alpha: 1}, 0.2, {
+							onComplete: function(twn:FlxTween)
+							{
+								new FlxTimer().start(1, function(tmr:FlxTimer)
+								{
+									FlxTween.tween(virusPIC, {alpha: 0}, 0.2, {
+										onUpdate: function(twn:FlxTween)
+										{
+											if (attempts >= 12 || FlxG.save.data.pissedDad)
+											{
+												FlxG.save.data.pissedDad = true;
+												virusTEXT.alpha = virusPIC.alpha;
+											}
+										}
+									});
+								});
+							},
+							onUpdate: function(twn:FlxTween)
+							{
+								if (attempts >= 12 || FlxG.save.data.pissedDad)
+								{
+									FlxG.save.data.pissedDad = true;
+									virusTEXT.alpha = virusPIC.alpha;
+								}
+							}
+						});
+					}
 
 					#if DISCORD_ALLOWED
 					// Updating Discord Rich Presence
-					DiscordClient.changePresence("Youtube", null);
+					// DiscordClient.changePresence("Youtube", null);
 					#end
 					StatusShit.status = 'Youtube';
-					loadSong('Stick');
+				// loadSong('Stick');
 
 				case 'visul':
 					trace('visual');
@@ -365,6 +413,14 @@ class MainMenuState extends MusicBeatState
 			#end
 		}
 
+		if (controls.BACK)
+		{
+			//selectedSomethin = true;
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+			MusicBeatState.switchState(new TitleState());
+		}
+
+
 		super.update(elapsed);
 	}
 
@@ -423,5 +479,31 @@ class MainMenuState extends MusicBeatState
 		vsc.animation.addByPrefix('vc', "VSC", 24);
 		vsc.animation.play('vc');
 		add(vsc);
+	}
+
+	var virusPIC:FlxSprite;
+	var virusTEXT:FlxText;
+	var attempts:Int = 0;
+
+	public function initVirusPIC()
+	{
+		virusPIC = new FlxSprite(0, 0);
+		virusPIC.frames = Paths.getSparrowAtlas('virus');
+		virusPIC.animation.addByPrefix('stop', 'DadWarning', 24);
+		virusPIC.animation.addByPrefix('warn', 'DadAnnoyed', 24);
+		virusPIC.animation.addByPrefix('ipaddress', 'pinkBg', 24);
+
+		virusPIC.antialiasing = ClientPrefs.data.antialiasing;
+		virusPIC.screenCenter();
+		virusPIC.alpha = 0;
+
+		virusPIC.animation.play('stop');
+
+		add(virusPIC);
+
+		virusTEXT = new FlxText(0, 0, 0, Main.usrName + ".\n I'm not in the mood.", 16);
+		virusTEXT.screenCenter();
+		virusTEXT.alpha = 0;
+		add(virusTEXT);
 	}
 }
