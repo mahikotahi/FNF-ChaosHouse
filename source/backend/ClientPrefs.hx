@@ -10,6 +10,9 @@ import states.TitleState;
 @:structInit class SaveVariables {
 
 	public var cursorColor:String = 'white';
+	public var desktopbg:String = 'hill';
+	public var cursorsize:Float = 1.0;
+
 	public var songSpecificNoteColors:Bool = false;
 
 	public var downScroll:Bool = false;

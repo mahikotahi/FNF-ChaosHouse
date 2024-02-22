@@ -24,6 +24,7 @@ class OptionsState extends MusicBeatState
 	var selectorRight:Alphabet;
 
 	override function create() {
+		if (!FlxG.save.data.exploredReigions.contains('options')){FlxG.save.data.exploredReigions.push('options');}
 
 		//var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/background'));

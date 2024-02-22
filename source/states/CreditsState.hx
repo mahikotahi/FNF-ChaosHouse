@@ -44,6 +44,7 @@ class CreditsState extends FlxState
 
 	override function create()
 	{
+		if (!FlxG.save.data.exploredReigions.contains('credits')){FlxG.save.data.exploredReigions.push('credits');}
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Notepad++", null);
@@ -114,7 +115,7 @@ class CreditsState extends FlxState
 		mouse.animation.addByPrefix('purple', "purple", 24);
 		mouse.animation.addByPrefix('pink', "pink", 24);
 		mouse.animation.addByPrefix('brown', "brown", 24);
-		// mouse.scale.set(0.85, 0.85);
+		mouse.scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
 		mouse.animation.play(ClientPrefs.data.cursorColor);
 		add(mouse);
 

@@ -104,6 +104,7 @@ class TitleState extends MusicBeatState
 		
 		FlxG.save.data.playername = Main.usrName;
 		FlxG.save.data.playedMod = true;
+		if(FlxG.save.data.exploredReigions == null)FlxG.save.data.exploredReigions = [];
 
 
 		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());

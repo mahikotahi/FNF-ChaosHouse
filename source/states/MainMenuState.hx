@@ -37,6 +37,7 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		if (!FlxG.save.data.exploredReigions.contains('desktop')){FlxG.save.data.exploredReigions.push('desktop');}
 		attempts = 0;
 
 		StatusShit.status = '';
@@ -114,7 +115,7 @@ class MainMenuState extends MusicBeatState
 		mouse.animation.addByPrefix('purple', "purple", 24);
 		mouse.animation.addByPrefix('pink', "pink", 24);
 		mouse.animation.addByPrefix('brown', "brown", 24);
-		// mouse.scale.set(0.85, 0.85);
+		mouse.scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
 		mouse.animation.play(ClientPrefs.data.cursorColor);
 		add(mouse);
 
@@ -245,63 +246,26 @@ class MainMenuState extends MusicBeatState
 
 				case 'youtube':
 					trace('youtube');
-					if (Application.current.meta.get('version') == '[DEMO]')
-					{
-						WindowAnimate = false;
-						virusPIC.animation.play('stop');
-						attempts++;
+					
+					WindowAnimate = false;
+					virusPIC.animation.play('stop');
+					attempts++;
 
-						if (attempts >= 4)
-							//virusPIC.animation.play('warn');
-
-						if (attempts >= 12 || FlxG.save.data.pissedDad)
+					FlxTween.tween(virusPIC, {alpha: 1}, 0.2, {
+						onComplete: function(twn:FlxTween)
 						{
-							//FlxG.sound.music.stop();
-							//virusPIC.animation.play('ipaddress');
+							new FlxTimer().start(1, function(tmr:FlxTimer)
+							{
+								FlxTween.tween(virusPIC, {alpha: 0}, 0.4);
+							});
 						}
-
-						// virusTEXT
-
-						FlxTween.tween(virusPIC, {alpha: 1}, 0.2, {
-							onComplete: function(twn:FlxTween)
-							{
-								new FlxTimer().start(1, function(tmr:FlxTimer)
-								{
-									FlxTween.tween(virusPIC, {alpha: 0}, 0.2, {
-										onUpdate: function(twn:FlxTween)
-											{
-												if (attempts >= 12 || FlxG.save.data.pissedDad)
-												{
-													//FlxG.save.data.pissedDad = true;
-													//virusTEXT.alpha = virusPIC.alpha;
-												}
-											},onComplete: function(twn:FlxTween)
-												{
-													if (attempts >= 12 || FlxG.save.data.pissedDad)
-													{
-														//FlxG.save.data.pissedDad = true;
-														//virusTEXT.alpha = virusPIC.alpha;
-													}
-												}
-									});
-								});
-							},
-							onUpdate: function(twn:FlxTween)
-							{
-								if (attempts >= 12 || FlxG.save.data.pissedDad)
-								{
-									//FlxG.save.data.pissedDad = true;
-									//virusTEXT.alpha = virusPIC.alpha;
-								}
-							}
-						});
-					}
+					});
 
 					#if DISCORD_ALLOWED
 					// Updating Discord Rich Presence
 					// DiscordClient.changePresence("Youtube", null);
 					#end
-					StatusShit.status = 'Youtube';
+					//StatusShit.status = 'Youtube';
 				// loadSong('Stick');
 
 				case 'visul':

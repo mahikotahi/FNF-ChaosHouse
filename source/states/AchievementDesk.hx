@@ -49,6 +49,7 @@ class AchievementDesk extends MusicBeatState
 
 	public function new()
 	{
+		if (!FlxG.save.data.exploredReigions.contains('achievements')){FlxG.save.data.exploredReigions.push('achievements');}
 		if (FlxG.save.data.achieves != null)
 		{
 			achievementToggles = FlxG.save.data.achieves;
@@ -96,7 +97,7 @@ class AchievementDesk extends MusicBeatState
 		mouse.animation.addByPrefix('purple', "purple", 24);
 		mouse.animation.addByPrefix('pink', "pink", 24);
 		mouse.animation.addByPrefix('brown', "brown", 24);
-		// mouse.scale.set(0.85, 0.85);
+		mouse.scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
 		mouse.animation.play(ClientPrefs.data.cursorColor);
 		add(mouse);
 
