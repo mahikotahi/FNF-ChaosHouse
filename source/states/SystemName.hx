@@ -51,7 +51,7 @@ class SystemName extends MusicBeatState
 				} else {FlxG.save.data.censorSysName = false;
 					FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 					FlxG.sound.play(Paths.sound('cancelMenu'));
-					warnText.text = "That's what i'm talking about "+ Sys.environment()["USERNAME"];
+					warnText.text = "That's what i'm talking about "+ Main.usrName;
 					warnText.screenCenter(Y);
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
 						onComplete: function (twn:FlxTween) {
