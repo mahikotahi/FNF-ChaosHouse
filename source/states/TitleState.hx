@@ -92,7 +92,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.pussyName == null) FlxG.save.data.pussyName = false; else if (FlxG.save.data.censorSysName != null)FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 		if (FlxG.save.data.pussyName != null && FlxG.save.data.censorSysName != null) FlxG.save.data.pussyName = FlxG.save.data.censorSysName;
 		
-		FlxG.save.data.pissedDad = false;
+		if (FlxG.save.data.pissedDad == true || FlxG.save.data.pissedDad == null){FlxG.save.data.pissedDad = false;}
 
 		if (FlxG.save.data.firstTimePlaying == null) 
 			FlxG.save.data.firstTimePlaying = true; 

@@ -269,13 +269,20 @@ class MainMenuState extends MusicBeatState
 								{
 									FlxTween.tween(virusPIC, {alpha: 0}, 0.2, {
 										onUpdate: function(twn:FlxTween)
-										{
-											if (attempts >= 12 || FlxG.save.data.pissedDad)
 											{
-												FlxG.save.data.pissedDad = true;
-												virusTEXT.alpha = virusPIC.alpha;
-											}
-										}
+												if (attempts >= 12 || FlxG.save.data.pissedDad)
+												{
+													FlxG.save.data.pissedDad = true;
+													virusTEXT.alpha = virusPIC.alpha;
+												}
+											},onComplete: function(twn:FlxTween)
+												{
+													if (attempts >= 12 || FlxG.save.data.pissedDad)
+													{
+														FlxG.save.data.pissedDad = true;
+														virusTEXT.alpha = virusPIC.alpha;
+													}
+												}
 									});
 								});
 							},
