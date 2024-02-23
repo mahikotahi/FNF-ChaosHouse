@@ -61,9 +61,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 		else
 		{
-
 			var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
-			deskBG.loadGraphic(DeskBGShit.imageLocation);
+			deskBG.loadGraphic(Paths.image(DeskBGShit.imageLocation));
 			add(deskBG);
 		}
 
