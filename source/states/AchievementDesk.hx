@@ -8,6 +8,7 @@ class AchievementDesk extends MusicBeatState
 	var base:FlxSprite;
 
 	var stick:FlxSprite;
+	var buckshot:FlxSprite;
 
 	var coolwindow:FlxSprite;
 
@@ -15,8 +16,8 @@ class AchievementDesk extends MusicBeatState
 
 	var mouse:FlxSprite;
 
-	var achievementNames:Array<String> = ['stick']; // for reference
-	public static var achievementToggles:Array<Bool> = [false];
+	var achievementNames:Array<String> = ['stick', 'buckshot']; // for reference
+	public static var achievementToggles:Array<Bool> = [false, false];
 
 	// LockedAchievement
 
@@ -43,6 +44,9 @@ class AchievementDesk extends MusicBeatState
 
 		achievementIcon(stick, 'StickAchievement', 0);
         stick.setPosition(base.x,base.y);
+
+		achievementIcon(buckshot, 'BuckshotAchievement', 1);
+        buckshot.setPosition(stick.x + stick.width + 16,stick.y);
 
 		FlxG.save.data.achieves = achievementToggles;
 	}
@@ -80,6 +84,9 @@ class AchievementDesk extends MusicBeatState
 
 		stick = new FlxSprite(160, 0);
         add(stick);
+
+		buckshot = new FlxSprite(160, 0);
+        add(buckshot);
 
 		mouse = new FlxSprite(0, 0);
 		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');

@@ -23,6 +23,7 @@ class MainMenuState extends MusicBeatState
 	var notepad:FlxSprite;
 	var tubeyou:FlxSprite;
 	var vsc:FlxSprite;
+	var shot:FlxSprite;
 
 	var mouse:FlxSprite;
 
@@ -76,7 +77,7 @@ class MainMenuState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.visible = true;
 		// magenta.color = 0xff21d9ee;
-		//add(magenta);
+		// add(magenta);
 
 		createCoolIcons();
 
@@ -180,6 +181,10 @@ class MainMenuState extends MusicBeatState
 		{
 			currentSelection = 'visul';
 		}
+		else if (mouse.overlaps(shot))
+		{
+			currentSelection = 'roulette';
+		}
 
 		if (prevCurSel != currentSelection)
 			mouseClickAmount = 0;
@@ -205,6 +210,9 @@ class MainMenuState extends MusicBeatState
 
 				case 'visul':
 					vsc.setPosition(realMouse.x - (vsc.width / division), realMouse.y - (vsc.height / division));
+
+				case 'roulette':
+					shot.setPosition(realMouse.x - (shot.width / division), realMouse.y - (shot.height / division));
 			}
 		}
 
@@ -250,9 +258,19 @@ class MainMenuState extends MusicBeatState
 					StatusShit.status = 'Adobe Animate 2021';
 					loadSong('Stick');
 
+				case 'roulette':
+					trace('buckshot roulet');
+
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Buckshot Roulette", null);
+					#end
+					StatusShit.status = 'Buckshot Roulette';
+					loadSong('Buckshot');
+
 				case 'youtube':
 					trace('youtube');
-					
+
 					WindowAnimate = false;
 					virusPIC.animation.play('stop');
 					attempts++;
@@ -271,7 +289,7 @@ class MainMenuState extends MusicBeatState
 					// Updating Discord Rich Presence
 					// DiscordClient.changePresence("Youtube", null);
 					#end
-					//StatusShit.status = 'Youtube';
+				// StatusShit.status = 'Youtube';
 				// loadSong('Stick');
 
 				case 'visul':
@@ -314,11 +332,10 @@ class MainMenuState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			//selectedSomethin = true;
+			// selectedSomethin = true;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new TitleState());
 		}
-
 
 		super.update(elapsed);
 	}
@@ -370,7 +387,7 @@ class MainMenuState extends MusicBeatState
 		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
 		tubeyou.animation.play('yout');
-		//add(tubeyou);
+		// add(tubeyou);
 
 		vsc = new FlxSprite(notepad.x + notepad.width + 60, notepad.y + 15);
 		vsc.antialiasing = ClientPrefs.data.antialiasing;
@@ -378,6 +395,13 @@ class MainMenuState extends MusicBeatState
 		vsc.animation.addByPrefix('vc', "VSC", 24);
 		vsc.animation.play('vc');
 		add(vsc);
+
+		shot = new FlxSprite(vsc.x + vsc.width + 24, vsc.y + 0);
+		shot.antialiasing = ClientPrefs.data.antialiasing;
+		shot.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
+		shot.animation.addByPrefix('bsr', "Buck", 24);
+		shot.animation.play('bsr');
+		add(shot);
 	}
 
 	var virusPIC:FlxSprite;

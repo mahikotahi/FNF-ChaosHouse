@@ -1,0 +1,14 @@
+{
+	"song": {
+		"player1": "sketchbf",
+		"gfVersion": "gf",
+		"notes": [],
+		"events": [],
+		"player2": "stick",
+		"song": "Buckshot",
+		"needsVoices": false,
+		"stage": "desktop",
+		"speed": 3,
+		"bpm": 200
+	}
+}

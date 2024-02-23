@@ -54,6 +54,7 @@ import psychlua.HScript;
 #if SScript
 import tea.SScript;
 #end
+import flixel.addons.plugin.screengrab.FlxScreenGrab;
 
 /**
  * This is where all the Gameplay stuff happens and is managed
@@ -273,8 +274,23 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	public var bucked:Bool = false;
+
 	override public function create()
 	{
+		bucked = false;
+		if (FlxG.save.data.bucked == true)
+		{
+			bucked = true;
+			FlxG.save.data.bucked = false;
+			FlxG.switchState(new Retry());
+		}
+		else
+		{
+			// testing purposes
+			// FlxG.save.data.bucked = true;
+		}
+
 		// trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
 
@@ -2535,21 +2551,31 @@ class PlayState extends MusicBeatState
 		var weekNoMiss:String = WeekData.getWeekFileName() + '_nomiss';
 		checkForAchievement([weekNoMiss, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
 		#end
-		
-		switch(SONG.song)
+
+		switch (SONG.song)
 		{
 			case 'stick':
-				if (!FlxG.save.data.exploredReigions.contains('stick')){FlxG.save.data.exploredReigions.push('stick');}
+				if (!FlxG.save.data.exploredReigions.contains('stick'))
+				{
+					FlxG.save.data.exploredReigions.push('stick');
+				}
+			case 'buckshot':
+				if (!FlxG.save.data.exploredReigions.contains('buckshot'))
+				{
+					FlxG.save.data.exploredReigions.push('buckshot');
+				}
 		}
 
 		// FlxG.save.data.achieves
 
 		if (fullCombo && !cheater && !ClientPrefs.getGameplaySetting('practice'))
 		{
-			switch(SONG.song)
+			switch (SONG.song)
 			{
 				case 'stick':
 					AchievementDesk.unlockAdvancement(0);
+				case 'buckshot':
+					AchievementDesk.unlockAdvancement(1);
 			}
 		}
 

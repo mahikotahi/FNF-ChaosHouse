@@ -24,7 +24,7 @@ class Desktop extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Desktop Background', "Set your Desktop Background", 'desktopbg', 'string', ['hill', 'the table']);
-		addOption(option);
+		//addOption(option);
 
 		var option:Option = new Option('Cursor Size', "Set your Cursor Size", 'cursorsize', 'float');
 		option.minValue = 0.5;

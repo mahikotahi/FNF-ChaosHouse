@@ -100,11 +100,12 @@ class TitleState extends MusicBeatState
 			FlxG.save.data.firstTimePlaying = false;
 
 		//if (FlxG.save.data.appPositions == null) FlxG.save.data.appPositions = [];
-		if (FlxG.save.data.achieves == null) FlxG.save.data.achieves = [false];
+		if (FlxG.save.data.achieves == null) FlxG.save.data.achieves = [false, false];
 		
 		FlxG.save.data.playername = Main.usrName;
 		FlxG.save.data.playedMod = true;
 		if(FlxG.save.data.exploredReigions == null)FlxG.save.data.exploredReigions = [];
+		if (FlxG.save.data.bucked == null) FlxG.save.data.bucked = false;
 
 
 		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());

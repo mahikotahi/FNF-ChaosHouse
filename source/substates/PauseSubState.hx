@@ -39,6 +39,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		menuItemsOG = [];
 		menuItemsOG.push(StatusShit.status);
+		menuItemsOG.push('Reset Application');
 		menuItemsOG.push('Terminal');
 		menuItemsOG.push('Desktop');
 
@@ -277,7 +278,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
 					PlayState.changedDifficulty = true;
 					practiceText.visible = PlayState.instance.practiceMode;
-				case "Restart Song":
+				case "Restart Song" | "Reset Application":
 					restartSong();
 				case "Leave Charting Mode":
 					restartSong();
