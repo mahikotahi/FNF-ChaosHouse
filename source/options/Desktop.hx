@@ -23,14 +23,13 @@ class Desktop extends BaseOptionsMenu
 		]);
 		addOption(option);
 
-		var option:Option = new Option('Desktop Background', "Set your Desktop Background", 'desktopbg', 'string', [
-			'hill'
-		]);
-		//addOption(option);
+		var option:Option = new Option('Desktop Background', "Set your Desktop Background", 'desktopbg', 'string', ['hill', 'the table']);
+		addOption(option);
 
 		var option:Option = new Option('Cursor Size', "Set your Cursor Size", 'cursorsize', 'float');
 		option.minValue = 0.5;
 		option.maxValue = 2;
+		option.changeValue = 0.1;
 		addOption(option);
 
 		cursor = new FlxTypedGroup<FlxSprite>();
@@ -54,18 +53,25 @@ class Desktop extends BaseOptionsMenu
 		mouse.animation.play(ClientPrefs.data.cursorColor);
 		cursor.add(mouse);
 
-		add(cursor);
-
 		super();
+	}
+
+	override function create()
+	{
+		add(cursor);
+		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
 		var realMouse:Dynamic = FlxG.mouse;
-		
+
 		cursor.members[0].scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
 		cursor.members[0].animation.play(ClientPrefs.data.cursorColor);
 		cursor.members[0].setPosition(realMouse.x, realMouse.y);
+
+		if (ClientPrefs.data.desktopbg == 'the table')
+			FlxG.sound.music.stop();
 
 		super.update(elapsed);
 	}
@@ -84,6 +90,9 @@ class Desktop extends BaseOptionsMenu
 		else
 			FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)));
 
+		if (ClientPrefs.data.desktopbg == 'the table')
+			FlxG.sound.music.stop();
+
 		changedMusic = true;
 	}
 
@@ -91,6 +100,9 @@ class Desktop extends BaseOptionsMenu
 	{
 		if (changedMusic && !OptionsState.onPlayState)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
+
+		if (ClientPrefs.data.desktopbg == 'the table')
+			FlxG.sound.music.stop();
 		super.destroy();
 	}
 

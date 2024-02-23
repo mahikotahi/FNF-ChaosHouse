@@ -61,14 +61,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 		else
 		{
-			var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('mainmenu/background'));
-			bg.antialiasing = ClientPrefs.data.antialiasing;
-			// bg.color = 0xff00ff00;
-			bg.setGraphicSize(Std.int(bg.width * 1.175));
-			bg.updateHitbox();
 
-			bg.screenCenter();
-			add(bg);
+			var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
+			deskBG.loadGraphic(DeskBGShit.imageLocation);
+			add(deskBG);
 		}
 
 		// avoids lagspikes while scrolling through menus!

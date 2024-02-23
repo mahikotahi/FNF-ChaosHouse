@@ -37,6 +37,10 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
+		deskBG.loadGraphic(DeskBGShit.imageLocation);
+		add(deskBG);
+
 		attempts = 0;
 
 		StatusShit.status = '';
@@ -72,7 +76,7 @@ class MainMenuState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.visible = true;
 		// magenta.color = 0xff21d9ee;
-		add(magenta);
+		//add(magenta);
 
 		createCoolIcons();
 
@@ -148,6 +152,9 @@ class MainMenuState extends MusicBeatState
 			if (FreeplayState.vocals != null)
 				FreeplayState.vocals.volume += 0.5 * elapsed;
 		}
+
+		if (ClientPrefs.data.desktopbg == 'the table')
+			FlxG.sound.music.stop();
 
 		var prevCurSel:String = currentSelection;
 

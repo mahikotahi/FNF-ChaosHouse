@@ -29,14 +29,15 @@ class CreditsState extends FlxState
 	public static var currentSelection:String = '';
 
 	var port:FlxSprite;
-	var portText:FlxText = new FlxText(0,0,0, "Portilizen", 16);
+	var portText:FlxText = new FlxText(0, 0, 0, "Portilizen", 16);
 
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
 	var tubeyou:FlxSprite;
-	
+
 	public var controls(get, never):Controls;
+
 	private function get_controls()
 	{
 		return Controls.instance;
@@ -59,8 +60,11 @@ class CreditsState extends FlxState
 		magenta.screenCenter();
 		magenta.visible = true;
 		// magenta.color = 0xff21d9ee;
-		add(magenta);
-		
+		// add(magenta);
+		var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
+		deskBG.loadGraphic(DeskBGShit.imageLocation);
+		add(deskBG);
+
 		createCoolIcons();
 
 		coolwindow = new FlxSprite(0, 0);
@@ -127,7 +131,7 @@ class CreditsState extends FlxState
 
 	override function update(elapsed:Float)
 	{
-		portText.setPosition(port.x + 16,port.y + port.height + 16);
+		portText.setPosition(port.x + 16, port.y + port.height + 16);
 		var realMouse:Dynamic = FlxG.mouse;
 
 		mouse.setPosition(realMouse.x, realMouse.y);
@@ -141,10 +145,10 @@ class CreditsState extends FlxState
 			currentSelection = 'port';
 		}
 		/*if (prevCurSel != currentSelection)
-			mouseClickAmount = 0;
+				mouseClickAmount = 0;
 
-		if (FlxG.mouse.justReleased && mouseClickAmount != 3)
-			mouseClickAmount++;*/
+			if (FlxG.mouse.justReleased && mouseClickAmount != 3)
+				mouseClickAmount++; */
 
 		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed)
 		{
@@ -159,6 +163,9 @@ class CreditsState extends FlxState
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
+
+		if (ClientPrefs.data.desktopbg == 'the table')
+			FlxG.sound.music.stop();
 
 		if (!quitting)
 		{
@@ -199,7 +206,7 @@ class CreditsState extends FlxState
 			{
 				// CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
-			
+
 			if (controls.BACK)
 			{
 				if (colorTween != null)
@@ -209,17 +216,17 @@ class CreditsState extends FlxState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
-					FlxTween.tween(coolwindow, {alpha: 0}, 1, {
-						onUpdate: function(twn:FlxTween)
-						{
-							coolwindow.scale.x = coolwindow.alpha * 2;
-							coolwindow.scale.y = coolwindow.alpha * 2;
-							port.scale.x = coolwindow.alpha * 2;
-							port.scale.y = coolwindow.alpha * 2;
-							portText.scale.x = coolwindow.alpha * 2;
-							portText.scale.y = coolwindow.alpha * 2;
-						}
-					});
+				FlxTween.tween(coolwindow, {alpha: 0}, 1, {
+					onUpdate: function(twn:FlxTween)
+					{
+						coolwindow.scale.x = coolwindow.alpha * 2;
+						coolwindow.scale.y = coolwindow.alpha * 2;
+						port.scale.x = coolwindow.alpha * 2;
+						port.scale.y = coolwindow.alpha * 2;
+						portText.scale.x = coolwindow.alpha * 2;
+						portText.scale.y = coolwindow.alpha * 2;
+					}
+				});
 			}
 		}
 
@@ -260,27 +267,27 @@ class CreditsState extends FlxState
 		terminal.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		terminal.animation.addByPrefix('termina', "Terminal", 24);
 		terminal.animation.play('termina');
-		//add(terminal);
+		// add(terminal);
 
 		notepad = new FlxSprite(20, 70 + terminal.height + 20);
 		notepad.antialiasing = ClientPrefs.data.antialiasing;
 		notepad.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		notepad.animation.addByPrefix('nopa', "Notepad", 24);
 		notepad.animation.play('nopa');
-		//add(notepad);
+		// add(notepad);
 
 		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
 		desktop.antialiasing = ClientPrefs.data.antialiasing;
 		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		desktop.animation.addByPrefix('desktop', "Animate", 24);
 		desktop.animation.play('desktop');
-		//add(desktop);
+		// add(desktop);
 
 		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
 		tubeyou.antialiasing = ClientPrefs.data.antialiasing;
 		tubeyou.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		tubeyou.animation.addByPrefix('yout', "Youtube", 24);
 		tubeyou.animation.play('yout');
-		//add(tubeyou);
+		// add(tubeyou);
 	}
 }

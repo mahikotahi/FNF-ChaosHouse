@@ -575,9 +575,9 @@ class TitleState extends MusicBeatState
 	var increaseVolume:Bool = false;
 	function skipIntro():Void
 	{
+		MusicBeatState.switchState(new MainMenuState());
 		if (!skippedIntro)
 		{
-			MusicBeatState.switchState(new MainMenuState());
 			if (playJingle) //Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
