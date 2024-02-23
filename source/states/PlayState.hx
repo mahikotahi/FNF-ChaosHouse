@@ -478,6 +478,17 @@ class PlayState extends MusicBeatState
 			startCharacterScripts(gf.curCharacter);
 		}
 
+		
+		switch (SONG.song)
+		{
+			case 'buckshot':
+				if (bucked == true)
+				{
+					bucked = false;
+					SONG.player2 = 'bf';
+				}
+		}
+
 		dad = new Character(0, 0, SONG.player2);
 		startCharacterPos(dad, true);
 		dadGroup.add(dad);
@@ -2576,6 +2587,15 @@ class PlayState extends MusicBeatState
 					AchievementDesk.unlockAdvancement(0);
 				case 'buckshot':
 					AchievementDesk.unlockAdvancement(1);
+			}
+		}
+		else
+		{
+			switch (SONG.song)
+			{
+				case 'buckshot':
+					FlxG.save.data.bucked = true;
+					//bucked = false;
 			}
 		}
 
