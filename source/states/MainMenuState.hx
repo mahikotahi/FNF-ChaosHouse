@@ -40,6 +40,7 @@ class MainMenuState extends MusicBeatState
 	{
 		var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
 		deskBG.loadGraphic(Paths.image(DeskBGShit.imageLocation));
+		deskBG.scale.x = 1.1;
 		add(deskBG);
 
 		attempts = 0;
@@ -63,7 +64,7 @@ class MainMenuState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('menuBG'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.scrollFactor.set(0, 0);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
 		bg.screenCenter();
 		// add(bg);

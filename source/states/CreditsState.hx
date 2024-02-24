@@ -63,6 +63,7 @@ class CreditsState extends FlxState
 		// add(magenta);
 		var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
 		deskBG.loadGraphic(DeskBGShit.imageLocation);
+		deskBG.scale.x = 1.1;
 		add(deskBG);
 
 		createCoolIcons();
