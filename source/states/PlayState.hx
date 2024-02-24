@@ -2574,7 +2574,7 @@ class PlayState extends MusicBeatState
 		checkForAchievement([weekNoMiss, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
 		#end
 
-		switch (SONG.song)
+		switch (SONG.song.toLowerCase())
 		{
 			case 'stick':
 				if (!FlxG.save.data.exploredReigions.contains('stick'))
@@ -2592,7 +2592,7 @@ class PlayState extends MusicBeatState
 
 		if (fullCombo && !cheater && !ClientPrefs.getGameplaySetting('practice'))
 		{
-			switch (SONG.song)
+			switch (SONG.song.toLowerCase())
 			{
 				case 'stick':
 					AchievementDesk.unlockAdvancement(0);
@@ -2600,7 +2600,7 @@ class PlayState extends MusicBeatState
 					AchievementDesk.unlockAdvancement(1);
 			}
 		}
-		switch (SONG.song)
+		switch (SONG.song.toLowerCase())
 		{
 			case 'buckshot':
 				FlxG.save.data.bucked = true;
