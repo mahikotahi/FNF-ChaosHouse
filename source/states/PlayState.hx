@@ -563,6 +563,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		moveCameraSection();
+		moveCamera(false);
 
 		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
 		healthBar.screenCenter(X);
@@ -1484,7 +1485,7 @@ class PlayState extends MusicBeatState
 			{
 				var daStrumTime:Float = songNotes[0];
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
-				var gottaHitNote:Bool = false;
+				var gottaHitNote:Bool = songNotes[1] > 3;
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
@@ -2187,19 +2188,27 @@ class PlayState extends MusicBeatState
 	{
 		var flValue1:Null<Float> = Std.parseFloat(value1);
 		var flValue2:Null<Float> = Std.parseFloat(value2);
-		var intValue1:Null<Int> = Std.parseInt(value1);
-		var intValue2:Null<Int> = Std.parseInt(value2);
 		if (Math.isNaN(flValue1))
 			flValue1 = null;
 		if (Math.isNaN(flValue2))
 			flValue2 = null;
+
+		var intValue1:Null<Int> = Std.parseInt(value1);
+		var intValue2:Null<Int> = Std.parseInt(value2);
+
 		if (Math.isNaN(intValue1))
 			intValue1 = null;
 		if (Math.isNaN(intValue2))
 			intValue2 = null;
 
+		var boolValue1:Bool = (value1.toLowerCase() == 'true' || value1 == '1');
+		var boolValue2:Bool = (value2.toLowerCase() == 'true' || value2 == '1');
+
 		switch (eventName)
 		{
+			case 'Camera Section':
+				moveCamera(boolValue1);
+
 			case 'boyfriend fucking dies':
 				//boyfriend.destroy();
 
@@ -2242,6 +2251,7 @@ class PlayState extends MusicBeatState
 				{
 					if (dad.curCharacter.startsWith('gf'))
 					{ // Tutorial GF is actually Dad! The GF is an imposter!! ding ding ding ding ding ding ding, dindinding, end my suffering
+					// no - portilizen
 						dad.playAnim('cheer', true);
 						dad.specialAnim = true;
 						dad.heyTimer = flValue2;
@@ -2522,8 +2532,23 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var isDad:Bool = (SONG.notes[sec].mustHitSection != true);
-		moveCamera(isDad);
+		
+
+		var songData = SONG;
+		var noteData:Array<SwagSection>;
+		// NEW SHIT
+		noteData = songData.notes;
+		var isDad:Bool = false;
+
+		
+		for (section in noteData)
+			{
+				for (songNotes in section.sectionNotes)
+				{
+					isDad = songNotes[1] > 3;
+				}
+			}
+
 		callOnScripts('onMoveCamera', [isDad ? 'dad' : 'boyfriend']);
 	}
 
@@ -3633,7 +3658,21 @@ class PlayState extends MusicBeatState
 				setOnScripts('crochet', Conductor.crochet);
 				setOnScripts('stepCrochet', Conductor.stepCrochet);
 			}
-			setOnScripts('mustHitSection', SONG.notes[curSection].mustHitSection);
+			var songData = SONG;
+		var noteData:Array<SwagSection>;
+		// NEW SHIT
+		noteData = songData.notes;
+		var hitsec:Bool = false;
+
+		
+		for (section in noteData)
+			{
+				for (songNotes in section.sectionNotes)
+				{
+					hitsec = songNotes[1] > 3;
+				}
+			}
+			setOnScripts('mustHitSection', false);
 			setOnScripts('altAnim', SONG.notes[curSection].altAnim);
 			setOnScripts('gfSection', SONG.notes[curSection].gfSection);
 		}

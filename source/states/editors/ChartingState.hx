@@ -1,5 +1,6 @@
 package states.editors;
 
+import flixel.addons.display.FlxBackdrop;
 import flash.geom.Rectangle;
 import haxe.Json;
 import haxe.format.JsonParser;
@@ -38,6 +39,10 @@ import objects.AttachedSprite;
 import objects.Character;
 import substates.Prompt;
 
+import haxe.ui.components.Button;
+import haxe.ui.containers.VBox;
+import haxe.ui.core.Screen;
+
 
 #if sys
 import flash.media.Sound;
@@ -45,7 +50,6 @@ import flash.media.Sound;
 
 @:access(flixel.sound.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)
-
 class ChartingState extends MusicBeatState
 {
 	public static var noteTypeList:Array<String> = //Used for backwards compatibility with 0.1 - 0.3.2 charts, though, you should add your hardcoded custom note types here too.
@@ -65,6 +69,7 @@ class ChartingState extends MusicBeatState
 	[
 		['', "Nothing. Yep, that's right."],
 		//['boyfriend fucking dies', "fuckin kill boyfrien"],
+		['Camera Section', 'Value 1 - IsDad?'],
 		['Change', "value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"],
 		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
 		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
@@ -141,6 +146,7 @@ class ChartingState extends MusicBeatState
 
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
+	var middleIcon:HealthIcon;
 
 	var value1InputText:FlxUIInputText;
 	var value2InputText:FlxUIInputText;
@@ -190,8 +196,26 @@ class ChartingState extends MusicBeatState
 	var text:String = "";
 	public static var vortex:Bool = false;
 	public var mouseQuant:Bool = false;
+
+	var gamepadColor:FlxColor = 0xfffd7194;
+	var keyboardColor:FlxColor = 0xff71a876;
 	override function create()
 	{
+
+		var bg:FlxSprite;
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = keyboardColor;
+		bg.antialiasing = ClientPrefs.data.antialiasing;
+		bg.scrollFactor.set();
+		bg.screenCenter();
+		add(bg);
+
+		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0x33FFFFFF, 0x0));
+		grid.velocity.set(40, 40);
+		grid.alpha = 0;
+		FlxTween.tween(grid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
+		add(grid);
+
 		if (PlayState.SONG != null) _song = PlayState.SONG;
 		if (_song == null)
 		{
@@ -214,11 +238,6 @@ class ChartingState extends MusicBeatState
 
 		vortex = FlxG.save.data.chart_vortex;
 		ignoreWarnings = FlxG.save.data.ignoreWarnings;
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		bg.scrollFactor.set();
-		bg.color = 0xFF222222;
-		add(bg);
 
 		gridLayer = new FlxTypedGroup<FlxSprite>();
 		add(gridLayer);
@@ -230,20 +249,25 @@ class ChartingState extends MusicBeatState
 		eventIcon.antialiasing = ClientPrefs.data.antialiasing;
 		leftIcon = new HealthIcon('bf');
 		rightIcon = new HealthIcon('dad');
+		middleIcon = new HealthIcon('gf');
 		eventIcon.scrollFactor.set(1, 1);
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
+		middleIcon.scrollFactor.set(1, 1);
 
 		eventIcon.setGraphicSize(30, 30);
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
+		middleIcon.setGraphicSize(0, 35);
 
 		add(eventIcon);
 		add(leftIcon);
 		add(rightIcon);
+		add(middleIcon);
 
 		leftIcon.setPosition(GRID_SIZE + 10, -100);
 		rightIcon.setPosition(GRID_SIZE * 5.2, -100);
+		middleIcon.setPosition(GRID_SIZE + 10 + 64, -100);
 
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		curRenderedNotes = new FlxTypedGroup<Note>();
@@ -2627,7 +2651,12 @@ class ChartingState extends MusicBeatState
 	{
 		leftIcon.changeIcon(characterData.iconP2);
 		rightIcon.changeIcon(characterData.iconP1);
-		if (_song.notes[curSec].gfSection) leftIcon.changeIcon('gf');
+		leftIcon.setGraphicSize(0, 45);
+		middleIcon.setGraphicSize(0, 35);
+		if (_song.notes[curSec].gfSection) {
+			leftIcon.setGraphicSize(0, 35);
+			middleIcon.setGraphicSize(0, 45);
+		}
 	}
 
 	var characterFailed:Bool = false;
@@ -2815,6 +2844,7 @@ class ChartingState extends MusicBeatState
 			note.loadGraphic(Paths.image('eventArrow'));
 			note.rgbShader.enabled = false;
 			note.eventName = getEventName(i[1]);
+			if (note.eventName == 'Camera Section') note.loadGraphic(Paths.image('CameraEvent'));
 			note.eventLength = i[1].length;
 			if(i[1].length < 2)
 			{

@@ -6,3 +6,10 @@
 - Removal of base game weeks 2 - 7
 - Add button to Chart Editor: Clear JSON
 - Removal of mustHitSection Button in the Chart Editor
+- Redid Charts to set mustHitSection to false (long story do not feel like explaining)
+- Slightly changed background for Chart Editor and Master Editor Menu (looks nice now)
+- Flash Files are public now
+- Changed from not associated with newgrounds to not associated with twitter actually
+- 1 new intro text phrase
+- Added Middle Icon to chart editor (moral support girl)
+- Added Camera Section Event to the chart editor

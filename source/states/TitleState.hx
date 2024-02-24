@@ -179,11 +179,7 @@ class TitleState extends MusicBeatState
 				startIntro();
 			   else
 			   {
-				   new FlxTimer().start(1, function(tmr:FlxTimer)
-				   {
-					   startVideo('intro');
-					   trace('starting video...');
-				   });
+				   startIntro();
 			   }
 		}
 		#end
@@ -355,7 +351,7 @@ class TitleState extends MusicBeatState
 
 		credTextShit.visible = false;
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('twit'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -600,7 +596,7 @@ class TitleState extends MusicBeatState
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['Portilizen']);
+					createCoolText(['The Chaos House']);
 					
 				case 4:
 					addMoreText('presents');
@@ -609,7 +605,7 @@ class TitleState extends MusicBeatState
 				case 6:
 					createCoolText(['Not associated', 'with'], -40);
 				case 8:
-					addMoreText('newgrounds', -40);
+					addMoreText('twitter actually', -40);
 					ngSpr.visible = true;
 				case 9:
 					deleteCoolText();
