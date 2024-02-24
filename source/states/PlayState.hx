@@ -2600,14 +2600,11 @@ class PlayState extends MusicBeatState
 					AchievementDesk.unlockAdvancement(1);
 			}
 		}
-		else
+		switch (SONG.song)
 		{
-			switch (SONG.song)
-			{
-				case 'buckshot':
-					FlxG.save.data.bucked = true;
-					//bucked = false;
-			}
+			case 'buckshot':
+				FlxG.save.data.bucked = true;
+				//bucked = false;
 		}
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
