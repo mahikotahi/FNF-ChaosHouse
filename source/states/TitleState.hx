@@ -1,5 +1,6 @@
 package states;
 
+import lime.app.Application;
 import backend.WeekData;
 import backend.Highscore;
 
@@ -86,6 +87,8 @@ class TitleState extends MusicBeatState
 		super.create();
 		//FlxG.save.data.censorSysName = null;
 
+		var viewChangelog:Bool = false;
+
 		if (FlxG.save.data.playername == null) FlxG.save.data.playername = '';
 		if (FlxG.save.data.cheater == null) FlxG.save.data.cheater = false;
 		if (FlxG.save.data.playedMod == null) FlxG.save.data.playedMod = false;
@@ -106,6 +109,10 @@ class TitleState extends MusicBeatState
 		FlxG.save.data.playedMod = true;
 		if(FlxG.save.data.exploredReigions == null)FlxG.save.data.exploredReigions = [];
 		if (FlxG.save.data.bucked == null) FlxG.save.data.bucked = false;
+
+		viewChangelog = (FlxG.save.data.version == null || FlxG.save.data.version != Application.current.meta.get('version'));
+
+		if (viewChangelog) FlxG.save.data.version = Application.current.meta.get('version');
 
 
 		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());
@@ -144,6 +151,9 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.censorSysName == null) {
 			//FlxG.save.data.censorSysName = false;
 			MusicBeatState.switchState(new SystemName());
+		}
+		else if (viewChangelog){
+			MusicBeatState.switchState(new OutdatedState());
 		}
 		else if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
 			FlxTransitionableState.skipNextTransIn = true;

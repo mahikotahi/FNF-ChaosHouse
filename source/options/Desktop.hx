@@ -31,6 +31,15 @@ class Desktop extends BaseOptionsMenu
 		option.maxValue = 2;
 		option.changeValue = 0.1;
 		addOption(option);
+		
+		#if !mobile
+		var option:Option = new Option('FPS Counter',
+			'If unchecked, hides FPS Counter.',
+			'showFPS',
+			'bool');
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
+		#end
 
 		cursor = new FlxTypedGroup<FlxSprite>();
 

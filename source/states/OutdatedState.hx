@@ -4,7 +4,11 @@ class OutdatedState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
+	
 	var warnText:FlxText;
+
+	var changes:Dynamic = '- Fixed "I better not see you again" screen not being visible\n-';
+
 	override function create()
 	{
 		super.create();
@@ -13,12 +17,7 @@ class OutdatedState extends MusicBeatState
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Sup bro, looks like you're running an   \n
-			outdated version of Psych Engine (" + MainMenuState.psychEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
-			Press ESCAPE to proceed anyway.\n
-			\n
-			Thank you for using the Engine!",
+			"Hey "+Main.usrName+", Looks like you haven't seen the changes for this update.\nI will List Them:\n\n"+changes,
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
@@ -30,7 +29,7 @@ class OutdatedState extends MusicBeatState
 		if(!leftState) {
 			if (controls.ACCEPT) {
 				leftState = true;
-				CoolUtil.browserLoad("https://github.com/ShadowMario/FNF-PsychEngine/releases");
+				CoolUtil.browserLoad("https://github.com/mahikotahi/FNF-ChaosHouse/releases");
 			}
 			else if(controls.BACK) {
 				leftState = true;

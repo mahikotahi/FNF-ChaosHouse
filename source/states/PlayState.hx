@@ -696,7 +696,7 @@ class PlayState extends MusicBeatState
 				iconP2.visible = false;
 				timeBar.visible = false;
 				timeTxt.visible = false;
-				scoreTxt.visible = false;
+				//scoreTxt.visible = false;
 				healthBar.visible = false;
 			}
 

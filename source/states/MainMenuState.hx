@@ -148,12 +148,12 @@ class MainMenuState extends MusicBeatState
 
 		mouse.setPosition(realMouse.x, realMouse.y);
 
-		if (FlxG.sound.music.volume < 0.8)
+		try{if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * elapsed;
 			if (FreeplayState.vocals != null)
 				FreeplayState.vocals.volume += 0.5 * elapsed;
-		}
+		}}catch(e){trace(e);}
 
 		if (ClientPrefs.data.desktopbg == 'the table')
 			FlxG.sound.music.stop();
