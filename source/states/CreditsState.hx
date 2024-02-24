@@ -31,6 +31,9 @@ class CreditsState extends FlxState
 	var port:FlxSprite;
 	var portText:FlxText = new FlxText(0, 0, 0, "Portilizen", 16);
 
+	var jtsf:FlxSprite;
+	var jtsfText:FlxText = new FlxText(0,0,0,"jtsf",16);
+
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
@@ -81,10 +84,19 @@ class CreditsState extends FlxState
 
 		port = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/Portilizen'));
 		port.screenCenter();
+		port.x -= 120;
 		add(port);
 
 		portText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(portText);
+
+		jtsf = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/Portilizen'));
+		jtsf.screenCenter();
+		jtsf.x += 120;
+		add(jtsf);
+
+		jtsfText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(jtsfText);
 
 		descBox = new AttachedSprite();
 		descBox.makeGraphic(1, 1, FlxColor.BLACK);
@@ -133,6 +145,7 @@ class CreditsState extends FlxState
 	override function update(elapsed:Float)
 	{
 		portText.setPosition(port.x + 16, port.y + port.height + 16);
+		jtsfText.setPosition(jtsf.x + 16, jtsf.y + jtsf.height + 16);
 		var realMouse:Dynamic = FlxG.mouse;
 
 		mouse.setPosition(realMouse.x, realMouse.y);
@@ -144,6 +157,10 @@ class CreditsState extends FlxState
 		if (mouse.overlaps(port))
 		{
 			currentSelection = 'port';
+		}
+		else if (mouse.overlaps(jtsf))
+		{
+			currentSelection = 'jtsf';
 		}
 		/*if (prevCurSel != currentSelection)
 				mouseClickAmount = 0;
@@ -157,6 +174,8 @@ class CreditsState extends FlxState
 			{
 				case 'port':
 					port.setPosition(realMouse.x - (port.width / 2), realMouse.y - (port.height / 2));
+				case 'jtsf':
+					jtsf.setPosition(realMouse.x - (jtsf.width / 2), realMouse.y - (jtsf.height / 2));
 			}
 		}
 
@@ -222,10 +241,16 @@ class CreditsState extends FlxState
 					{
 						coolwindow.scale.x = coolwindow.alpha * 2;
 						coolwindow.scale.y = coolwindow.alpha * 2;
+						
 						port.scale.x = coolwindow.alpha * 2;
 						port.scale.y = coolwindow.alpha * 2;
 						portText.scale.x = coolwindow.alpha * 2;
 						portText.scale.y = coolwindow.alpha * 2;
+
+						jtsf.scale.x = coolwindow.alpha * 2;
+						jtsf.scale.y = coolwindow.alpha * 2;
+						jtsfText.scale.x = coolwindow.alpha * 2;
+						jtsfText.scale.y = coolwindow.alpha * 2;
 					}
 				});
 			}
