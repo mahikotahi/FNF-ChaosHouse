@@ -104,7 +104,7 @@ class CreditsState extends FlxState
 		djotta = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/djotta'));
 		djotta.screenCenter();
 		djotta.y += 120;
-		add(jtsf);
+		add(djotta);
 
 		djottaTXT.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(djottaTXT);
