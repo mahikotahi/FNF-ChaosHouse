@@ -32,6 +32,7 @@ class Retry extends MusicBeatState
 		];
 
 		retry = new Alphabet(0, 0, 'I better not see you again', true);
+		retry.text += (FlxG.save.data.pussyName) ? '\nPussy' : '\n'+Main.usrName;
 		retry.color = FlxColor.RED;
 		retry.screenCenter();
 		add(retry);

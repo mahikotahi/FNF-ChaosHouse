@@ -29,10 +29,10 @@ class CreditsState extends FlxState
 	public static var currentSelection:String = '';
 
 	var port:FlxSprite;
-	var portText:FlxText = new FlxText(0, 0, 0, "Portilizen", 16);
+	var portText:FlxText = new FlxText(0, 0, 0, "Portilizen\n", 16);
 
 	var jtsf:FlxSprite;
-	var jtsfText:FlxText = new FlxText(0,0,0,"jtsf",16);
+	var jtsfText:FlxText = new FlxText(0,0,0,"jtsf\n",16);
 
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;

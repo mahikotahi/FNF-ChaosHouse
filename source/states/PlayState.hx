@@ -275,21 +275,13 @@ class PlayState extends MusicBeatState
 	public var endCallback:Void->Void = null;
 
 	public var bucked:Bool = false;
+	public var missamount:Int = 0;
+	public var defib:FlxSprite = new FlxSprite().loadGraphic(Paths.image('defib charge broke6'));
 
 	override public function create()
 	{
-		bucked = false;
-		if (FlxG.save.data.bucked == true)
-		{
-			bucked = true;
-			FlxG.save.data.bucked = false;
-			FlxG.switchState(new Retry());
-		}
-		else
-		{
-			// testing purposes
-			// FlxG.save.data.bucked = true;
-		}
+
+		missamount = FlxG.random.int(2, 6);
 
 		// trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
@@ -692,13 +684,45 @@ class PlayState extends MusicBeatState
 
 		if (SONG.song == 'Buckshot')
 			{
-				iconP1.visible = false;
-				iconP2.visible = false;
-				timeBar.visible = false;
-				timeTxt.visible = false;
-				//scoreTxt.visible = false;
-				healthBar.visible = false;
+			iconP1.visible = false;
+			iconP2.visible = false;
+			timeBar.visible = false;
+			timeTxt.visible = false;
+			// scoreTxt.visible = false;
+			healthBar.visible = false;
+
+			// thank you vs sonic.exe 2.0
+			opponentStrums.forEach(function(spr:FlxSprite)
+			{
+				if (!FlxG.save.data.midscroll)
+					FlxTween.tween(spr, {x: spr.x += 700, y: spr.y}, 5, {ease: FlxEase.quartOut});
+				// spr.x += 700;
+			});
+			playerStrums.forEach(function(spr:FlxSprite)
+			{
+				if (!FlxG.save.data.midscroll)
+					FlxTween.tween(spr, {x: spr.x -= 600, y: spr.y}, 5, {ease: FlxEase.quartOut});
+				// spr.x -= 600;
+			});
 			}
+
+			bucked = false;
+			if (FlxG.save.data.bucked == true)
+			{
+				bucked = true;
+				FlxG.save.data.bucked = false;
+				FlxG.switchState(new Retry());
+			}
+			else
+			{
+				// testing purposes
+				// FlxG.save.data.bucked = true;
+			}
+
+			defib.screenCenter();
+			defib.camera = scoreTxt.camera;
+			defib.visible = false;
+			add(defib);
 
 		super.create();
 		Paths.clearUnusedMemory();
@@ -1240,6 +1264,12 @@ class PlayState extends MusicBeatState
 		var tempScore:String = 'Score: ${songScore}' + (!instakillOnMiss ? ' | Misses: ${songMisses}' : "");
 		// "tempScore" variable is used to prevent another memory leak, just in case
 		// "\n" here prevents the text from being cut off by beat zooms
+
+		if (SONG.song == 'Buckshot')
+		{
+			tempScore = 'Score: ${songScore}';
+		}
+
 		scoreTxt.text = '${tempScore}\n';
 
 		if (!miss && !cpuControlled)
@@ -1777,6 +1807,12 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if (SONG.song.toLowerCase() == 'buckshot')
+		{
+			if (songMisses > missamount)
+				health = 0;
+		}
+
 		if (!inCutscene && !paused && !freezeCamera)
 		{
 			FlxG.camera.followLerp = 2.4 * cameraSpeed * playbackRate;
@@ -3192,7 +3228,19 @@ class PlayState extends MusicBeatState
 		if (!practiceMode)
 			songScore -= 10;
 		if (!endingSong)
+		{
 			songMisses++;
+
+			//defib discharge.ogg
+			if (SONG.song.toLowerCase() == 'buckshot')
+			{
+				defib.visible = true;
+				defib.alpha = 0;
+				FlxTween.tween(defib, {alpha: 0}, 2);
+			}
+
+		}
+
 		totalPlayed++;
 		RecalculateRating(true);
 

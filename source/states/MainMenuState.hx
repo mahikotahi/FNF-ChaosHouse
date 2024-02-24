@@ -24,6 +24,8 @@ class MainMenuState extends MusicBeatState
 	var tubeyou:FlxSprite;
 	var vsc:FlxSprite;
 	var shot:FlxSprite;
+	var craft:FlxSprite;
+	var tutor:FlxSprite;
 
 	var mouse:FlxSprite;
 
@@ -89,6 +91,9 @@ class MainMenuState extends MusicBeatState
 		add(desktopIcon);
 
 		var fnfVer:FlxText = new FlxText(0, 0, 0, "Chaos Desktop " + Application.current.meta.get('version'), 12);
+		#if debug
+		fnfVer.text = fnfVer.text += " [BETA]";
+		#end
 		fnfVer.scrollFactor.set();
 		fnfVer.setPosition(desktopIcon.x + desktopIcon.width + 8, FlxG.height - 32);
 		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -148,43 +153,61 @@ class MainMenuState extends MusicBeatState
 
 		mouse.setPosition(realMouse.x, realMouse.y);
 
-		try{if (FlxG.sound.music.volume < 0.8)
+		try
 		{
-			FlxG.sound.music.volume += 0.5 * elapsed;
-			if (FreeplayState.vocals != null)
-				FreeplayState.vocals.volume += 0.5 * elapsed;
-		}}catch(e){trace(e);}
+			if (FlxG.sound.music.volume < 0.8)
+			{
+				FlxG.sound.music.volume += 0.5 * elapsed;
+				if (FreeplayState.vocals != null)
+					FreeplayState.vocals.volume += 0.5 * elapsed;
+			}
+		}
+		catch (e)
+		{
+			trace(e);
+		}
 
 		if (ClientPrefs.data.desktopbg == 'the table')
 			FlxG.sound.music.stop();
 
 		var prevCurSel:String = currentSelection;
 
-		currentSelection = '';
+		if (!FlxG.keys.pressed.SHIFT && !FlxG.mouse.pressed)
+		{
+			currentSelection = '';
 
-		if (mouse.overlaps(terminal))
-		{
-			currentSelection = 'terminal';
-		}
-		else if (mouse.overlaps(desktop))
-		{
-			currentSelection = 'desktop';
-		}
-		else if (mouse.overlaps(tubeyou))
-		{
-			currentSelection = 'youtube';
-		}
-		else if (mouse.overlaps(notepad))
-		{
-			currentSelection = 'notepad';
-		}
-		else if (mouse.overlaps(vsc))
-		{
-			currentSelection = 'visul';
-		}
-		else if (mouse.overlaps(shot))
-		{
-			currentSelection = 'roulette';
+			if (mouse.overlaps(terminal))
+			{
+				currentSelection = 'terminal';
+			}
+			else if (mouse.overlaps(desktop))
+			{
+				currentSelection = 'desktop';
+			}
+			else if (mouse.overlaps(tubeyou))
+			{
+				currentSelection = 'youtube';
+			}
+			else if (mouse.overlaps(notepad))
+			{
+				currentSelection = 'notepad';
+			}
+			else if (mouse.overlaps(vsc))
+			{
+				currentSelection = 'visul';
+			}
+			else if (mouse.overlaps(shot))
+			{
+				currentSelection = 'roulette';
+			}
+			else if (mouse.overlaps(craft))
+			{
+				currentSelection = 'microcraft';
+			}
+			else if (mouse.overlaps(tutor))
+			{
+				currentSelection = 'tutorial';
+			}
 		}
 
 		if (prevCurSel != currentSelection)
@@ -192,6 +215,8 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.mouse.justReleased && mouseClickAmount != 3 && virusPIC.alpha < 1)
 			mouseClickAmount++;
+
+		division = 3;
 
 		if (FlxG.keys.pressed.SHIFT && FlxG.mouse.pressed && virusPIC.alpha < 1)
 		{
@@ -214,6 +239,13 @@ class MainMenuState extends MusicBeatState
 
 				case 'roulette':
 					shot.setPosition(realMouse.x - (shot.width / division), realMouse.y - (shot.height / division));
+
+				case 'tutorial':
+					tutor.setPosition(realMouse.x - (tutor.width / division), realMouse.y - (tutor.height / division));
+
+				case 'microcraft':
+					division = 2;
+					craft.setPosition(realMouse.x - (craft.width / division), realMouse.y - (craft.height / division));
 			}
 		}
 
@@ -249,16 +281,27 @@ class MainMenuState extends MusicBeatState
 
 					MusicBeatState.switchState(new CreditsState());
 
-				case 'desktop':
-					trace('adobe animate');
+					case 'desktop':
+						trace('adobe animate');
+	
+						#if DISCORD_ALLOWED
+						// Updating Discord Rich Presence
+						DiscordClient.changePresence("Adobe Animate 2021", null);
+						#end
+						StatusShit.status = 'Adobe Animate 2021';
+						loadSong('Stick');
 
-					#if DISCORD_ALLOWED
-					// Updating Discord Rich Presence
-					DiscordClient.changePresence("Adobe Animate 2021", null);
-					#end
-					StatusShit.status = 'Adobe Animate 2021';
-					loadSong('Stick');
 
+						case 'tutorial':
+							trace('tutor');
+		
+							#if DISCORD_ALLOWED
+							// Updating Discord Rich Presence
+							DiscordClient.changePresence("Tutorial", null);
+							#end
+							StatusShit.status = 'Tutorial';
+							loadSong('Tutorial');
+			
 				case 'roulette':
 					trace('buckshot roulet');
 
@@ -273,18 +316,6 @@ class MainMenuState extends MusicBeatState
 					trace('youtube');
 
 					WindowAnimate = false;
-					virusPIC.animation.play('stop');
-					attempts++;
-
-					FlxTween.tween(virusPIC, {alpha: 1}, 0.2, {
-						onComplete: function(twn:FlxTween)
-						{
-							new FlxTimer().start(1, function(tmr:FlxTimer)
-							{
-								FlxTween.tween(virusPIC, {alpha: 0}, 0.4);
-							});
-						}
-					});
 
 					#if DISCORD_ALLOWED
 					// Updating Discord Rich Presence
@@ -355,8 +386,15 @@ class MainMenuState extends MusicBeatState
 		PlayState.storyDifficulty = 1;
 		LoadingState.loadAndSwitchState(new PlayState());
 
-		try{FlxG.sound.music.pause();
-		FlxG.sound.music.volume = 0;}catch(e){trace(e);}
+		try
+		{
+			FlxG.sound.music.pause();
+			FlxG.sound.music.volume = 0;
+		}
+		catch (e)
+		{
+			trace(e);
+		}
 		FlxG.camera.followLerp = 0;
 	}
 
@@ -403,6 +441,22 @@ class MainMenuState extends MusicBeatState
 		shot.animation.addByPrefix('bsr', "Buck", 24);
 		shot.animation.play('bsr');
 		add(shot);
+
+		craft = new FlxSprite(desktop.x + desktop.width - 80, -10);
+		craft.antialiasing = ClientPrefs.data.antialiasing;
+		// craft.loadGraphic(Paths.image('mainmenu/craf'));
+		// craft.frames = Paths.getSparrowAtlas('mainmenu/crafty');
+		// craft.animation.addByPrefix('crafty', 'crafty', 24);
+		// craft.animation.play('crafty');
+		craft.frames = Paths.getSparrowAtlas('mainmenu/craftist');
+		craft.animation.addByPrefix('crafty', 'Craftist', 24);
+		craft.animation.play('crafty');
+		craft.scale.set(0.5, 0.5);
+		add(craft);
+
+		tutor = new FlxSprite(32, FlxG.height - 120).loadGraphic(Paths.image('coolmic'));
+		tutor.scale.set(0.4,0.4);
+		add(tutor);
 	}
 
 	var virusPIC:FlxSprite;
