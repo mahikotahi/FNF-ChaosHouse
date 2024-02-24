@@ -120,7 +120,7 @@ class TitleState extends MusicBeatState
 
 		//viewChangelog = (FlxG.save.data.version == null || FlxG.save.data.version != Application.current.meta.get('version'));
 
-		FlxG.save.data.version = Application.current.meta.get('version');
+		//FlxG.save.data.version = Application.current.meta.get('version');
 
 
 		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());
