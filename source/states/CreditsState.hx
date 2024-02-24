@@ -34,6 +34,9 @@ class CreditsState extends FlxState
 	var jtsf:FlxSprite;
 	var jtsfText:FlxText = new FlxText(0,0,0,"jtsf\n",16);
 
+	var djotta:FlxSprite;
+	var djottaTXT:FlxText = new FlxText(0,0,0,"Djotta\n",16);
+
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
@@ -98,6 +101,14 @@ class CreditsState extends FlxState
 		jtsfText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(jtsfText);
 
+		djotta = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/djotta'));
+		djotta.screenCenter();
+		djotta.y += 120;
+		add(jtsf);
+
+		djottaTXT.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(djottaTXT);
+
 		descBox = new AttachedSprite();
 		descBox.makeGraphic(1, 1, FlxColor.BLACK);
 		descBox.xAdd = -10;
@@ -146,6 +157,7 @@ class CreditsState extends FlxState
 	{
 		portText.setPosition(port.x + 16, port.y + port.height + 16);
 		jtsfText.setPosition(jtsf.x + 16, jtsf.y + jtsf.height + 16);
+		djottaTXT.setPosition(djotta.x + 16, djotta.y + djotta.height + 16);
 		var realMouse:Dynamic = FlxG.mouse;
 
 		mouse.setPosition(realMouse.x, realMouse.y);
@@ -162,6 +174,10 @@ class CreditsState extends FlxState
 		{
 			currentSelection = 'jtsf';
 		}
+		else if (mouse.overlaps(djotta))
+		{
+			currentSelection = 'djotta';
+		}
 		/*if (prevCurSel != currentSelection)
 				mouseClickAmount = 0;
 
@@ -174,8 +190,10 @@ class CreditsState extends FlxState
 			{
 				case 'port':
 					port.setPosition(realMouse.x - (port.width / 2), realMouse.y - (port.height / 2));
-				case 'jtsf':
-					jtsf.setPosition(realMouse.x - (jtsf.width / 2), realMouse.y - (jtsf.height / 2));
+					case 'jtsf':
+						jtsf.setPosition(realMouse.x - (jtsf.width / 2), realMouse.y - (jtsf.height / 2));
+						case 'djotta':
+							djotta.setPosition(realMouse.x - (djotta.width / 2), realMouse.y - (djotta.height / 2));
 			}
 		}
 

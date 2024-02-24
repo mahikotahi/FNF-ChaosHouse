@@ -1,11 +1,8 @@
 0.1.5-hotfix
-- Redone Buckshot Character Sprites
-- Redone Buckshot Song (thanks jtsf)
+- Redone Buckshot Boyfriend Sprites
 - Redone Version system
-- Added "Craftist" to the song list
 - Modified Hold a Grab function (main menu)
 - Intro video
-- Added Microcraft Application
 - Fixed "I better not see you again" screen not being visible (IBNSYA screen)
 - IBNSYA Screen can now call you a pussy or say your device name
 - Added Tutorial Application
@@ -13,4 +10,4 @@
 - Fixed Bug where you could go to freeplay
 - Score (and only score) is visible in Buckshot
 - You get a random amount of Misses in Buckshot from 2 to 6
-- You can now see when you miss in Buckshot
+- You can now see when you miss in Buckshot more clearly

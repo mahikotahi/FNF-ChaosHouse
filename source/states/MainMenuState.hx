@@ -452,9 +452,9 @@ class MainMenuState extends MusicBeatState
 		craft.animation.addByPrefix('crafty', 'Craftist', 24);
 		craft.animation.play('crafty');
 		craft.scale.set(0.5, 0.5);
-		add(craft);
+		//add(craft);
 
-		tutor = new FlxSprite(32, FlxG.height - 120).loadGraphic(Paths.image('coolmic'));
+		tutor = new FlxSprite(12, FlxG.height - 160).loadGraphic(Paths.image('coolmic'));
 		tutor.scale.set(0.4,0.4);
 		add(tutor);
 	}
