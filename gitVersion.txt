@@ -11,3 +11,4 @@
 - Score (and only score) is visible in Buckshot
 - You get a random amount of Misses in Buckshot from 2 to 6
 - You can now see when you miss in Buckshot more clearly
+- the first scraps of "packs": custom modding source for Chaos House Mods Specifically

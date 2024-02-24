@@ -93,7 +93,7 @@ class CreditsState extends FlxState
 		portText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(portText);
 
-		jtsf = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/Portilizen'));
+		jtsf = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/jtsf'));
 		jtsf.screenCenter();
 		jtsf.x += 120;
 		add(jtsf);
