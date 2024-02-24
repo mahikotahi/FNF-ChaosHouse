@@ -1,14 +1,1 @@
-0.1.5-hotfix
-- Redone Buckshot Boyfriend Sprites
-- Redone Version system
-- Modified Hold a Grab function (main menu)
-- Intro video
-- Fixed "I better not see you again" screen not being visible (IBNSYA screen)
-- IBNSYA Screen can now call you a pussy or say your device name
-- Added Tutorial Application
-- Opponent and Player Strums are flipped on Buckshot now
-- Fixed Bug where you could go to freeplay
-- Score (and only score) is visible in Buckshot
-- You get a random amount of Misses in Buckshot from 2 to 6
-- You can now see when you miss in Buckshot more clearly
-- the first scraps of "packs": custom modding source for Chaos House Mods Specifically
+2.0
