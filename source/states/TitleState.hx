@@ -84,6 +84,14 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
+		if (!initialized)
+		{
+			if(FlxG.sound.music == null) {
+				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			}
+		}
+
+
 		super.create();
 		//FlxG.save.data.censorSysName = null;
 
@@ -110,9 +118,9 @@ class TitleState extends MusicBeatState
 		if(FlxG.save.data.exploredReigions == null)FlxG.save.data.exploredReigions = [];
 		if (FlxG.save.data.bucked == null) FlxG.save.data.bucked = false;
 
-		viewChangelog = (FlxG.save.data.version == null || FlxG.save.data.version != Application.current.meta.get('version'));
+		//viewChangelog = (FlxG.save.data.version == null || FlxG.save.data.version != Application.current.meta.get('version'));
 
-		if (viewChangelog) FlxG.save.data.version = Application.current.meta.get('version');
+		FlxG.save.data.version = Application.current.meta.get('version');
 
 
 		FlxG.save.bind('thechaoshouse', CoolUtil.getSavePath());
@@ -181,13 +189,6 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
-		if (!initialized)
-		{
-			if(FlxG.sound.music == null) {
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-			}
-		}
-
 		Conductor.bpm = titleJSON.bpm;
 		persistentUpdate = true;
 
