@@ -20,3 +20,4 @@
 - Added Easy Way of adding event images
 - Fixed Boyfriend not showing up when gameover isnt set to error
 - Changelog now in game folder
+- Changed Y position of song offset text in chart editor
