@@ -402,6 +402,7 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
+			//case 'table': new states.stages.Table();
 			case 'tube':
 				new states.stages.Tube();
 			case 'desktop':
@@ -688,6 +689,16 @@ class PlayState extends MusicBeatState
 
 		cacheCountdown();
 		cachePopUpScore();
+
+		if (SONG.song == 'Buckshot')
+			{
+				iconP1.visible = false;
+				iconP2.visible = false;
+				timeBar.visible = false;
+				timeTxt.visible = false;
+				scoreTxt.visible = false;
+				healthBar.visible = false;
+			}
 
 		super.create();
 		Paths.clearUnusedMemory();
@@ -3099,6 +3110,13 @@ class PlayState extends MusicBeatState
 		]);
 		if (result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll)
 			callOnHScript('noteMiss', [daNote]);
+
+		
+
+		if (SONG.song == 'Buckshot')
+			{
+				moveCamera(false);
+			}
 	}
 
 	function noteMissPress(direction:Int = 1):Void // You pressed a key when there was no notes to press for this key
