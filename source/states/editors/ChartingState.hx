@@ -70,7 +70,8 @@ class ChartingState extends MusicBeatState
 		['', "Nothing. Yep, that's right."],
 		//['boyfriend fucking dies', "fuckin kill boyfrien"],
 		['Camera Section', 'Value 1 - IsDad?'],
-		['Change', "value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"],
+		['Camera Flash', 'Value 1 - Length'],
+		['Charge', "value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"],
 		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
 		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
 		['Set GF Speed', "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
@@ -298,7 +299,7 @@ class ChartingState extends MusicBeatState
 		strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(GRID_SIZE * 9), 4);
 		add(strumLine);
 
-		quant = new AttachedSprite('chart_quant','chart_quant');
+		quant = new AttachedSprite('chart_editor_shit/chart_quant','chart_quant');
 		quant.animation.addByPrefix('q','chart_quant',0,false);
 		quant.animation.play('q', true, false, 0);
 		quant.sprTracker = strumLine;
@@ -2841,10 +2842,53 @@ class ChartingState extends MusicBeatState
 			note.sustainLength = daSus;
 			note.noteType = i[3];
 		} else { //Event note
-			note.loadGraphic(Paths.image('eventArrow'));
+			note.loadGraphic(Paths.image('chart_editor_shit/eventArrow'));
 			note.rgbShader.enabled = false;
 			note.eventName = getEventName(i[1]);
-			if (note.eventName == 'Camera Section') note.loadGraphic(Paths.image('CameraEvent'));
+
+			eventImage(note, 'Camera Section', 'CameraEvent');
+			eventImage(note, 'Camera Flash', 'CameraFlash');
+
+			// Softcoding
+			try
+			{
+				note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName}'));
+			}
+			catch (e:Dynamic)
+			{
+				trace(e);
+				//note.loadGraphic(Paths.image('chart_editor_shit/eventArrow'));
+			    try
+				{
+					note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName.split(' ')}'));
+				}
+				catch (e:Dynamic)
+				{
+					trace(e);
+					//note.loadGraphic(Paths.image('chart_editor_shit/eventArrow'));
+				};
+			};
+
+			// Softcoding
+			try
+			{
+				note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName}'));
+			}
+			catch (e:Dynamic)
+			{
+				trace(e);
+				//note.loadGraphic(Paths.image('chart_editor_shit/eventArrow'));
+			    try
+				{
+					note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName.split(' ')}'));
+				}
+				catch (e:Dynamic)
+				{
+					trace(e);
+					//note.loadGraphic(Paths.image('chart_editor_shit/eventArrow'));
+				};
+			};
+
 			note.eventLength = i[1].length;
 			if(i[1].length < 2)
 			{
@@ -2864,6 +2908,11 @@ class ChartingState extends MusicBeatState
 		//if(isNextSection) note.y += gridBG.height;
 		if(note.y < -150) note.y = -150;
 		return note;
+	}
+
+	function eventImage(note:Note, eventName:String = '', eventImage:String = '')
+	{
+		if (note.eventName == eventName) note.loadGraphic(Paths.image('chart_editor_shit/${eventImage}'));
 	}
 
 	function getEventName(names:Array<Dynamic>):String

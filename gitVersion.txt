@@ -13,3 +13,10 @@
 - 1 new intro text phrase
 - Added Middle Icon to chart editor (moral support girl)
 - Added Camera Section Event to the chart editor
+- Added chart_editor_shit folder (organizing update???)
+- I better not see you again test is now Center Aligned
+- Added Camera Flash Event
+- Added Event Icons for (probably almost) all Events
+- Added Easy Way of adding event images
+- Fixed Boyfriend not showing up when gameover isnt set to error
+- Changelog now in game folder

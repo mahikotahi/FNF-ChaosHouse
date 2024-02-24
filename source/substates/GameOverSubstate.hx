@@ -53,13 +53,13 @@ class GameOverSubstate extends MusicBeatSubstate
 		boyfriend = new Character(PlayState.instance.boyfriend.getScreenPosition().x, PlayState.instance.boyfriend.getScreenPosition().y, characterName, true);
 		boyfriend.x += boyfriend.positionArray[0] - PlayState.instance.boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1] - PlayState.instance.boyfriend.positionArray[1];
-		if (characterName != 'error') add(boyfriend);
 
 		var death:FlxSprite = new FlxSprite(0,0);
 		death.loadGraphic(Paths.image('die'));
 		death.scale.set(5,5);
 		death.screenCenter();
-		if (characterName == 'error')add(death);
+		
+		(characterName == 'error') ? add(death) : add(boyfriend);
 
 
 		FlxG.sound.play(Paths.sound(deathSoundName));
