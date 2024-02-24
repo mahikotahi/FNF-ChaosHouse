@@ -211,7 +211,7 @@ class Mods
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');
 		}
 
-		//File.saveContent('modsList.txt', fileStr);
+		File.saveContent('modsList.txt', fileStr);
 		updatedOnState = true;
 		//trace('Saved modsList.txt');
 		#end
@@ -220,5 +220,14 @@ class Mods
 	public static function loadTopMod()
 	{
 		Mods.currentModDirectory = '';
+		
+		#if MODS_ALLOWED
+		var list:Array<String> = Mods.parseList().enabled;
+
+		trace(list);
+
+		if(list != null && list[0] != null)
+			Mods.currentModDirectory = list[0];
+		#end
 	}
 }
