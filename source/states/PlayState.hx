@@ -719,16 +719,11 @@ class PlayState extends MusicBeatState
 		}
 
 			bucked = false;
-			if (FlxG.save.data.bucked == true)
+			if (FlxG.save.data.bucked == true && SONG.song.toLowerCase() == 'buckshot')
 			{
 				bucked = true;
 				FlxG.save.data.bucked = false;
 				FlxG.switchState(new Retry());
-			}
-			else
-			{
-				// testing purposes
-				// FlxG.save.data.bucked = true;
 			}
 
 			defib.screenCenter();
@@ -1489,13 +1484,7 @@ class PlayState extends MusicBeatState
 			{
 				var daStrumTime:Float = songNotes[0];
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
-				var gottaHitNote:Bool = section.mustHitSection;
-
-				if (songNotes[1] > 3)
-				{
-					gottaHitNote = !section.mustHitSection;
-				}
-
+				var gottaHitNote:Bool = false;
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];

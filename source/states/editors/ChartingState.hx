@@ -65,7 +65,7 @@ class ChartingState extends MusicBeatState
 	[
 		['', "Nothing. Yep, that's right."],
 		//['boyfriend fucking dies', "fuckin kill boyfrien"],
-		['Charge', "value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays"],
+		['Change', "value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"],
 		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
 		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
 		['Set GF Speed', "Sets GF head bopping speed,\nValue 1: 1 = Normal speed,\n2 = 1/2 speed, 4 = 1/4 speed etc.\nUsed on Fresh during the beatbox parts.\n\nWarning: Value must be integer!"],
@@ -192,9 +192,8 @@ class ChartingState extends MusicBeatState
 	public var mouseQuant:Bool = false;
 	override function create()
 	{
-		if (PlayState.SONG != null)
-			_song = PlayState.SONG;
-		else
+		if (PlayState.SONG != null) _song = PlayState.SONG;
+		if (_song == null)
 		{
 			Difficulty.resetList();
 			_song = {
@@ -212,13 +211,6 @@ class ChartingState extends MusicBeatState
 			addSection();
 			PlayState.SONG = _song;
 		}
-
-		// Paths.clearMemory();
-
-		#if DISCORD_ALLOWED
-		// Updating Discord Rich Presence
-		//DiscordClient.changePresence("Visual Studio Code");
-		#end
 
 		vortex = FlxG.save.data.chart_vortex;
 		ignoreWarnings = FlxG.save.data.ignoreWarnings;
@@ -874,7 +866,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(new FlxText(stepperBeats.x, stepperBeats.y - 15, 0, 'Beats per Section:'));
 		tab_group_section.add(stepperBeats);
 		tab_group_section.add(stepperSectionBPM);
-		tab_group_section.add(check_mustHitSection);
+		//tab_group_section.add(check_mustHitSection);
 		tab_group_section.add(check_gfSection);
 		tab_group_section.add(check_altAnim);
 		tab_group_section.add(check_changeBPM);
@@ -1549,7 +1541,7 @@ class ChartingState extends MusicBeatState
 			switch (label)
 			{
 				case 'Must hit section':
-					_song.notes[curSec].mustHitSection = check.checked;
+					_song.notes[curSec].mustHitSection = false;
 
 					updateGrid();
 					updateHeads();
@@ -2633,18 +2625,9 @@ class ChartingState extends MusicBeatState
 
 	function updateHeads():Void
 	{
-		if (_song.notes[curSec].mustHitSection)
-		{
-			leftIcon.changeIcon(characterData.iconP1);
-			rightIcon.changeIcon(characterData.iconP2);
-			if (_song.notes[curSec].gfSection) leftIcon.changeIcon('gf');
-		}
-		else
-		{
-			leftIcon.changeIcon(characterData.iconP2);
-			rightIcon.changeIcon(characterData.iconP1);
-			if (_song.notes[curSec].gfSection) leftIcon.changeIcon('gf');
-		}
+		leftIcon.changeIcon(characterData.iconP2);
+		rightIcon.changeIcon(characterData.iconP1);
+		if (_song.notes[curSec].gfSection) leftIcon.changeIcon('gf');
 	}
 
 	var characterFailed:Bool = false;
@@ -2845,13 +2828,6 @@ class ChartingState extends MusicBeatState
 		note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 		note.updateHitbox();
 		note.x = Math.floor(daNoteInfo * GRID_SIZE) + GRID_SIZE;
-		if(isNextSection && _song.notes[curSec].mustHitSection != _song.notes[curSec+1].mustHitSection) {
-			if(daNoteInfo > 3) {
-				note.x -= GRID_SIZE * 4;
-			} else if(daSus != null) {
-				note.x += GRID_SIZE * 4;
-			}
-		}
 
 		var beats:Float = getSectionBeats(isNextSection ? 1 : 0);
 		note.y = getYfromStrumNotes(daStrumTime - sectionStartTime(), beats);
@@ -2889,7 +2865,7 @@ class ChartingState extends MusicBeatState
 			sectionBeats: sectionBeats,
 			bpm: _song.bpm,
 			changeBPM: false,
-			mustHitSection: true,
+			mustHitSection: false,
 			gfSection: false,
 			sectionNotes: [],
 			altAnim: false

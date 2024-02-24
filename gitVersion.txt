@@ -1,3 +1,8 @@
 2.0
 - Removing of the custom modding title: "Pack"
 - Organizing of Chaos House "Modding" Files
+- Fixed Djotta Flow Credits Icon not being visible
+- Chart Editor should no longer flip along with any issues that had came with it
+- Removal of base game weeks 2 - 7
+- Add button to Chart Editor: Clear JSON
+- Removal of mustHitSection Button in the Chart Editor
