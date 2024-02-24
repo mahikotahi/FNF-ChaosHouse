@@ -355,8 +355,8 @@ class MainMenuState extends MusicBeatState
 		PlayState.storyDifficulty = 1;
 		LoadingState.loadAndSwitchState(new PlayState());
 
-		FlxG.sound.music.pause();
-		FlxG.sound.music.volume = 0;
+		try{FlxG.sound.music.pause();
+		FlxG.sound.music.volume = 0;}catch(e){trace(e);}
 		FlxG.camera.followLerp = 0;
 	}
 
