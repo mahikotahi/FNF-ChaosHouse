@@ -354,13 +354,12 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		#if debug
+		
 		if (controls.justPressed('debug_1'))
 		{
 			selectedSomethin = true;
 			MusicBeatState.switchState(new MasterEditorMenu());
 		}
-		#end
 
 		if (controls.BACK)
 		{

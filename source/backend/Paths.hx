@@ -501,44 +501,44 @@ class Paths
 		return (psychMod ? 'mods/' : 'packs/') + key;
 	}
 
-	inline static public function modsFont(key:String)
+	inline static public function modsFont(key:String, psychMod:Bool = true)
 	{
-		return modFolders('fonts/' + key);
+		return modFolders('fonts/' + key, psychMod);
 	}
 
-	inline static public function modsJson(key:String)
+	inline static public function modsJson(key:String, psychMod:Bool = true)
 	{
-		return modFolders('data/' + key + '.json');
+		return modFolders('data/' + key + '.json', psychMod);
 	}
 
-	inline static public function modsVideo(key:String)
+	inline static public function modsVideo(key:String, psychMod:Bool = true)
 	{
-		return modFolders('videos/' + key + '.' + VIDEO_EXT);
+		return modFolders('videos/' + key + '.' + VIDEO_EXT, psychMod);
 	}
 
-	inline static public function modsSounds(path:String, key:String)
+	inline static public function modsSounds(path:String, key:String, psychMod:Bool = true)
 	{
-		return modFolders(path + '/' + key + '.' + SOUND_EXT);
+		return modFolders(path + '/' + key + '.' + SOUND_EXT, psychMod);
 	}
 
-	inline static public function modsImages(key:String)
+	inline static public function modsImages(key:String, psychMod:Bool = true)
 	{
-		return modFolders('images/' + key + '.png');
+		return modFolders('images/' + key + '.png', psychMod);
 	}
 
-	inline static public function modsXml(key:String)
+	inline static public function modsXml(key:String, psychMod:Bool = true)
 	{
-		return modFolders('images/' + key + '.xml');
+		return modFolders('images/' + key + '.xml', psychMod);
 	}
 
-	inline static public function modsTxt(key:String)
+	inline static public function modsTxt(key:String, psychMod:Bool = true)
 	{
-		return modFolders('images/' + key + '.txt');
+		return modFolders('images/' + key + '.txt', psychMod);
 	}
 
-	inline static public function modsImagesJson(key:String)
+	inline static public function modsImagesJson(key:String, psychMod:Bool = true)
 	{
-		return modFolders('images/' + key + '.json');
+		return modFolders('images/' + key + '.json', psychMod);
 	}
 
 	/* Goes unused for now

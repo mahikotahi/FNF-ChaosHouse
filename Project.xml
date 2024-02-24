@@ -23,7 +23,6 @@
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" />
 	<!--<define name="FINALGAME" />-->
-	<!-- <define name="PACKS_ALLOWED" />-->
 	<define name="MODS_ALLOWED" />
 	<define name="LUA_ALLOWED" />
 
