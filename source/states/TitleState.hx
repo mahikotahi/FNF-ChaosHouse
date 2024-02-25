@@ -165,7 +165,7 @@ class TitleState extends MusicBeatState
 
 			http.onData = function (data:String)
 			{
-				updateVersion = data.split('\n')[0].trim();
+				updateVersion = data;
 				var curVersion:String = Std.string(Application.current.meta.get('version'));
 
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
