@@ -7,7 +7,6 @@ class OutdatedState extends MusicBeatState
 	
 	var warnText:FlxText;
 
-	var changes:Dynamic = '- Fixed "I better not see you again" screen not being visible\n-';
 
 	override function create()
 	{
@@ -16,8 +15,37 @@ class OutdatedState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
+		var coolname:Dynamic = (FlxG.save.data.pussyName) ? Main.usrName : 'Stupid!';
+
+		var changes:Dynamic = '';
+		
+		var http = new haxe.Http("https://raw.githubusercontent.com/mahikotahi/FNF-ChaosHouse/main/gitVersion.txt");
+
+		http.onData = function (data:String)
+		{
+			trace(data);
+			http = new haxe.Http("https://raw.githubusercontent.com/mahikotahi/FNF-ChaosHouse/main/gitLog.txt");
+
+			http.onData = function (data:String)
+			{
+				changes = data;
+			}
+
+			http.onError = function (error) {
+				trace('error: $error');
+			}
+
+			http.request();
+		}
+
+		http.onError = function (error) {
+			trace('error: $error');
+		}
+
+		http.request();
+
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey "+Main.usrName+", Looks like you haven't seen the changes for this update.\nI will List Them:\n\n"+changes,
+			"Hey "+ coolname +",\n\nLooks like you haven't been keeping track of the updates.\nI will List Them:\n\n"+changes,
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);

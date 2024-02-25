@@ -1,0 +1,31 @@
+- Removing of the custom modding title: "Pack"
+- Organizing of Chaos House "Modding" Files
+- Fixed Djotta Flow Credits Icon not being visible
+- Chart Editor should no longer flip along with any issues that had came with it
+- Removal of base game weeks 2 - 7
+- Add button to Chart Editor: Clear JSON
+- Removal of mustHitSection Button in the Chart Editor
+- Redid Charts to set mustHitSection to false (long story do not feel like explaining)
+- Slightly changed background for Chart Editor and Master Editor Menu (looks nice now)
+- Flash Files are public now
+- Changed from not associated with newgrounds to not associated with twitter actually
+- 1 new intro text phrase
+- Added Middle Icon to chart editor (moral support girl)
+- Added Camera Section Event to the chart editor
+- Added chart_editor_shit folder (organizing update???)
+- Added Camera Flash Event
+- Added Event Icons for (probably almost) all Events
+- Added Easy Way of adding event images
+- Fixed Boyfriend not showing up when gameover isnt set to error
+- Changelog now in game folder
+- Changed Y position of song offset text in chart editor
+- The Intro now Credits 'Chaos Team' instead of 'Portilizen'
+- Chart Editor Waveform now changes color depending on setting (if its dad its the dads health color, etc etc)
+- Chart Editor Tip Text size is now 12
+- Fixed Cheater Check
+- Minor introText shit
+- You now wait a few (3) seconds before you can press enter (hi elomentomentoplayz) on the SystemName screen
+- New Save shit (new folder specifically - "chaosdesk")
+- Slightly modified SystemName Screen
+- Added Image "Loading" Screen (originally meant for caching files but just ended up a file reader basically)
+- Split Logs and Version
