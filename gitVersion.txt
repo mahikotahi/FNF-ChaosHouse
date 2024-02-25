@@ -25,6 +25,6 @@
 - Chart Editor Tip Text size is now 12
 - Fixed Cheater Check
 - Minor introText shit
-- You now wait a few (3) seconds before you can press enter (hi elomento)
+- You now wait a few (3) seconds before you can press enter (hi elomentomentoplayz) on the SystemName screen
 - New Save shit (new folder specifically - "chaosdesk")
 - Slightly modified SystemName Screen
