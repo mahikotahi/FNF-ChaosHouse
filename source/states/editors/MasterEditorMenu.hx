@@ -32,6 +32,7 @@ class MasterEditorMenu extends MusicBeatState
 
 	override function create()
 	{
+		FlxG.mouse.visible = false;
 		FlxG.camera.bgColor = FlxColor.BLACK;
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
@@ -119,6 +120,7 @@ class MasterEditorMenu extends MusicBeatState
 		{
 			switch(options[curSelected]) {
 				case 'Chart Editor'://felt it would be cool maybe
+				//FlxG.mouse.visible = true;
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 				case 'Character Editor':
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));

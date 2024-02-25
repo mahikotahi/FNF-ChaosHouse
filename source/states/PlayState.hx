@@ -280,7 +280,6 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-
 		missamount = FlxG.random.int(2, 6);
 
 		// trace('Playback Rate: ' + playbackRate);
@@ -394,7 +393,7 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			//case 'table': new states.stages.Table();
+			// case 'table': new states.stages.Table();
 			case 'tube':
 				new states.stages.Tube();
 			case 'desktop':
@@ -462,7 +461,6 @@ class PlayState extends MusicBeatState
 			startCharacterScripts(gf.curCharacter);
 		}
 
-		
 		switch (SONG.song)
 		{
 			case 'buckshot':
@@ -719,19 +717,19 @@ class PlayState extends MusicBeatState
 			FlxTween.tween(text, {alpha: 0}, 2);
 		}
 
-			bucked = false;
-			if (FlxG.save.data.bucked == true && SONG.song.toLowerCase() == 'buckshot')
-			{
-				bucked = true;
-				FlxG.save.data.bucked = false;
-				FlxG.switchState(new Retry());
-			}
+		bucked = false;
+		if (FlxG.save.data.bucked == true && SONG.song.toLowerCase() == 'buckshot')
+		{
+			bucked = true;
+			FlxG.save.data.bucked = false;
+			FlxG.switchState(new Retry());
+		}
 
-			defib.screenCenter();
-			//defib.camera = scoreTxt.camera;
-			defib.alpha = 0;
-			defib.scrollFactor.set();
-			add(defib);
+		defib.screenCenter();
+		// defib.camera = scoreTxt.camera;
+		defib.alpha = 0;
+		defib.scrollFactor.set();
+		add(defib);
 
 		super.create();
 		Paths.clearUnusedMemory();
@@ -2209,21 +2207,84 @@ class PlayState extends MusicBeatState
 			case 'Camera Section':
 				moveCamera(boolValue1);
 
+			case 'Camera Flash':
+				var color:FlxColor = FlxColor.WHITE;
+
+				switch (value2.toLowerCase())
+				{
+					case 'red':
+						color = FlxColor.RED;
+
+					case 'orange':
+						color = FlxColor.ORANGE;
+
+					case 'yellow':
+						color = FlxColor.YELLOW;
+
+					case 'lime':
+						color = FlxColor.LIME;
+
+					case 'green':
+						color = FlxColor.GREEN;
+
+					case 'blue':
+						color = FlxColor.BLUE;
+
+					case 'cyan':
+						color = FlxColor.CYAN;
+
+					case 'purple':
+						color = FlxColor.PURPLE;
+
+					case 'pink':
+						color = FlxColor.PINK;
+
+					case 'brown':
+						color = FlxColor.BROWN;
+
+					case 'gray' | 'grey':
+						color = FlxColor.GRAY;
+
+					case 'black':
+						color = FlxColor.BLACK;
+
+					case 'magenta':
+						color = FlxColor.MAGENTA;
+
+					default:
+						color = FlxColor.WHITE;
+				}
+
+				if (value2.startsWith('0x'))
+					if (value2.length == 8 || value2.length == 10)
+						try
+						{
+							color = FlxColor.fromString(value2);
+						}
+						catch (e:Dynamic)
+						{
+							trace(e);
+						};
+
+				trace(color);
+
+				FlxG.camera.flash(color, flValue1);
+
 			case 'boyfriend fucking dies':
-				//boyfriend.destroy();
+			// boyfriend.destroy();
 
 			case 'Charge':
-				//songMisses += intValue1;
+				// songMisses += intValue1;
 
-				//defib.visible = true;
-				//defib.alpha = 1;
-				//FlxTween.tween(defib, {alpha: 0}, 2);
+				// defib.visible = true;
+				// defib.alpha = 1;
+				// FlxTween.tween(defib, {alpha: 0}, 2);
 				FlxG.sound.play(Paths.sound('defib discharge'));
 
-				//defib bootup.ogg
-				//FlxG.sound.play(Paths.sound('defib bootup'));
+				// defib bootup.ogg
+				// FlxG.sound.play(Paths.sound('defib bootup'));
 
-				var text:FlxText = new FlxText(0,0,0,'cool shit',64);
+				var text:FlxText = new FlxText(0, 0, 0, 'cool shit', 64);
 				text.screenCenter();
 				text.camera = camHUD;
 				text.scrollFactor.set();
@@ -2232,7 +2293,7 @@ class PlayState extends MusicBeatState
 				add(text);
 
 				FlxG.camera.flash(FlxColor.RED, intValue2 / 10);
-				FlxTween.tween(text, {alpha:0}, intValue2);
+				FlxTween.tween(text, {alpha: 0}, intValue2);
 
 			case 'Hey!':
 				var value:Int = 2;
@@ -2251,7 +2312,7 @@ class PlayState extends MusicBeatState
 				{
 					if (dad.curCharacter.startsWith('gf'))
 					{ // Tutorial GF is actually Dad! The GF is an imposter!! ding ding ding ding ding ding ding, dindinding, end my suffering
-					// no - portilizen
+						// no - portilizen
 						dad.playAnim('cheer', true);
 						dad.specialAnim = true;
 						dad.heyTimer = flValue2;
@@ -2532,22 +2593,19 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		
-
 		var songData = SONG;
 		var noteData:Array<SwagSection>;
 		// NEW SHIT
 		noteData = songData.notes;
 		var isDad:Bool = false;
 
-		
 		for (section in noteData)
+		{
+			for (songNotes in section.sectionNotes)
 			{
-				for (songNotes in section.sectionNotes)
-				{
-					isDad = songNotes[1] > 3;
-				}
+				isDad = songNotes[1] > 3;
 			}
+		}
 
 		callOnScripts('onMoveCamera', [isDad ? 'dad' : 'boyfriend']);
 	}
@@ -2658,8 +2716,8 @@ class PlayState extends MusicBeatState
 		deathCounter = 0;
 		seenCutscene = false;
 
-		var fullCombo:Bool = campaignMisses == 0;
-		var cheater:Bool = cpuControlled;
+		var fullCombo:Bool = songMisses == 0;
+		var cheater:Bool = cpuControlled || chartingMode;
 
 		// cpuControlled = ClientPrefs.getGameplaySetting('botplay');
 
@@ -2698,7 +2756,7 @@ class PlayState extends MusicBeatState
 		{
 			case 'buckshot':
 				FlxG.save.data.bucked = true;
-				//bucked = false;
+				// bucked = false;
 		}
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
@@ -3202,12 +3260,10 @@ class PlayState extends MusicBeatState
 		if (result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll)
 			callOnHScript('noteMiss', [daNote]);
 
-		
-
 		if (SONG.song == 'Buckshot')
-			{
-				moveCamera(false);
-			}
+		{
+			moveCamera(false);
+		}
 	}
 
 	function noteMissPress(direction:Int = 1):Void // You pressed a key when there was no notes to press for this key
@@ -3289,18 +3345,18 @@ class PlayState extends MusicBeatState
 		{
 			songMisses++;
 
-			//defib discharge.ogg
+			// defib discharge.ogg
 			if (SONG.song.toLowerCase() == 'buckshot')
 			{
-				//defib.visible = true;
-				//defib.alpha = 1;
-				//FlxTween.tween(defib, {alpha: 0}, 2);
+				// defib.visible = true;
+				// defib.alpha = 1;
+				// FlxTween.tween(defib, {alpha: 0}, 2);
 				FlxG.sound.play(Paths.sound('defib discharge'));
 
-				//defib bootup.ogg
-				//FlxG.sound.play(Paths.sound('defib bootup'));
+				// defib bootup.ogg
+				// FlxG.sound.play(Paths.sound('defib bootup'));
 
-				var text:FlxText = new FlxText(0,0,0,'cool shit',64);
+				var text:FlxText = new FlxText(0, 0, 0, 'cool shit', 64);
 				text.screenCenter();
 				text.camera = camHUD;
 				text.scrollFactor.set();
@@ -3308,9 +3364,8 @@ class PlayState extends MusicBeatState
 				text.text = '${songMisses}/${missamount}';
 				add(text);
 				FlxG.camera.flash(FlxColor.RED, 0.2);
-				FlxTween.tween(text, {alpha:0}, 2);
+				FlxTween.tween(text, {alpha: 0}, 2);
 			}
-
 		}
 
 		totalPlayed++;
@@ -3659,13 +3714,12 @@ class PlayState extends MusicBeatState
 				setOnScripts('stepCrochet', Conductor.stepCrochet);
 			}
 			var songData = SONG;
-		var noteData:Array<SwagSection>;
-		// NEW SHIT
-		noteData = songData.notes;
-		var hitsec:Bool = false;
+			var noteData:Array<SwagSection>;
+			// NEW SHIT
+			noteData = songData.notes;
+			var hitsec:Bool = false;
 
-		
-		for (section in noteData)
+			for (section in noteData)
 			{
 				for (songNotes in section.sectionNotes)
 				{

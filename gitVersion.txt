@@ -14,10 +14,14 @@
 - Added Middle Icon to chart editor (moral support girl)
 - Added Camera Section Event to the chart editor
 - Added chart_editor_shit folder (organizing update???)
-- I better not see you again test is now Center Aligned
 - Added Camera Flash Event
 - Added Event Icons for (probably almost) all Events
 - Added Easy Way of adding event images
 - Fixed Boyfriend not showing up when gameover isnt set to error
 - Changelog now in game folder
 - Changed Y position of song offset text in chart editor
+- The Intro now Credits 'Chaos Team' instead of 'Portilizen'
+- Chart Editor Waveform now changes color depending on setting (if its inst its dull green, if its dad its the dads health color, etc etc)
+- Chart Editor Tip Text size is now 12
+- Fixed Cheater Check
+- Minor introText shit

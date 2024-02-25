@@ -35,7 +35,7 @@ class Retry extends MusicBeatState
 		retry.text += (FlxG.save.data.pussyName) ? '\nPussy' : '\n'+Main.usrName;
 		retry.color = FlxColor.RED;
 		retry.screenCenter();
-		retry.setAlignmentFromString('CENTER');
+		//retry.setAlignmentFromString('CENTER');
 		add(retry);
 
 		retry.visible = true;

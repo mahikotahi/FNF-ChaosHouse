@@ -1,5 +1,6 @@
 package states.editors;
 
+import objects.CoolMouse;
 import flixel.addons.display.FlxBackdrop;
 import flash.geom.Rectangle;
 import haxe.Json;
@@ -49,6 +50,7 @@ class ChartingState extends MusicBeatState
 		['', 'Alt Animation', 'Hey!', 'Hurt Note', 'GF Sing', 'No Animation'];
 
 	public var ignoreWarnings = false;
+	public var camHUD:FlxCamera;
 
 	var curNoteTypes:Array<String> = [];
 	var undos = [];
@@ -57,7 +59,10 @@ class ChartingState extends MusicBeatState
 		['', "Nothing. Yep, that's right."],
 		// ['boyfriend fucking dies', "fuckin kill boyfrien"],
 		['Camera Section', 'Value 1 - IsDad?'],
-		['Camera Flash', 'Value 1 - Length'],
+		[
+			'Camera Flash',
+			'Value 1 - Length' + "\n\nValue 2 is color \n(red, green, orange, 0xffffff/white,\n 0x90ffffff for a transparent white, etc)"
+		],
 		[
 			'Charge',
 			"value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"
@@ -208,8 +213,12 @@ class ChartingState extends MusicBeatState
 	var gamepadColor:FlxColor = 0xfffd7194;
 	var keyboardColor:FlxColor = 0xff71a876;
 
+	var mouse:CoolMouse;
+
 	override function create()
 	{
+		FlxG.mouse.visible = true;
+
 		var bg:FlxSprite;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = keyboardColor;
@@ -276,7 +285,7 @@ class ChartingState extends MusicBeatState
 
 		leftIcon.setPosition(GRID_SIZE + 10, -100);
 		rightIcon.setPosition(GRID_SIZE * 5.2, -100);
-		middleIcon.setPosition(GRID_SIZE + 10 + 64, -100);
+		middleIcon.setPosition(GRID_SIZE * 3, -100);
 
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		curRenderedNotes = new FlxTypedGroup<Note>();
@@ -285,7 +294,6 @@ class ChartingState extends MusicBeatState
 		nextRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		nextRenderedNotes = new FlxTypedGroup<Note>();
 
-		FlxG.mouse.visible = true;
 		// FlxG.save.bind('funkin', CoolUtil.getSavePath());
 
 		// addSection();
@@ -369,7 +377,7 @@ class ChartingState extends MusicBeatState
 		var tipTextArray:Array<String> = text.split('\n');
 		for (i in 0...tipTextArray.length)
 		{
-			var tipText:FlxText = new FlxText(UI_box.x, UI_box.y + UI_box.height + 8, 0, tipTextArray[i], 16);
+			var tipText:FlxText = new FlxText(UI_box.x, UI_box.y + UI_box.height + 8, 0, tipTextArray[i], 12);
 			tipText.y += i * 12;
 			tipText.setFormat(Paths.font("vcr.ttf"), 14, FlxColor.WHITE, LEFT /*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 			// tipText.borderSize = 2;
@@ -406,6 +414,13 @@ class ChartingState extends MusicBeatState
 
 		updateGrid();
 		super.create();
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		mouse = new CoolMouse(0, 0);
+		// mouse.visible = false;
+		mouse.camera = camHUD;
+		add(mouse);
 	}
 
 	var check_mute_inst:FlxUICheckBox = null;
@@ -997,8 +1012,9 @@ class ChartingState extends MusicBeatState
 			{
 				var fileName:String = file.toLowerCase().trim();
 				var wordLen:Int = 4; // length of word ".lua" and ".txt";
-				if ((#if LUA_ALLOWED fileName.endsWith('.lua') || #end#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3)
-					|| #end fileName.endsWith('.txt')) && fileName != 'readme.txt')
+				if ((#if LUA_ALLOWED fileName.endsWith('.lua')
+					|| #end#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3) || #end fileName.endsWith('.txt'))
+					&& fileName != 'readme.txt')
 				{
 					var fileToCheck:String = file.substr(0, file.length - wordLen);
 					if (!curNoteTypes.contains(fileToCheck))
@@ -1843,7 +1859,6 @@ class ChartingState extends MusicBeatState
 			strumLineNotes.members[i].y = strumLine.y;
 		}
 
-		FlxG.mouse.visible = true; // cause reasons. trust me
 		camPos.y = strumLine.y;
 		if (!disableAutoScrolling.checked)
 		{
@@ -1989,7 +2004,6 @@ class ChartingState extends MusicBeatState
 			else if (FlxG.keys.justPressed.ENTER)
 			{
 				autosaveSong();
-				FlxG.mouse.visible = false;
 				PlayState.SONG = _song;
 				FlxG.sound.music.stop();
 				if (vocals != null)
@@ -1999,6 +2013,7 @@ class ChartingState extends MusicBeatState
 
 				// if(_song.stage == null) _song.stage = stageDropDown.selectedLabel;
 				StageData.loadDirectory(_song);
+				FlxG.mouse.visible = false;
 				LoadingState.loadAndSwitchState(new PlayState());
 			}
 
@@ -2021,7 +2036,6 @@ class ChartingState extends MusicBeatState
 				PlayState.chartingMode = false;
 				MusicBeatState.switchState(new states.editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				FlxG.mouse.visible = false;
 				return;
 			}
 
@@ -2413,6 +2427,10 @@ class ChartingState extends MusicBeatState
 		}
 		lastConductorPos = Conductor.songPosition;
 		super.update(elapsed);
+
+		var realMouse:Dynamic = FlxG.mouse;
+
+		mouse.setPosition(realMouse.x, realMouse.y);
 	}
 
 	function pauseAndSetVocalsTime()
@@ -2572,6 +2590,29 @@ class ChartingState extends MusicBeatState
 		else if (FlxG.save.data.chart_waveformOppVoices)
 			sound = opponentVocals;
 
+		var doingVocals:Bool = sound == vocals && vocals != null;
+		var doingOpVocals:Bool = sound == opponentVocals && opponentVocals != null;
+
+		var color:FlxColor = 0x578361;
+
+		color = 0x579961;
+
+		// FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2])
+		// FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2])
+
+		var gf:Character = new Character(0, 0, _song.gfVersion);
+		var boyfriend:Character = new Character(0, 0, _song.player1, true);
+		var dad:Character = new Character(0, 0, _song.player2);
+		var sec = _song.notes[curSec];
+
+		if (doingVocals)
+			color = FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]);
+		if (doingOpVocals)
+			color = FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]);
+		if (doingVocals || doingOpVocals)
+			if (sec.gfSection)
+				color = FlxColor.fromRGB(gf.healthColorArray[0], gf.healthColorArray[1], gf.healthColorArray[2]);
+
 		if (sound != null && sound._sound != null && sound._sound.__buffer != null)
 		{
 			var bytes:Bytes = sound._sound.__buffer.data.toBytes();
@@ -2597,7 +2638,7 @@ class ChartingState extends MusicBeatState
 			var rmin:Float = FlxMath.bound(((index < wavData[1][0].length && index >= 0) ? wavData[1][0][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
 			var rmax:Float = FlxMath.bound(((index < wavData[1][1].length && index >= 0) ? wavData[1][1][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
 
-			waveformSprite.pixels.fillRect(new Rectangle(hSize - (lmin + rmin), index * size, (lmin + rmin) + (lmax + rmax), size), FlxColor.BLUE);
+			waveformSprite.pixels.fillRect(new Rectangle(hSize - (lmin + rmin), index * size, (lmin + rmin) + (lmax + rmax), size), color);
 		}
 
 		waveformPrinted = true;
@@ -2968,107 +3009,114 @@ class ChartingState extends MusicBeatState
 		nextRenderedSustains.forEachAlive(function(spr:FlxSprite) spr.destroy());
 		nextRenderedSustains.clear();
 
-		if (_song.notes[curSec].changeBPM && _song.notes[curSec].bpm > 0)
+		try
 		{
-			Conductor.bpm = _song.notes[curSec].bpm;
-			// trace('BPM of this section:');
-		}
-		else
-		{
-			// get last bpm
-			var daBPM:Float = _song.bpm;
-			for (i in 0...curSec)
-				if (_song.notes[i].changeBPM)
-					daBPM = _song.notes[i].bpm;
-			Conductor.bpm = daBPM;
-		}
-
-		// CURRENT SECTION
-		var beats:Float = getSectionBeats();
-		for (i in _song.notes[curSec].sectionNotes)
-		{
-			var note:Note = setupNoteData(i, false);
-			curRenderedNotes.add(note);
-			if (note.sustainLength > 0)
+			if (_song.notes[curSec].changeBPM && _song.notes[curSec].bpm > 0)
 			{
-				curRenderedSustains.add(setupSusNote(note, beats));
+				Conductor.bpm = _song.notes[curSec].bpm;
+				// trace('BPM of this section:');
+			}
+			else
+			{
+				// get last bpm
+				var daBPM:Float = _song.bpm;
+				for (i in 0...curSec)
+					if (_song.notes[i].changeBPM)
+						daBPM = _song.notes[i].bpm;
+				Conductor.bpm = daBPM;
 			}
 
-			if (i[3] != null && note.noteType != null && note.noteType.length > 0)
-			{
-				var typeInt:Int = curNoteTypes.indexOf(i[3]);
-				var theType:String = '' + typeInt;
-				if (typeInt < 0)
-					theType = '?';
-
-				var daText:AttachedFlxText = new AttachedFlxText(0, 0, 100, theType, 24);
-				daText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK);
-				daText.xAdd = -32;
-				daText.yAdd = 6;
-				daText.borderSize = 1;
-				curRenderedNoteType.add(daText);
-				daText.sprTracker = note;
-			}
-			note.mustPress = _song.notes[curSec].mustHitSection;
-			if (i[1] > 3)
-				note.mustPress = !note.mustPress;
-		}
-
-		// CURRENT EVENTS
-		var startThing:Float = sectionStartTime();
-		var endThing:Float = sectionStartTime(1);
-		for (i in _song.events)
-		{
-			if (endThing > i[0] && i[0] >= startThing)
+			// CURRENT SECTION
+			var beats:Float = getSectionBeats();
+			for (i in _song.notes[curSec].sectionNotes)
 			{
 				var note:Note = setupNoteData(i, false);
 				curRenderedNotes.add(note);
-
-				var text:String = 'Event: ' + note.eventName + ' (' + Math.floor(note.strumTime) + ' ms)' + '\nValue 1: ' + note.eventVal1 + '\nValue 2: '
-					+ note.eventVal2;
-				if (note.eventLength > 1)
-					text = note.eventLength + ' Events:\n' + note.eventName;
-
-				var daText:AttachedFlxText = new AttachedFlxText(0, 0, 400, text, 12);
-				daText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK);
-				daText.xAdd = -410;
-				daText.borderSize = 1;
-				if (note.eventLength > 1)
-					daText.yAdd += 8;
-				curRenderedNoteType.add(daText);
-				daText.sprTracker = note;
-				// trace('test: ' + i[0], 'startThing: ' + startThing, 'endThing: ' + endThing);
-			}
-		}
-
-		// NEXT SECTION
-		var beats:Float = getSectionBeats(1);
-		if (curSec < _song.notes.length - 1)
-		{
-			for (i in _song.notes[curSec + 1].sectionNotes)
-			{
-				var note:Note = setupNoteData(i, true);
-				note.alpha = 0.6;
-				nextRenderedNotes.add(note);
 				if (note.sustainLength > 0)
 				{
-					nextRenderedSustains.add(setupSusNote(note, beats));
+					curRenderedSustains.add(setupSusNote(note, beats));
+				}
+
+				if (i[3] != null && note.noteType != null && note.noteType.length > 0)
+				{
+					var typeInt:Int = curNoteTypes.indexOf(i[3]);
+					var theType:String = '' + typeInt;
+					if (typeInt < 0)
+						theType = '?';
+
+					var daText:AttachedFlxText = new AttachedFlxText(0, 0, 100, theType, 24);
+					daText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK);
+					daText.xAdd = -32;
+					daText.yAdd = 6;
+					daText.borderSize = 1;
+					curRenderedNoteType.add(daText);
+					daText.sprTracker = note;
+				}
+				note.mustPress = _song.notes[curSec].mustHitSection;
+				if (i[1] > 3)
+					note.mustPress = !note.mustPress;
+			}
+
+			// CURRENT EVENTS
+			var startThing:Float = sectionStartTime();
+			var endThing:Float = sectionStartTime(1);
+			for (i in _song.events)
+			{
+				if (endThing > i[0] && i[0] >= startThing)
+				{
+					var note:Note = setupNoteData(i, false);
+					curRenderedNotes.add(note);
+
+					var text:String = 'Event: ' + note.eventName + ' (' + Math.floor(note.strumTime) + ' ms)' + '\nValue 1: ' + note.eventVal1
+						+ '\nValue 2: ' + note.eventVal2;
+					if (note.eventLength > 1)
+						text = note.eventLength + ' Events:\n' + note.eventName;
+
+					var daText:AttachedFlxText = new AttachedFlxText(0, 0, 400, text, 12);
+					daText.setFormat(Paths.font("vcr.ttf"), 12, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.BLACK);
+					daText.xAdd = -410;
+					daText.borderSize = 1;
+					if (note.eventLength > 1)
+						daText.yAdd += 8;
+					curRenderedNoteType.add(daText);
+					daText.sprTracker = note;
+					// trace('test: ' + i[0], 'startThing: ' + startThing, 'endThing: ' + endThing);
+				}
+			}
+
+			// NEXT SECTION
+			var beats:Float = getSectionBeats(1);
+			if (curSec < _song.notes.length - 1)
+			{
+				for (i in _song.notes[curSec + 1].sectionNotes)
+				{
+					var note:Note = setupNoteData(i, true);
+					note.alpha = 0.6;
+					nextRenderedNotes.add(note);
+					if (note.sustainLength > 0)
+					{
+						nextRenderedSustains.add(setupSusNote(note, beats));
+					}
+				}
+			}
+
+			// NEXT EVENTS
+			var startThing:Float = sectionStartTime(1);
+			var endThing:Float = sectionStartTime(2);
+			for (i in _song.events)
+			{
+				if (endThing > i[0] && i[0] >= startThing)
+				{
+					var note:Note = setupNoteData(i, true);
+					note.alpha = 0.6;
+					nextRenderedNotes.add(note);
 				}
 			}
 		}
-
-		// NEXT EVENTS
-		var startThing:Float = sectionStartTime(1);
-		var endThing:Float = sectionStartTime(2);
-		for (i in _song.events)
+		catch (e:Dynamic)
 		{
-			if (endThing > i[0] && i[0] >= startThing)
-			{
-				var note:Note = setupNoteData(i, true);
-				note.alpha = 0.6;
-				nextRenderedNotes.add(note);
-			}
-		}
+			trace(e);
+		};
 	}
 
 	function setupNoteData(i:Array<Dynamic>, isNextSection:Bool):Note
@@ -3106,9 +3154,38 @@ class ChartingState extends MusicBeatState
 			{ // Softcoding
 				try
 				{
-					try{note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName}'));}catch(e){trace(e);try{note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName.split(' ')}'));}catch(e){trace(e);}};
-					try{note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName}'));}catch(e){trace(e);try{note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName.split(' ')}'));}catch(e){trace(e);}};
-					
+					try
+					{
+						note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName}'));
+					}
+					catch (e)
+					{
+						trace(e);
+						try
+						{
+							note.loadGraphic(Paths.modsImages('chart_editor_shit/${note.eventName.split(' ')}'));
+						}
+						catch (e)
+						{
+							trace(e);
+						}
+					};
+					try
+					{
+						note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName}'));
+					}
+					catch (e)
+					{
+						trace(e);
+						try
+						{
+							note.loadGraphic(Paths.image('chart_editor_shit/${note.eventName.split(' ')}'));
+						}
+						catch (e)
+						{
+							trace(e);
+						}
+					};
 				}
 				catch (e:Dynamic)
 				{

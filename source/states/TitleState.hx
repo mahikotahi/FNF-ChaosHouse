@@ -78,6 +78,7 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		FlxG.mouse.visible = false;
 		Paths.clearStoredMemory();
 
 		#if LUA_ALLOWED
@@ -596,7 +597,7 @@ class TitleState extends MusicBeatState
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['The Chaos House']);
+					createCoolText(['Chaos Team']);
 					
 				case 4:
 					addMoreText('presents');

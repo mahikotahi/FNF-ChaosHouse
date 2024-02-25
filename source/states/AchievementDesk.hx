@@ -2,6 +2,7 @@ package states;
 
 import flixel.FlxSprite;
 import flixel.FlxG;
+import objects.CoolMouse;
 
 class AchievementDesk extends MusicBeatState
 {
@@ -14,10 +15,9 @@ class AchievementDesk extends MusicBeatState
 
 	var folder:String = 'desktopshit/achievements/';
 
-	var mouse:FlxSprite;
-
 	var achievementNames:Array<String> = ['stick', 'buckshot']; // for reference
 	public static var achievementToggles:Array<Bool> = [false, false];
+	var mouse:FlxSprite;
 
 	// LockedAchievement
 
@@ -88,6 +88,8 @@ class AchievementDesk extends MusicBeatState
 		buckshot = new FlxSprite(160, 0);
         add(buckshot);
 
+		updateIcons();
+
 		mouse = new FlxSprite(0, 0);
 		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');
 		mouse.animation.addByPrefix('white', "white", 24);
@@ -106,8 +108,6 @@ class AchievementDesk extends MusicBeatState
 		mouse.scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
 		mouse.animation.play(ClientPrefs.data.cursorColor);
 		add(mouse);
-
-		updateIcons();
 
 		super.create();
 	}

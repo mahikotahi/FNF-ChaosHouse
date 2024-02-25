@@ -1,5 +1,6 @@
 package states;
 
+import objects.CoolMouse;
 import flixel.FlxState;
 import objects.AttachedSprite;
 
@@ -18,8 +19,6 @@ class CreditsState extends FlxState
 	var descBox:AttachedSprite;
 
 	var offsetThing:Float = -75;
-
-	var mouse:FlxSprite;
 
 	var game:PlayState = PlayState.instance;
 	var coolwindow:FlxSprite;
@@ -43,6 +42,8 @@ class CreditsState extends FlxState
 	var tubeyou:FlxSprite;
 
 	public var controls(get, never):Controls;
+
+	var mouse:FlxSprite;
 
 	private function get_controls()
 	{
@@ -127,6 +128,8 @@ class CreditsState extends FlxState
 		// bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		// intendedColor = bg.color;
 
+		
+
 		mouse = new FlxSprite(0, 0);
 		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');
 		mouse.animation.addByPrefix('white', "white", 24);
@@ -189,11 +192,11 @@ class CreditsState extends FlxState
 			switch (currentSelection)
 			{
 				case 'port':
-					port.setPosition(realMouse.x - (port.width / 2), realMouse.y - (port.height / 2));
+					port.setPosition(mouse.x - (port.width / 2), mouse.y - (port.height / 2));
 					case 'jtsf':
-						jtsf.setPosition(realMouse.x - (jtsf.width / 2), realMouse.y - (jtsf.height / 2));
+						jtsf.setPosition(mouse.x - (jtsf.width / 2), mouse.y - (jtsf.height / 2));
 						case 'djotta':
-							djotta.setPosition(realMouse.x - (djotta.width / 2), realMouse.y - (djotta.height / 2));
+							djotta.setPosition(mouse.x - (djotta.width / 2), mouse.y - (djotta.height / 2));
 			}
 		}
 

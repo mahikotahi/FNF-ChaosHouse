@@ -8,6 +8,7 @@ import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import backend.Song;
 import backend.Highscore;
+import objects.CoolMouse;
 
 class MainMenuState extends MusicBeatState
 {
@@ -27,8 +28,6 @@ class MainMenuState extends MusicBeatState
 	var craft:FlxSprite;
 	var tutor:FlxSprite;
 
-	var mouse:FlxSprite;
-
 	var game:PlayState = PlayState.instance;
 	var coolwindow:FlxSprite;
 
@@ -37,6 +36,7 @@ class MainMenuState extends MusicBeatState
 	public static var timePassedOnState:Float = 0;
 
 	var appPos:Array<Array<Int>> = [[0, 0]];
+	var mouse:FlxSprite;
 
 	override function create()
 	{
@@ -281,27 +281,26 @@ class MainMenuState extends MusicBeatState
 
 					MusicBeatState.switchState(new CreditsState());
 
-					case 'desktop':
-						trace('adobe animate');
-	
-						#if DISCORD_ALLOWED
-						// Updating Discord Rich Presence
-						DiscordClient.changePresence("Adobe Animate 2021", null);
-						#end
-						StatusShit.status = 'Adobe Animate 2021';
-						loadSong('Stick');
+				case 'desktop':
+					trace('adobe animate');
 
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Adobe Animate 2021", null);
+					#end
+					StatusShit.status = 'Adobe Animate 2021';
+					loadSong('Stick');
 
-						case 'tutorial':
-							trace('tutor');
-		
-							#if DISCORD_ALLOWED
-							// Updating Discord Rich Presence
-							DiscordClient.changePresence("Tutorial", null);
-							#end
-							StatusShit.status = 'Tutorial';
-							loadSong('Tutorial');
-			
+				case 'tutorial':
+					trace('tutor');
+
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Tutorial", null);
+					#end
+					StatusShit.status = 'Tutorial';
+					loadSong('Tutorial');
+
 				case 'roulette':
 					trace('buckshot roulet');
 
@@ -354,7 +353,6 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		
 		if (controls.justPressed('debug_1'))
 		{
 			selectedSomethin = true;
@@ -451,10 +449,10 @@ class MainMenuState extends MusicBeatState
 		craft.animation.addByPrefix('crafty', 'Craftist', 24);
 		craft.animation.play('crafty');
 		craft.scale.set(0.5, 0.5);
-		//add(craft);
+		// add(craft);
 
 		tutor = new FlxSprite(12, FlxG.height - 160).loadGraphic(Paths.image('coolmic'));
-		tutor.scale.set(0.4,0.4);
+		tutor.scale.set(0.4, 0.4);
 		add(tutor);
 	}
 

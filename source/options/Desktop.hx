@@ -9,8 +9,6 @@ class Desktop extends BaseOptionsMenu
 {
 	var cursor:FlxTypedGroup<FlxSprite>;
 
-	var mouse:FlxSprite;
-
 	public function new()
 	{
 		title = 'Window';
@@ -43,24 +41,7 @@ class Desktop extends BaseOptionsMenu
 
 		cursor = new FlxTypedGroup<FlxSprite>();
 
-		mouse = new FlxSprite(0, 0);
-		mouse.frames = Paths.getSparrowAtlas('mainmenu/cursor');
-		mouse.animation.addByPrefix('white', "white", 24);
-		mouse.animation.addByPrefix('gray', "gray", 24);
-		mouse.animation.addByPrefix('black', "black", 24);
-		mouse.animation.addByPrefix('red', "red", 24);
-		mouse.animation.addByPrefix('orange', "orange", 24);
-		mouse.animation.addByPrefix('yellow', "yellow", 24);
-		mouse.animation.addByPrefix('green', "green", 24);
-		mouse.animation.addByPrefix('lime', "lime", 24);
-		mouse.animation.addByPrefix('cyan', "cyan", 24);
-		mouse.animation.addByPrefix('blue', "blue", 24);
-		mouse.animation.addByPrefix('purple', "purple", 24);
-		mouse.animation.addByPrefix('pink', "pink", 24);
-		mouse.animation.addByPrefix('brown', "brown", 24);
-		mouse.scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
-		mouse.animation.play(ClientPrefs.data.cursorColor);
-		cursor.add(mouse);
+		FlxG.mouse.visible = true;
 
 		super();
 	}
