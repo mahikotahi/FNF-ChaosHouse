@@ -68,6 +68,10 @@ class ChartingState extends MusicBeatState
 			"value 1 is the fuckin fake miss amount, \nthe value 2 is how long it stays\n\nthis is for buckshot"
 		],
 		[
+			'TimeChange',
+			"no values needed"
+		],
+		[
 			'Dadbattle Spotlight',
 			"Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"
 		],
@@ -2593,7 +2597,7 @@ class ChartingState extends MusicBeatState
 		var doingVocals:Bool = FlxG.save.data.chart_waveformVoice;
 		var doingOpVocals:Bool = FlxG.save.data.chart_waveformOppVoices;
 
-		var color:FlxColor = FlxColor.BLUE;
+		var color:FlxColor = 0xffffff;
 
 		// FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2])
 		// FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2])
@@ -2605,11 +2609,14 @@ class ChartingState extends MusicBeatState
 
 		if (doingVocals)
 			color = FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]);
-		if (doingOpVocals)
+		else if (doingOpVocals)
 			color = FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]);
+	
 		if (doingVocals || doingOpVocals)
 			if (sec.gfSection)
 				color = FlxColor.fromRGB(gf.healthColorArray[0], gf.healthColorArray[1], gf.healthColorArray[2]);
+		else
+			color = FlxColor.BLUE;
 
 		if (sound != null && sound._sound != null && sound._sound.__buffer != null)
 		{

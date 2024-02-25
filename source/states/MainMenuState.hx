@@ -458,7 +458,15 @@ class MainMenuState extends MusicBeatState
 		shot.animation.play('bsr');
 		add(shot);
 
-		craft = new FlxSprite(desktop.x + desktop.width - 80, -10);
+		mods = new FlxSprite(desktop.x + desktop.width + 10, desktop.y);
+		mods.antialiasing = ClientPrefs.data.antialiasing;
+		mods.frames = Paths.getSparrowAtlas('mainmenu/Modser');
+		mods.animation.addByPrefix('modsa', "Mods0", 24);
+		mods.animation.play('modsa');
+		mods.scale.set(0.5,0.5);
+		#if MODS_ALLOWED add(mods); #end
+
+		craft = new FlxSprite(mods.x + mods.width - 80, -10);
 		craft.antialiasing = ClientPrefs.data.antialiasing;
 		// craft.loadGraphic(Paths.image('mainmenu/craf'));
 		// craft.frames = Paths.getSparrowAtlas('mainmenu/crafty');
@@ -468,19 +476,11 @@ class MainMenuState extends MusicBeatState
 		craft.animation.addByPrefix('crafty', 'Craftist', 24);
 		craft.animation.play('crafty');
 		craft.scale.set(0.5, 0.5);
-		// add(craft);
+		add(craft);
 
 		tutor = new FlxSprite(12, FlxG.height - 160).loadGraphic(Paths.image('coolmic'));
 		tutor.scale.set(0.4, 0.4);
 		add(tutor);
-
-		mods = new FlxSprite(desktop.x + desktop.width + 10, desktop.y);
-		mods.antialiasing = ClientPrefs.data.antialiasing;
-		mods.frames = Paths.getSparrowAtlas('mainmenu/Modser');
-		mods.animation.addByPrefix('modsa', "Mods0", 24);
-		mods.animation.play('modsa');
-		mods.scale.set(0.5,0.5);
-		#if MODS_ALLOWED add(mods); #end
 	}
 
 	var virusPIC:FlxSprite;

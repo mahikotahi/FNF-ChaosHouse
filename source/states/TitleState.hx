@@ -132,7 +132,7 @@ class TitleState extends MusicBeatState
 
 
 		FlxG.save.bind('chaosdesk', CoolUtil.getSavePath());
-		ClientPrefs.saveSettings();
+		//ClientPrefs.saveSettings();
 		trace(Main.usrName);
 		//FlxG.save.data.flashing = null;
 		

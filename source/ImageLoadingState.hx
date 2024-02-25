@@ -36,7 +36,9 @@ class ImageLoadingState extends MusicBeatState
 
             if (cooltype == null) cooltype = 'UFT';
 
-            trace('File: '+filePaths[i] +'/'+filesToRead[i]);
+            var cooltrace:String = 'File: '+filePaths[i] +'/'+filesToRead[i];
+
+            trace(cooltrace);
 
             // rip caching code
         }

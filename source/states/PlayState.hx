@@ -1,5 +1,6 @@
 package states;
 
+import flixel.ui.FlxBar;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -278,6 +279,10 @@ class PlayState extends MusicBeatState
 	public var missamount:Int = 0;
 	public var defib:FlxSprite = new FlxSprite().loadGraphic(Paths.image('defib charge broke6'));
 
+	private var MChealthBarBGG:FlxSprite;
+	private var MChealthBarBG:FlxSprite;
+	private var MChealthBar:Bar;
+
 	override public function create()
 	{
 		missamount = FlxG.random.int(2, 6);
@@ -393,6 +398,8 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
+			case 'oneblock':
+				new states.stages.OneBlock();
 			// case 'table': new states.stages.Table();
 			case 'tube':
 				new states.stages.Tube();
@@ -450,13 +457,14 @@ class PlayState extends MusicBeatState
 			}
 		#end
 
+		gf = new Character(0, 0, SONG.gfVersion);
+		startCharacterPos(gf);
+		gf.scrollFactor.set(0.95, 0.95);
+
 		if (!stageData.hide_girlfriend)
 		{
 			if (SONG.gfVersion == null || SONG.gfVersion.length < 1)
 				SONG.gfVersion = 'gf'; // Fix for the Chart Editor
-			gf = new Character(0, 0, SONG.gfVersion);
-			startCharacterPos(gf);
-			gf.scrollFactor.set(0.95, 0.95);
 			gfGroup.add(gf);
 			startCharacterScripts(gf.curCharacter);
 		}
@@ -563,14 +571,36 @@ class PlayState extends MusicBeatState
 		moveCameraSection();
 		moveCamera(false);
 
-		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11), 'healthBar', function() return health, 0, 2);
+		MChealthBarBGG = new FlxSprite(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11)).loadGraphic(Paths.image('oneblockworld/healthBar'));
+		// if (FlxG.save.data.downscroll) MChealthBarBGG.y = 50;
+		//MChealthBarBGG.scale.set(1.4, 1.4);
+		MChealthBarBGG.screenCenter(X);
+		MChealthBarBGG.scrollFactor.set();
+
+		if (SONG.song.toLowerCase() == 'test') add(MChealthBarBGG);
+
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11) - 1,
+			(SONG.song.toLowerCase() != 'test') ? 'healthBar' : 'oneblockworld/healthBarBGG', function() return health, 0, 2);
 		healthBar.screenCenter(X);
 		healthBar.leftToRight = false;
 		healthBar.scrollFactor.set();
 		healthBar.visible = !ClientPrefs.data.hideHud;
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
-		reloadHealthBarColors();
+		//healthBar.scale.set(healthBar.scale.x, healthBar.scale.y + 0.1);
+		//reloadHealthBarColors();
+
 		uiGroup.add(healthBar);
+
+		MChealthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.11) - 0, 'oneblockworld/healthBar', function() return health, 0, 2);
+		MChealthBar.screenCenter(X);
+		MChealthBar.leftToRight = false;
+		MChealthBar.scrollFactor.set();
+		MChealthBar.visible = !ClientPrefs.data.hideHud;
+		MChealthBar.alpha = ClientPrefs.data.healthBarAlpha - 0.0;
+		MChealthBar.scale.set(1,1.1);
+		reloadHealthBarColors();
+
+		(SONG.song.toLowerCase() == 'test') ? uiGroup.add(MChealthBar) : trace('no minecraft');
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
@@ -736,6 +766,8 @@ class PlayState extends MusicBeatState
 
 		if (eventNotes.length < 1)
 			checkEventNote();
+
+		moveCamera(false);
 	}
 
 	function set_songSpeed(value:Float):Float
@@ -807,6 +839,8 @@ class PlayState extends MusicBeatState
 	public function reloadHealthBarColors()
 	{
 		healthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
+		MChealthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
 			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
 	}
 
