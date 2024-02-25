@@ -285,7 +285,7 @@ class ChartingState extends MusicBeatState
 
 		leftIcon.setPosition(GRID_SIZE + 10, -100);
 		rightIcon.setPosition(GRID_SIZE * 5.2, -100);
-		middleIcon.setPosition(GRID_SIZE * 3, -100);
+		middleIcon.setPosition(GRID_SIZE * 3.1, -100);
 
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 		curRenderedNotes = new FlxTypedGroup<Note>();
@@ -2590,12 +2590,10 @@ class ChartingState extends MusicBeatState
 		else if (FlxG.save.data.chart_waveformOppVoices)
 			sound = opponentVocals;
 
-		var doingVocals:Bool = sound == vocals && vocals != null;
-		var doingOpVocals:Bool = sound == opponentVocals && opponentVocals != null;
+		var doingVocals:Bool = FlxG.save.data.chart_waveformVoice;
+		var doingOpVocals:Bool = FlxG.save.data.chart_waveformOppVoices;
 
-		var color:FlxColor = 0x578361;
-
-		color = 0x579961;
+		var color:FlxColor = FlxColor.BLUE;
 
 		// FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2])
 		// FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2])

@@ -41,7 +41,7 @@ class Desktop extends BaseOptionsMenu
 
 		cursor = new FlxTypedGroup<FlxSprite>();
 
-		FlxG.mouse.visible = true;
+		//FlxG.mouse.visible = true;
 
 		super();
 	}
@@ -55,10 +55,6 @@ class Desktop extends BaseOptionsMenu
 	override function update(elapsed:Float)
 	{
 		var realMouse:Dynamic = FlxG.mouse;
-
-		cursor.members[0].scale.set(ClientPrefs.data.cursorsize, ClientPrefs.data.cursorsize);
-		cursor.members[0].animation.play(ClientPrefs.data.cursorColor);
-		cursor.members[0].setPosition(realMouse.x, realMouse.y);
 
 		if (ClientPrefs.data.desktopbg == 'the table')
 			FlxG.sound.music.stop();

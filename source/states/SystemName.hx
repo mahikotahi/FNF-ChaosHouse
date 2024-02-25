@@ -8,7 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class SystemName extends MusicBeatState
 {
-	public static var leftState:Bool = false;
+	public static var leftState:Bool = true;
 
 	var warnText:FlxText;
 	override function create()
@@ -19,13 +19,15 @@ class SystemName extends MusicBeatState
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			"I'm Going to read your system name in this.\n\nDo you want me to?",
+			"I'm Going to read your system name in this.\n\nDo you want me to?\n(Enter to be a pussy, Escape to be a man)\n\n",
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
 
 		if (FlxG.save.data.censorSysName == null) FlxG.save.data.censorSysName = false;
+
+		new FlxTimer().start(3.0, function(tmr:FlxTimer){ trace('ieksijf'); leftState = true; });
 	}
 
 	override function update(elapsed:Float)
