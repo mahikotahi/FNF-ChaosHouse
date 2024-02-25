@@ -47,8 +47,8 @@ class OutdatedState extends MusicBeatState
 		warnText = new FlxText(0, 0, FlxG.width,
 			"Hey "+ coolname +",\n\nLooks like you haven't been keeping track of the updates.\nI will List Them:\n\n"+changes,
 			32);
-		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
-		warnText.screenCenter(Y);
+		warnText.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, CENTER);
+		warnText.screenCenter();
 		add(warnText);
 	}
 

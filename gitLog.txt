@@ -29,3 +29,4 @@
 - Slightly modified SystemName Screen
 - Added Image "Loading" Screen (originally meant for caching files but just ended up a file reader basically)
 - Split Logs and Version
+- Added Checks for mod github version

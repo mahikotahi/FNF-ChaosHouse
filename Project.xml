@@ -86,7 +86,7 @@
 	</section>
 
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
-	<assets path='gitVersion.txt' rename='changelog.txt'/>
+	<assets path='gitLog.txt' rename='changelog.txt'/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
