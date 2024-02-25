@@ -27,6 +27,7 @@ class MainMenuState extends MusicBeatState
 	var shot:FlxSprite;
 	var craft:FlxSprite;
 	var tutor:FlxSprite;
+	var mods:FlxSprite;
 
 	var game:PlayState = PlayState.instance;
 	var coolwindow:FlxSprite;
@@ -208,6 +209,10 @@ class MainMenuState extends MusicBeatState
 			{
 				currentSelection = 'tutorial';
 			}
+			else if (mouse.overlaps(mods))
+			{
+				currentSelection = 'mods';
+			}
 		}
 
 		if (prevCurSel != currentSelection)
@@ -246,6 +251,9 @@ class MainMenuState extends MusicBeatState
 				case 'microcraft':
 					division = 2;
 					craft.setPosition(realMouse.x - (craft.width / division), realMouse.y - (craft.height / division));
+				
+				case 'mods':
+					mods.setPosition(realMouse.x - (mods.width / division), realMouse.y - (mods.height / division));
 			}
 		}
 
@@ -336,6 +344,17 @@ class MainMenuState extends MusicBeatState
 
 					MusicBeatState.switchState(new AchievementDesk());
 
+
+					case 'mods':
+						trace('mods');
+	
+						#if DISCORD_ALLOWED
+						// Updating Discord Rich Presence
+						DiscordClient.changePresence("Vim", null);
+						#end
+	
+						MusicBeatState.switchState(new ModsMenuState());
+	
 				default:
 					trace(currentSelection);
 					WindowAnimate = false;
@@ -454,6 +473,14 @@ class MainMenuState extends MusicBeatState
 		tutor = new FlxSprite(12, FlxG.height - 160).loadGraphic(Paths.image('coolmic'));
 		tutor.scale.set(0.4, 0.4);
 		add(tutor);
+
+		mods = new FlxSprite(desktop.x + desktop.width + 10, desktop.y);
+		mods.antialiasing = ClientPrefs.data.antialiasing;
+		mods.frames = Paths.getSparrowAtlas('mainmenu/Modser');
+		mods.animation.addByPrefix('modsa', "Mods0", 24);
+		mods.animation.play('modsa');
+		mods.scale.set(0.5,0.5);
+		#if MODS_ALLOWED add(mods); #end
 	}
 
 	var virusPIC:FlxSprite;
