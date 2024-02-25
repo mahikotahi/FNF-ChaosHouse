@@ -38,6 +38,12 @@ class Desktop extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
 		#end
+		
+		var option:Option = new Option('Check for Updates',
+			'On Release builds, turn this on to check for updates when you start the game.',
+			'checkForUpdates',
+			'bool');
+		addOption(option);
 
 		cursor = new FlxTypedGroup<FlxSprite>();
 

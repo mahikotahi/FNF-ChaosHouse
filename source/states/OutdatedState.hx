@@ -1,11 +1,14 @@
 package states;
 
+import lime.app.Application;
+
 class OutdatedState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
 	
 	var warnText:FlxText;
+	var curVersion:String = Std.string(Application.current.meta.get('version'));
 
 
 	override function create()
@@ -45,7 +48,7 @@ class OutdatedState extends MusicBeatState
 		http.request();
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey "+ coolname +",\n\nLooks like you haven't been keeping track of the updates.\nI will List Them:\n\n"+changes,
+			"Hey "+ coolname +',\n\nIts ${curVersion},\nLooks like you have not been keeping track of the github commits.\nI will List Them:\n\n'+changes,
 			32);
 		warnText.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, CENTER);
 		warnText.screenCenter();
