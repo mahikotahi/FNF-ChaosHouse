@@ -33,4 +33,3 @@
 - Added Options Check to remove the Git Commit Check
 - Added song "One Block"
 - Added Desktop Application Minecraft
-- Added Method of adding Desktop Applications
