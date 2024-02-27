@@ -38,7 +38,8 @@ class ImageLoadingState extends MusicBeatState
 
             var cooltrace:String = 'File: '+filePaths[i] +'/'+filesToRead[i];
 
-            trace(cooltrace);
+
+            if (cooltrace.contains('data/menu/'))trace(cooltrace);
 
             // rip caching code
         }

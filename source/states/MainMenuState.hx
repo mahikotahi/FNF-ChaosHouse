@@ -1,5 +1,6 @@
 package states;
 
+import objects.MenuApplication;
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -10,6 +11,16 @@ import backend.Song;
 import backend.Highscore;
 import objects.CoolMouse;
 
+import openfl.Assets;
+
+typedef MenuAppFile =
+{
+	var filename:String;
+	var xmlanimation:String;
+	var antialiasing:String;
+	var index:String;
+}
+
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
@@ -19,6 +30,7 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
+	var desktopO:MenuApplication;
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
@@ -140,9 +152,21 @@ class MainMenuState extends MusicBeatState
 
 		initVirusPIC();
 
+		readMenuAppFile();
+
 		super.create();
 
 		// FlxG.camera.follow(camFollow, null, 9);
+	}
+
+	public function readMenuAppFile(filename:String = 'menu/desktop')
+	{
+		var file:String = Assets.getText(Paths.txt('${filename}'));
+		var content:Array<String> = file.split('\n');
+		
+		//trace(file);
+
+		return(content);
 	}
 
 	var selectedSomethin:Bool = false;
@@ -183,7 +207,8 @@ class MainMenuState extends MusicBeatState
 			}
 			else if (mouse.overlaps(desktop))
 			{
-				currentSelection = 'desktop';
+				 currentSelection = 'desktop';
+				//currentSelection = desktop.selection;
 			}
 			else if (mouse.overlaps(tubeyou))
 			{
@@ -251,7 +276,7 @@ class MainMenuState extends MusicBeatState
 				case 'microcraft':
 					division = 2;
 					craft.setPosition(realMouse.x - (craft.width / division), realMouse.y - (craft.height / division));
-				
+
 				case 'mods':
 					mods.setPosition(realMouse.x - (mods.width / division), realMouse.y - (mods.height / division));
 			}
@@ -344,17 +369,16 @@ class MainMenuState extends MusicBeatState
 
 					MusicBeatState.switchState(new AchievementDesk());
 
+				case 'mods':
+					trace('mods');
 
-					case 'mods':
-						trace('mods');
-	
-						#if DISCORD_ALLOWED
-						// Updating Discord Rich Presence
-						DiscordClient.changePresence("Vim", null);
-						#end
-	
-						MusicBeatState.switchState(new ModsMenuState());
-	
+					#if DISCORD_ALLOWED
+					// Updating Discord Rich Presence
+					DiscordClient.changePresence("Vim", null);
+					#end
+
+					MusicBeatState.switchState(new ModsMenuState());
+
 				default:
 					trace(currentSelection);
 					WindowAnimate = false;
@@ -430,11 +454,18 @@ class MainMenuState extends MusicBeatState
 		notepad.animation.play('nopa');
 		add(notepad);
 
+
+		var value:Array<String> = readMenuAppFile();
 		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
+		//desktop = new MenuApplication(terminal.x + terminal.width + 48, 60);
 		desktop.antialiasing = ClientPrefs.data.antialiasing;
 		desktop.frames = Paths.getSparrowAtlas('mainmenu/MenuShit');
 		desktop.animation.addByPrefix('desktop', "Animate", 24);
 		desktop.animation.play('desktop');
+		//desktop.init('desktop');
+		//trace(value[0]);
+		//desktop.setValues(value[0], value[1], value[2], value[3]);
+
 		add(desktop);
 
 		tubeyou = new FlxSprite(desktop.x + desktop.width + 48, 80);
@@ -463,7 +494,7 @@ class MainMenuState extends MusicBeatState
 		mods.frames = Paths.getSparrowAtlas('mainmenu/Modser');
 		mods.animation.addByPrefix('modsa', "Mods0", 24);
 		mods.animation.play('modsa');
-		mods.scale.set(0.5,0.5);
+		mods.scale.set(0.5, 0.5);
 		#if MODS_ALLOWED add(mods); #end
 
 		craft = new FlxSprite(mods.x + mods.width - 80, -10);
