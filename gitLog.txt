@@ -31,6 +31,4 @@
 - Split Logs and Version
 - Added Checks for mod github version
 - Added Options Check to remove the Git Commit Check
-- Added song "One Block"
-- Added Desktop Application Minecraft
 - Added Ability to go to the Master Editor
