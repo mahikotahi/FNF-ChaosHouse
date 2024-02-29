@@ -32,3 +32,4 @@
 - Added Checks for mod github version
 - Added Options Check to remove the Git Commit Check
 - Added Ability to go to the Master Editor
+- Enabled Haxe Flixels Core Recording System
