@@ -456,7 +456,7 @@ class MainMenuState extends MusicBeatState
 
 
 		var value:Array<String> = readMenuAppFile();
-		
+
 		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
 		//desktop = new MenuApplication(terminal.x + terminal.width + 48, 60);
 		desktop.antialiasing = ClientPrefs.data.antialiasing;
@@ -496,7 +496,9 @@ class MainMenuState extends MusicBeatState
 		mods.animation.addByPrefix('modsa', "Mods0", 24);
 		mods.animation.play('modsa');
 		mods.scale.set(0.5, 0.5);
-		#if MODS_ALLOWED add(mods); #end
+		#if MODS_ALLOWED 
+		//add(mods); 
+		#end
 
 		craft = new FlxSprite(mods.x + mods.width - 80, -10);
 		craft.antialiasing = ClientPrefs.data.antialiasing;
