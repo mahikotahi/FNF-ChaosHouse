@@ -35,9 +35,6 @@ import objects.HealthIcon;
 import objects.AttachedSprite;
 import objects.Character;
 import substates.Prompt;
-import haxe.ui.components.Button;
-import haxe.ui.containers.VBox;
-import haxe.ui.core.Screen;
 #if sys
 import flash.media.Sound;
 #end
