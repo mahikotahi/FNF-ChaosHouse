@@ -109,10 +109,6 @@
 	<!-- Enables a terminal log prompt on debug builds -->
 	<haxelib name="hxcpp-debug-server" if="debug"/>
 	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug" />
-
-	<!-- Chart Editor-->
-	<haxelib name="haxeui-core" />
-	<haxelib name="haxeui-openfl" />
 	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
