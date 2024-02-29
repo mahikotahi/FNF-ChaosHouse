@@ -456,6 +456,7 @@ class MainMenuState extends MusicBeatState
 
 
 		var value:Array<String> = readMenuAppFile();
+		
 		desktop = new FlxSprite(terminal.x + terminal.width + 48, 60);
 		//desktop = new MenuApplication(terminal.x + terminal.width + 48, 60);
 		desktop.antialiasing = ClientPrefs.data.antialiasing;
@@ -507,7 +508,7 @@ class MainMenuState extends MusicBeatState
 		craft.animation.addByPrefix('crafty', 'Craftist', 24);
 		craft.animation.play('crafty');
 		craft.scale.set(0.5, 0.5);
-		add(craft);
+		//add(craft);
 
 		tutor = new FlxSprite(12, FlxG.height - 160).loadGraphic(Paths.image('coolmic'));
 		tutor.scale.set(0.4, 0.4);
