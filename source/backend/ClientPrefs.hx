@@ -8,6 +8,16 @@ import states.TitleState;
 
 // Add a variable here and it will get automatically saved
 @:structInit class SaveVariables {
+	
+	public var editorGradColor:String = null;
+	public var defaultColor:String = null;
+	public var editorGradVisible:Bool = false;
+	public var editorGridVisible:Bool = true;
+	public var chartBookMarkList:Array<String> = ["Default", "ChaosHouse"];
+	public var chartBookMarks:Map<String, Array<Dynamic>> = [ //i dont think this needs to be dynamic but sure ig
+		"Default" => [false, 0xFF000000, false],
+		"ChaosHouse" => [false, 0xFF000000, true],
+	];
 
 	public var cursorColor:String = 'white';
 	public var desktopbg:String = 'hill';

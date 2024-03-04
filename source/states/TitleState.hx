@@ -658,7 +658,6 @@ class TitleState extends MusicBeatState
 	var increaseVolume:Bool = false;
 	function skipIntro():Void
 	{
-		MusicBeatState.switchState(new MainMenuState());
 		if (!skippedIntro)
 		{
 			if (playJingle) //Ignore deez
@@ -737,5 +736,17 @@ class TitleState extends MusicBeatState
 
 			skippedIntro = true;
 		}
+
+		FlxTween.tween(logoBl, {y: -100}, 1.4, {ease: FlxEase.expoInOut});
+
+		logoBl.angle = -4;
+
+			new FlxTimer().start(0.01, function(tmr:FlxTimer)
+			{
+				if (logoBl.angle == -4)
+					FlxTween.angle(logoBl, logoBl.angle, 4, 4, {ease: FlxEase.quartInOut});
+				if (logoBl.angle == 4)
+					FlxTween.angle(logoBl, logoBl.angle, -4, 4, {ease: FlxEase.quartInOut});
+			}, 0);
 	}
 }

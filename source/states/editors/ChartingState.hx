@@ -1,5 +1,6 @@
 package states.editors;
 
+import openfl.net.FileFilter;
 import objects.CoolMouse;
 import flixel.addons.display.FlxBackdrop;
 import flash.geom.Rectangle;
@@ -214,7 +215,11 @@ class ChartingState extends MusicBeatState
 	var gamepadColor:FlxColor = 0xfffd7194;
 	var keyboardColor:FlxColor = 0xff71a876;
 
+	var scrollgridcolor:Dynamic = 0x33FFFFFF;
+
 	var mouse:CoolMouse;
+	var gradient:FlxSprite;
+	var scrollgrid:FlxBackdrop;
 
 	override function create()
 	{
@@ -228,11 +233,19 @@ class ChartingState extends MusicBeatState
 		bg.screenCenter();
 		add(bg);
 
-		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0x33FFFFFF, 0x0));
-		grid.velocity.set(40, 40);
-		grid.alpha = 0;
-		FlxTween.tween(grid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
-		add(grid);
+		gradient = new FlxSprite(0, 0).loadGraphic(Paths.image('chartEditor/gradientSprite'));
+		// gradient.setPosition(0, ((FlxG.height * 4) * -1));
+		gradient.scrollFactor.set(0, 0);
+		gradient.updateHitbox();
+		gradient.visible = ClientPrefs.data.editorGradVisible;
+		// gradient.alpha = 1;
+		add(gradient);
+
+		scrollgrid = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, scrollgridcolor, 0x0));
+		scrollgrid.velocity.set(40, 40);
+		scrollgrid.alpha = 0;
+		FlxTween.tween(scrollgrid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
+		add(scrollgrid);
 
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
@@ -345,6 +358,7 @@ class ChartingState extends MusicBeatState
 		add(dummyArrow);
 
 		var tabs = [
+			{name: "Visual", label: 'Visual'},
 			{name: "Song", label: 'Song'},
 			{name: "Section", label: 'Section'},
 			{name: "Note", label: 'Note'},
@@ -395,6 +409,7 @@ class ChartingState extends MusicBeatState
 		addDataUI();
 		updateHeads();
 		updateWaveform();
+		addVisualUI();
 		// UI_box.selected_tab = 4;
 
 		add(curRenderedSustains);
@@ -436,6 +451,99 @@ class ChartingState extends MusicBeatState
 	#if FLX_PITCH
 	var sliderRate:FlxUISlider;
 	#end
+	
+	
+	var gradientcolor:FlxUIInputText;
+	var check_grad_vis:FlxUICheckBox = null;
+	var gradIncrease:FlxUINumericStepper;
+	var colorDisplay:FlxSprite = new FlxSprite();
+
+	// var storedColor:String;
+
+	function addVisualUI():Void
+	{
+		var tab_group_vis = new FlxUI(null, UI_box);
+		tab_group_vis.name = "Visual";
+
+		gradientcolor = new FlxUIInputText(10, 30, 150, '${ClientPrefs.data.editorGradColor}', 8);
+
+		gradIncrease = new FlxUINumericStepper(gradientcolor.x, gradientcolor.y + gradientcolor.height + 16, 0, -1, 1);
+		gradIncrease.name = 'gradient_increase';
+		blockPressWhileTypingOnStepper.push(gradIncrease);
+
+		colorDisplay.setPosition(gradientcolor.x + gradientcolor.width + 10, gradientcolor.y);
+		colorDisplay.loadGraphic(Paths.image('chartEditor/colorDisplay'));
+		// colorDisplay.makeGraphic(150,150,0xFFFFFF);
+		colorDisplay.color = FlxColor.fromString(ClientPrefs.data.editorGradColor);
+		colorDisplay.scale.set(0.6, 0.6);
+
+		check_grad_vis = new FlxUICheckBox(10, gradientcolor.y + 15, null, null, "Gradient Visible?", 100);
+		check_grad_vis.checked = gradient.visible;
+
+		check_grad_vis.callback = function()
+		{
+			gradient.visible = check_grad_vis.checked;
+		}
+
+		// trace(ClientPrefs.data.chartBookMarkList);
+		// trace(ClientPrefs.data.chartBookMarks);
+
+		var defaultColor = new FlxButton(check_grad_vis.x + 2, check_grad_vis.y + check_grad_vis.height + 48, "Set Default", function()
+		{
+			ClientPrefs.data.defaultColor = gradientcolor.text;
+			trace(ClientPrefs.data.defaultColor);
+		});
+		//defaultColor.scale.set(1.4,1.8);
+		//defaultColor.label.size = 12;
+		//defaultColor.label.y -= 500;
+
+		var resetDefault = new FlxButton(defaultColor.x, defaultColor.y + defaultColor.height + 16, "Reset Default", function()
+		{
+			ClientPrefs.data.defaultColor = null;
+			trace(ClientPrefs.data.defaultColor);
+		});
+	    //resetDefault.scale.set(1.4,1.8);
+		//resetDefault.label.size = 12;
+		//resetDefault.label.y += 500;
+
+		var loadVisuals = new FlxButton(defaultColor.x, defaultColor.y + defaultColor.height + 58, "Load Visuals", function()
+			{
+				loadVisualFile();
+			});
+
+			var saveVisuals = new FlxButton(loadVisuals.x, loadVisuals.y + loadVisuals.height + 16, "Save Visuals", function()
+				{
+					saveVisuals();
+				});
+
+		// tab_group_vis.add(/*obj*/);
+		tab_group_vis.add(new FlxText(gradientcolor.x, gradientcolor.y - 25, 0, 'Gradient Shit:', 12));
+		tab_group_vis.add(gradientcolor);
+		tab_group_vis.add(colorDisplay);
+		tab_group_vis.add(check_grad_vis);
+		tab_group_vis.add(new FlxText(defaultColor.x, defaultColor.y - 16, 0, 'Default Color Shit:', 12));
+		tab_group_vis.add(defaultColor);
+		tab_group_vis.add(resetDefault);
+		tab_group_vis.add(new FlxText(loadVisuals.x, loadVisuals.y - 16, 0, 'JSON File stuff:', 12));
+		tab_group_vis.add(loadVisuals);
+		tab_group_vis.add(saveVisuals);
+
+		/* Doesn't Work how I want too: TRY and fix it??
+			tab_group_vis.add(prsTxt);
+			tab_group_vis.add(prsNm);
+			tab_group_vis.add(newPrsName);
+			tab_group_vis.add(lPrs);
+			tab_group_vis.add(prsList);
+			tab_group_vis.add(newPrsButton);
+			tab_group_vis.add(clearPresets);
+		 */
+
+		UI_box.addGroup(tab_group_vis);
+
+		initPsychCamera().follow(camPos, LOCKON, 999);
+	}
+
+	public var storedGradColor:String;
 
 	function addSongUI():Void
 	{
@@ -1836,8 +1944,22 @@ class ChartingState extends MusicBeatState
 	var lastConductorPos:Float;
 	var colorSine:Float = 0;
 
+	// update loop
+
 	override function update(elapsed:Float)
 	{
+		gradient.visible = check_grad_vis.checked;
+
+		if (gradientcolor.text.length > 5)
+		{
+			storedGradColor = Std.string(gradient.color);
+			gradient.color = FlxColor.fromString('0x' + gradientcolor.text);
+			colorDisplay.color = gradient.color;
+		}
+
+		ClientPrefs.data.editorGradVisible = gradient.visible;
+		ClientPrefs.data.editorGradColor = Std.string(gradient.color);
+
 		curStep = recalculateSteps();
 
 		if (FlxG.sound.music.time < 0)
@@ -3629,6 +3751,153 @@ class ChartingState extends MusicBeatState
 			val = _song.notes[section].sectionBeats;
 		return val != null ? val : 4;
 	}
+
+	function onLoadComplete(_):Void
+		{
+			_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+	
+			#if sys
+			var fullPath:String = null;
+			@:privateAccess
+			if(_file.__path != null) fullPath = _file.__path;
+	
+			var error:Bool = false;
+			var e:String = '';
+	
+			if(fullPath != null) {
+				var rawJson = File.getContent(fullPath);
+				if(rawJson != null) {
+					var loadedVisual:VisualJson = cast Json.parse(rawJson);
+					trace(loadedVisual);
+	
+					if(loadedVisual.gradColor != null && loadedVisual.gradColor.length > 0) //Make sure it's really a visual file
+					{
+						//trace(loadedVisual.gradColor);
+						//trace(loadedVisual.gradVis);
+	
+						gradientcolor.text = loadedVisual.gradColor;
+	
+						if (gradientcolor.text.length < 6)
+						{
+							gradientcolor.text = '000000';
+							e = 'Not a full Color';
+							error = true;
+						}
+	
+						//colorDisplay.color = FlxColor.fromString(loadedVisual.gradColor);
+						try{check_grad_vis.checked = loadedVisual.gradVis;}catch(f:Dynamic){e = 'Not a Boolean Value';}
+					}
+				}
+			}
+			_file = null;
+			#else
+			trace("File couldn't be loaded! You aren't on Desktop, are you?");
+			#end
+	
+			if (error) {
+				
+				trace('ERROR! $e');
+	
+				var errorStr:String = e.toString();
+	
+				if (missingText == null)
+				{
+					missingText = new FlxText(50, 0, FlxG.width - 100, '', 24);
+					missingText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+					missingText.scrollFactor.set();
+					add(missingText);
+				}
+				else
+					missingTextTimer.cancel();
+	
+				missingText.text = '[!] ERROR: $e! [!]';
+				missingText.screenCenter(Y);
+	
+				missingTextTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+	
+					FlxTween.tween(missingText, {alpha: 0}, 2, {
+						onComplete: function(twn:FlxTween)
+						{
+							remove(missingText);
+							missingText.destroy();
+						}
+					});
+	
+					//remove(missingText);
+					//missingText.destroy();
+				});
+	
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+			}
+		}
+	
+		function loadVisualFile() {
+			var jsonFilter:FileFilter = new FileFilter('JSON', 'json');
+			_file = new FileReference();
+			_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
+			_file.addEventListener(Event.CANCEL, onLoadCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file.browse([jsonFilter]);
+		}
+	
+		/**
+			* Called when the save file dialog is cancelled.
+			*/
+		function onLoadCancel(_):Void
+		{
+			_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file = null;
+			trace("Cancelled file loading.");
+		}
+	
+		/**
+			* Called if there is an error while saving the gameplay recording.
+			*/
+		function onLoadError(_):Void
+		{
+			_file.removeEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onLoadComplete);
+			_file.removeEventListener(Event.CANCEL, onLoadCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+			_file = null;
+			trace("Problem loading file");
+		}
+
+		private function saveVisuals()
+			{
+				
+				var myjsonfile = {
+					"gradColor": gradientcolor.text,
+					"gradVis": gradient.visible,
+					"gridColor":scrollgrid.color,
+					"gridVis":scrollgrid.visible
+				};
+		
+				var data:String = haxe.Json.stringify(myjsonfile, "\t");
+		
+				if ((data != null) && (data.length > 0))
+				{
+					_file = new FileReference();
+					_file.addEventListener(#if desktop Event.SELECT #else Event.COMPLETE #end, onSaveComplete);
+					_file.addEventListener(Event.CANCEL, onSaveCancel);
+					_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+					_file.save(data.trim(), "Visuals.json");
+				}
+			}
+}
+
+
+typedef VisualJson =
+{
+	var gradColor:String;
+	var gradVis:Bool;
+
+	var gridColor:String;
+	var gridVis:Bool;
 }
 
 class AttachedFlxText extends FlxText
