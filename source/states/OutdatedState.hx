@@ -48,7 +48,7 @@ class OutdatedState extends MusicBeatState
 		http.request();
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\n my version is ${updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
+			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\n my version is ${TitleState.updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
 			32);
 		warnText.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, CENTER);
 		warnText.screenCenter();
