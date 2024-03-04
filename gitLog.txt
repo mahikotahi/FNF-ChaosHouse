@@ -1,3 +1,4 @@
+[UPDATE IN DEVELOPMENT]
 - Added JTSF icon
 - Added Chart Editor Visual Tab
 - Added Chart Editor Gradient
@@ -5,3 +6,4 @@
 - Added the Kade Engine logo spin thing
 - Added the Title screen back
 - Fixed Outdated State
+- Fixed some shit with the Outdated State

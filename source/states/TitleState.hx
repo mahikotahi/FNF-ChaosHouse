@@ -192,9 +192,6 @@ class TitleState extends MusicBeatState
 			//FlxG.save.data.censorSysName = false;
 			MusicBeatState.switchState(new SystemName());
 		}
-		else if (viewChangelog){
-			MusicBeatState.switchState(new OutdatedState());
-		}
 		else if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
@@ -352,7 +349,9 @@ class TitleState extends MusicBeatState
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
-		//add(titleText);
+		 add(gfDance);
+		add(titleText);
+		add(logoBl);
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.antialiasing = ClientPrefs.data.antialiasing;
@@ -470,7 +469,7 @@ class TitleState extends MusicBeatState
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
 			
-			/*if(pressedEnter)
+			if(pressedEnter)
 			{
 				titleText.color = FlxColor.WHITE;
 				titleText.alpha = 1;
@@ -493,7 +492,7 @@ class TitleState extends MusicBeatState
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
-			}*/
+			}
 			#if TITLE_SCREEN_EASTER_EGG
 			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE)
 			{
@@ -660,6 +659,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
+			//FlxG.camera.flash(FlxColor.WHITE, 2);
 			if (playJingle) //Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;

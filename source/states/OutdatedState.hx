@@ -47,8 +47,8 @@ class OutdatedState extends MusicBeatState
 
 		http.request();
 
-		warnText = new FlxText(0, 0, FlxG.width,
-			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\n my version is ${TitleState.updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
+		warnText = new FlxText(0, 0, 0,
+			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\the update  version is ${TitleState.updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
 			32);
 		warnText.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, CENTER);
 		warnText.screenCenter();
@@ -71,7 +71,7 @@ class OutdatedState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				FlxTween.tween(warnText, {alpha: 0}, 1, {
 					onComplete: function (twn:FlxTween) {
-						MusicBeatState.switchState(new MainMenuState());
+						MusicBeatState.switchState(new TitleState());
 					}
 				});
 			}
