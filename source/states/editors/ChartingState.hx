@@ -701,7 +701,7 @@ class ChartingState extends MusicBeatState
 	
 			if (!blockInput)
 			{
-				if (FlxG.keys.justPressed.ESCAPE)
+				if (FlxG.keys.justPressed.ESCAPE && FlxG.keys.pressed.SHIFT)
 				{
 					if (FlxG.sound.music != null)
 						FlxG.sound.music.stop();
@@ -751,7 +751,7 @@ class ChartingState extends MusicBeatState
 					}
 				}
 	
-				if (FlxG.keys.justPressed.BACKSPACE)
+				if (FlxG.keys.justPressed.ESCAPE)
 				{
 					// Protect against lost data when quickly leaving the chart editor.
 					autosaveSong();
