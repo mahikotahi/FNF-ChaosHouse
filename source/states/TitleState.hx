@@ -716,7 +716,6 @@ class TitleState extends MusicBeatState
 			{
 				remove(ngSpr);
 				remove(credGroup);
-				//FlxG.camera.flash(FlxColor.WHITE, 4);
 
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
 				if (easteregg == null) easteregg = '';
@@ -736,6 +735,9 @@ class TitleState extends MusicBeatState
 
 			skippedIntro = true;
 		}
+
+		
+		FlxG.camera.flash(FlxColor.WHITE, 4);
 
 		FlxTween.tween(logoBl, {y: -100}, 1.4, {ease: FlxEase.expoInOut});
 

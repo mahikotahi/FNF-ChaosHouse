@@ -1,4 +1,4 @@
-[UPDATE IN DEVELOPMENT]
+[UPDATE V3 IN DEVELOPMENT]
 - Added JTSF icon
 - Added Chart Editor Visual Tab
 - Added Chart Editor Gradient
@@ -7,3 +7,5 @@
 - Added the Title screen back
 - Fixed Outdated State
 - Fixed some shit with the Outdated State
+- Pressing SHIFT + ESCAPE gives the gameplay preview in the chart Editor
+- Pressing ESCAPE lets you leave the chart Editor
