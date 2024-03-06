@@ -39,7 +39,7 @@ class ImageLoadingState extends MusicBeatState
             var cooltrace:String = 'File: '+filePaths[i] +'/'+filesToRead[i];
 
 
-            if (cooltrace.contains('data/menu/'))trace(cooltrace);
+            //if (cooltrace.contains('data/menu/'))trace(cooltrace);
 
             // rip caching code
         }
@@ -47,12 +47,9 @@ class ImageLoadingState extends MusicBeatState
 
     public static function checkFileEnding(ending:String = '.png', file:String = 'coolswag.png', returnType:String = 'image')
     {
+        if (Std.string(file).endsWith(ending)) {trace('work $returnType!');return returnType;}
 
-        //trace(Std.string(file));
-        
-        if (Std.string(file).endsWith(ending)) return returnType;
-
-        return null;
+        return 'UFT';
     }
 
     public static function read(epicfolder:String = 'assets')
