@@ -1,5 +1,6 @@
 package states.editors;
 
+import psychlua.FunkinLua;
 import openfl.net.FileFilter;
 import flixel.addons.display.FlxBackdrop;
 import flash.geom.Rectangle;
@@ -43,12 +44,26 @@ class NewChartingState extends MusicBeatState
 {
 	// background shit
 	var backgroundColor:FlxColor = 0xff71a876;
+	
+	var scrollgridcolor:Dynamic = 0x33FFFFFF;
+	var gradient:FlxSprite;
+	var scrollgrid:FlxBackdrop;
 
 	// file shit
 	var _file:FileReference;
 
 	// ui shit
+	var zoom:Int = 1;
+	var sectionBeats:Int = 4;
+
 	public static var GRID_SIZE:Int = 40;
+
+	var gridLayer:FlxTypedGroup<FlxSprite>;
+
+	var gridBG:FlxSprite;
+	var strumLine:FlxSprite;
+
+	var columns:Int = 9;
 
 	var UI_box:FlxUITabMenu;
 
@@ -70,7 +85,22 @@ class NewChartingState extends MusicBeatState
 
 		var background:FlxSprite = new FlxSprite(0, 0, Paths.image('menuDesat'));
 		background.screenCenter();
+		background.color = backgroundColor;
 		add(background);
+
+		gradient = new FlxSprite(0, 0).loadGraphic(Paths.image('chartEditor/gradientSprite'));
+		// gradient.setPosition(0, ((FlxG.height * 4) * -1));
+		gradient.scrollFactor.set(0, 0);
+		gradient.updateHitbox();
+		gradient.visible = ClientPrefs.data.editorGradVisible;
+		// gradient.alpha = 1;
+		add(gradient);
+
+		scrollgrid = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, scrollgridcolor, 0x0));
+		scrollgrid.velocity.set(40, 40);
+		scrollgrid.alpha = 0;
+		FlxTween.tween(scrollgrid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
+		add(scrollgrid);
 
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
@@ -117,6 +147,29 @@ class NewChartingState extends MusicBeatState
 		songUI();
 		visualUI();
 
+		gridBG = FlxGridOverlay.create(1, 1, columns, (sectionBeats * 4 * zoom)); /*columns, Std.int(getSectionBeats() * 4 * zoomList[curZoom])*/
+		gridBG.antialiasing = false;
+		gridBG.scale.set(GRID_SIZE, GRID_SIZE);
+		gridBG.updateHitbox();
+		gridBG.setPosition(UI_box.x - (gridBG.width * 1.5) - 8, 0);
+		gridBG.screenCenter(Y);
+		add(gridBG);
+
+		gridLayer = new FlxTypedGroup<FlxSprite>();
+		add(gridLayer);
+
+		strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(GRID_SIZE * 9), 4, FlxColor.RED);
+		strumLine.setPosition(gridBG.x, gridBG.y);
+		add(strumLine);
+
+		for (i in 0...Std.int(sectionBeats))
+		{
+			var beatsep:FlxSprite = new FlxSprite(gridBG.x, (GRID_SIZE * (4 * zoom)) * i).makeGraphic(1, 1, 0xFF8D0000);
+			beatsep.scale.x = gridBG.width;
+			beatsep.updateHitbox();
+			gridLayer.add(beatsep);
+		}
+
 		super.create();
 	}
 
@@ -141,11 +194,20 @@ class NewChartingState extends MusicBeatState
         UI_box.addGroup(tab_grp);
 	}
 
+	var stepperBeats:FlxUINumericStepper;
+
 	public function sectionUI()
 	{
 		var tab_grp = new FlxUI(null, UI_box);
 		tab_grp.name = "Section";
+
+		stepperBeats = new FlxUINumericStepper(10, 30, 1, 4, 1, 7, 2);
+		stepperBeats.value = sectionBeats;
+		stepperBeats.name = 'section_beats';
         
+		tab_grp.add(new FlxText(stepperBeats.x, stepperBeats.y - 15, 0, 'Section Beats:'));
+		tab_grp.add(stepperBeats);
+
         UI_box.addGroup(tab_grp);
 	}
 
@@ -156,9 +218,9 @@ class NewChartingState extends MusicBeatState
 		var tab_grp = new FlxUI(null, UI_box);
 		tab_grp.name = "Song";
 
-		UI_songTitle = new FlxUIInputText(10, 45, 100, _song.song, 8);
+		UI_songTitle = new FlxUIInputText(10, 30, 100, _song.song, 8);
         
-        var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 70, 1, 1, 1, 400, 3);
+        var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(UI_songTitle.x + UI_songTitle.width + 4, UI_songTitle.y, 1, 1, 1, 400, 3);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
@@ -185,6 +247,8 @@ class NewChartingState extends MusicBeatState
 
 		tab_grp.add(new FlxText(UI_songTitle.x, UI_songTitle.y - 15, 0, 'Song Name:'));
         tab_grp.add(UI_songTitle);
+		tab_grp.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'BPM:'));
+        tab_grp.add(stepperBPM);
 		tab_grp.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
         tab_grp.add(player1DropDown);
 		tab_grp.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
