@@ -41,15 +41,211 @@ import flash.media.Sound;
 
 class NewChartingState extends MusicBeatState
 {
+	// background shit
+	var backgroundColor:FlxColor = 0xff71a876;
 
-    override public function create()
-    {
-        super.create();
-    }
+	// file shit
+	var _file:FileReference;
 
-    override public function update(elapsed:Float)
+	// ui shit
+	public static var GRID_SIZE:Int = 40;
+
+	var UI_box:FlxUITabMenu;
+
+    var characters:Array<String> = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getSharedPath());
+
+	var leftIcon:HealthIcon;
+	var rightIcon:HealthIcon;
+
+	var playbackSpeed:Float = 1;
+
+	// song shit
+	var _song:SwagSong;
+
+	override public function create()
+	{
+		trace('You are in the Chart Editor!! Woah!');
+
+		FlxG.mouse.visible = true;
+
+		var background:FlxSprite = new FlxSprite(0, 0, Paths.image('menuDesat'));
+		background.screenCenter();
+		add(background);
+
+		if (PlayState.SONG != null)
+			_song = PlayState.SONG;
+		if (_song == null)
+		{
+			Difficulty.resetList();
+			_song = {
+				song: 'Test',
+				notes: [],
+				events: [],
+				bpm: 150.0,
+				needsVoices: true,
+				player1: 'bf',
+				player2: 'dad',
+				gfVersion: 'gf',
+				speed: 1,
+				stage: 'stage'
+			};
+			// addSection();
+			PlayState.SONG = _song;
+		}
+
+		var tabs = [
+			{name: "Visual", label: 'Visual'},
+			{name: "Song", label: 'Song'},
+			{name: "Section", label: 'Section'},
+			{name: "Note", label: 'Note'},
+		];
+
+		UI_box = new FlxUITabMenu(null, tabs, true);
+
+		UI_box.resize(600, 350);
+		UI_box.x = FlxG.width - UI_box.width - 16;
+		UI_box.y = 25;
+		UI_box.scrollFactor.set();
+
+		add(UI_box);
+
+        characterListShit();
+
+		dataUI();
+		noteUI();
+		sectionUI();
+		songUI();
+		visualUI();
+
+		super.create();
+	}
+
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+	}
+
+	public function dataUI()
+	{
+		var tab_grp = new FlxUI(null, UI_box);
+		tab_grp.name = "Data";
+
+        UI_box.addGroup(tab_grp);
+	}
+
+	public function noteUI()
+	{
+		var tab_grp = new FlxUI(null, UI_box);
+		tab_grp.name = "Note";
+
+        UI_box.addGroup(tab_grp);
+	}
+
+	public function sectionUI()
+	{
+		var tab_grp = new FlxUI(null, UI_box);
+		tab_grp.name = "Section";
+        
+        UI_box.addGroup(tab_grp);
+	}
+
+	var UI_songTitle:FlxUIInputText;
+
+	public function songUI()
+	{
+		var tab_grp = new FlxUI(null, UI_box);
+		tab_grp.name = "Song";
+
+		UI_songTitle = new FlxUIInputText(10, 45, 100, _song.song, 8);
+        
+        var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 70, 1, 1, 1, 400, 3);
+		stepperBPM.value = Conductor.bpm;
+		stepperBPM.name = 'song_bpm';
+
+		var player1DropDown = new FlxUIDropDownMenu(10, UI_songTitle.y + 45, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true),
+			function(character:String)
+			{
+				_song.player1 = characters[Std.parseInt(character)];
+			});
+		player1DropDown.selectedLabel = _song.player1;
+
+		var gfVersionDropDown = new FlxUIDropDownMenu(player1DropDown.x + player1DropDown.width + 10, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true),
+			function(character:String)
+			{
+				_song.gfVersion = characters[Std.parseInt(character)];
+			});
+		gfVersionDropDown.selectedLabel = _song.gfVersion;
+
+		var player2DropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width + 10, gfVersionDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true),
+			function(character:String)
+			{
+				_song.player2 = characters[Std.parseInt(character)];
+			});
+		player2DropDown.selectedLabel = _song.player2;
+
+		tab_grp.add(new FlxText(UI_songTitle.x, UI_songTitle.y - 15, 0, 'Song Name:'));
+        tab_grp.add(UI_songTitle);
+		tab_grp.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
+        tab_grp.add(player1DropDown);
+		tab_grp.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
+        tab_grp.add(gfVersionDropDown);
+		tab_grp.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
+        tab_grp.add(player2DropDown);
+        
+        UI_box.addGroup(tab_grp);
+	}
+
+	public function visualUI()
+	{
+		var tab_grp = new FlxUI(null, UI_box);
+		tab_grp.name = "Visual";
+        
+        UI_box.addGroup(tab_grp);
+	}
+
+    public function characterListShit()
     {
-        super.update(elapsed);
+        #if MODS_ALLOWED
+		var directories:Array<String> = [
+			Paths.mods('characters/'),
+			Paths.mods(Mods.currentModDirectory + '/characters/'),
+			Paths.getSharedPath('characters/')
+		];
+		for (mod in Mods.getGlobalMods())
+			directories.push(Paths.mods(mod + '/characters/'));
+		#else
+		var directories:Array<String> = [Paths.getSharedPath('characters/')];
+		#end
+
+		var tempArray:Array<String> = [];
+		for (character in characters)
+		{
+			if (character.trim().length > 0)
+				tempArray.push(character);
+		}
+
+		#if MODS_ALLOWED
+		for (i in 0...directories.length)
+		{
+			var directory:String = directories[i];
+			if (FileSystem.exists(directory))
+			{
+				for (file in FileSystem.readDirectory(directory))
+				{
+					var path = haxe.io.Path.join([directory, file]);
+					if (!FileSystem.isDirectory(path) && file.endsWith('.json'))
+					{
+						var charToCheck:String = file.substr(0, file.length - 5);
+						if (charToCheck.trim().length > 0 && !charToCheck.endsWith('-dead') && !tempArray.contains(charToCheck))
+						{
+							tempArray.push(charToCheck);
+							characters.push(charToCheck);
+						}
+					}
+				}
+			}
+		}
+		#end
+		tempArray = [];
     }
-    
 }

@@ -185,11 +185,14 @@ class TitleState extends MusicBeatState
 			http.request();
 		}
 
+		//MusicBeatState.switchState(new states.editors.NewChartingState());
+
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
 		#elseif CHARTING
-		MusicBeatState.switchState(new ChartingState());
+		trace('yanke with no brim!!!!!!!!');
+		MusicBeatState.switchState(new states.editors.NewChartingState());
 		#else
 		if (FlxG.save.data.censorSysName == null) {
 			//FlxG.save.data.censorSysName = false;
@@ -610,7 +613,7 @@ class TitleState extends MusicBeatState
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
-		gfDance.animation.play('dance');
+		try{gfDance.animation.play('dance');}catch(e:Dynamic){trace('No GF?');}
 
 		if(!closedState) {
 			sickBeats++;

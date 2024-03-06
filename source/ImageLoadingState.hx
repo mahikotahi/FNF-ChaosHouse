@@ -47,7 +47,7 @@ class ImageLoadingState extends MusicBeatState
 
     public static function checkFileEnding(ending:String = '.png', file:String = 'coolswag.png', returnType:String = 'image')
     {
-        if (Std.string(file).endsWith(ending)) {trace('work $returnType!');return returnType;}
+        if (Std.string(file).endsWith(ending)) {/*trace('work $returnType!');*/return returnType;}
 
         return 'UFT';
     }
