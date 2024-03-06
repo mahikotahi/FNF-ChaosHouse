@@ -146,6 +146,9 @@ class Paths
 
 	inline public static function getSharedPath(file:String = '')
 	{
+		if (file.contains('.txt'))
+			trace('assets/shared/$file');
+
 		return 'assets/shared/$file';
 	}
 

@@ -44,7 +44,7 @@ class NewChartingState extends MusicBeatState
 {
 	// background shit
 	var backgroundColor:FlxColor = 0xff71a876;
-	
+
 	var scrollgridcolor:Dynamic = 0x33FFFFFF;
 	var gradient:FlxSprite;
 	var scrollgrid:FlxBackdrop;
@@ -54,11 +54,16 @@ class NewChartingState extends MusicBeatState
 
 	// ui shit
 	var zoom:Int = 1;
+
+	var curSec:Int = 0;
 	var sectionBeats:Int = 4;
 
 	public static var GRID_SIZE:Int = 40;
 
+	var sectionLines:FlxTypedGroup<FlxSprite>;
 	var gridLayer:FlxTypedGroup<FlxSprite>;
+
+	var curSelectedNote:Array<Dynamic> = null;
 
 	var gridBG:FlxSprite;
 	var strumLine:FlxSprite;
@@ -67,7 +72,7 @@ class NewChartingState extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-    var characters:Array<String> = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getSharedPath());
+	var characters:Array<String> = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getSharedPath());
 
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
@@ -139,7 +144,7 @@ class NewChartingState extends MusicBeatState
 
 		add(UI_box);
 
-        characterListShit();
+		characterListShit();
 
 		dataUI();
 		noteUI();
@@ -157,24 +162,34 @@ class NewChartingState extends MusicBeatState
 
 		gridLayer = new FlxTypedGroup<FlxSprite>();
 		add(gridLayer);
+		sectionLines = new FlxTypedGroup<FlxSprite>();
+		add(sectionLines);
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(Std.int(GRID_SIZE * 9), 4, FlxColor.RED);
 		strumLine.setPosition(gridBG.x, gridBG.y);
 		add(strumLine);
 
-		for (i in 0...Std.int(sectionBeats))
-		{
-			var beatsep:FlxSprite = new FlxSprite(gridBG.x, (GRID_SIZE * (4 * zoom)) * i).makeGraphic(1, 1, 0xFF8D0000);
-			beatsep.scale.x = gridBG.width;
-			beatsep.updateHitbox();
-			gridLayer.add(beatsep);
-		}
+		updateSectionLines();
 
 		super.create();
 	}
 
 	override public function update(elapsed:Float)
 	{
+		if (sectionBeats != stepperBeats.value)
+		{
+			sectionBeats = Std.int(stepperBeats.value);
+			trace('sus');
+			updateSectionLines();
+		}
+
+		if (controls.BACK)
+		{
+			FlxG.sound.play(Paths.sound('cancelMenu'));
+			FlxG.mouse.visible = false;
+			MusicBeatState.switchState(new MainMenuState());
+		}
+
 		super.update(elapsed);
 	}
 
@@ -183,7 +198,7 @@ class NewChartingState extends MusicBeatState
 		var tab_grp = new FlxUI(null, UI_box);
 		tab_grp.name = "Data";
 
-        UI_box.addGroup(tab_grp);
+		UI_box.addGroup(tab_grp);
 	}
 
 	public function noteUI()
@@ -191,7 +206,7 @@ class NewChartingState extends MusicBeatState
 		var tab_grp = new FlxUI(null, UI_box);
 		tab_grp.name = "Note";
 
-        UI_box.addGroup(tab_grp);
+		UI_box.addGroup(tab_grp);
 	}
 
 	var stepperBeats:FlxUINumericStepper;
@@ -204,11 +219,11 @@ class NewChartingState extends MusicBeatState
 		stepperBeats = new FlxUINumericStepper(10, 30, 1, 4, 1, 7, 2);
 		stepperBeats.value = sectionBeats;
 		stepperBeats.name = 'section_beats';
-        
+
 		tab_grp.add(new FlxText(stepperBeats.x, stepperBeats.y - 15, 0, 'Section Beats:'));
 		tab_grp.add(stepperBeats);
 
-        UI_box.addGroup(tab_grp);
+		UI_box.addGroup(tab_grp);
 	}
 
 	var UI_songTitle:FlxUIInputText;
@@ -219,8 +234,8 @@ class NewChartingState extends MusicBeatState
 		tab_grp.name = "Song";
 
 		UI_songTitle = new FlxUIInputText(10, 30, 100, _song.song, 8);
-        
-        var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(UI_songTitle.x + UI_songTitle.width + 4, UI_songTitle.y, 1, 1, 1, 400, 3);
+
+		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(UI_songTitle.x + UI_songTitle.width + 4, UI_songTitle.y, 1, 1, 1, 400, 3);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
@@ -231,45 +246,45 @@ class NewChartingState extends MusicBeatState
 			});
 		player1DropDown.selectedLabel = _song.player1;
 
-		var gfVersionDropDown = new FlxUIDropDownMenu(player1DropDown.x + player1DropDown.width + 10, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true),
-			function(character:String)
-			{
-				_song.gfVersion = characters[Std.parseInt(character)];
-			});
+		var gfVersionDropDown = new FlxUIDropDownMenu(player1DropDown.x + player1DropDown.width + 10, player1DropDown.y,
+			FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			_song.gfVersion = characters[Std.parseInt(character)];
+		});
 		gfVersionDropDown.selectedLabel = _song.gfVersion;
 
-		var player2DropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width + 10, gfVersionDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true),
-			function(character:String)
-			{
-				_song.player2 = characters[Std.parseInt(character)];
-			});
+		var player2DropDown = new FlxUIDropDownMenu(gfVersionDropDown.x + gfVersionDropDown.width + 10, gfVersionDropDown.y,
+			FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			_song.player2 = characters[Std.parseInt(character)];
+		});
 		player2DropDown.selectedLabel = _song.player2;
 
 		tab_grp.add(new FlxText(UI_songTitle.x, UI_songTitle.y - 15, 0, 'Song Name:'));
-        tab_grp.add(UI_songTitle);
+		tab_grp.add(UI_songTitle);
 		tab_grp.add(new FlxText(stepperBPM.x, stepperBPM.y - 15, 0, 'BPM:'));
-        tab_grp.add(stepperBPM);
+		tab_grp.add(stepperBPM);
 		tab_grp.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
-        tab_grp.add(player1DropDown);
+		tab_grp.add(player1DropDown);
 		tab_grp.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
-        tab_grp.add(gfVersionDropDown);
+		tab_grp.add(gfVersionDropDown);
 		tab_grp.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
-        tab_grp.add(player2DropDown);
-        
-        UI_box.addGroup(tab_grp);
+		tab_grp.add(player2DropDown);
+
+		UI_box.addGroup(tab_grp);
 	}
 
 	public function visualUI()
 	{
 		var tab_grp = new FlxUI(null, UI_box);
 		tab_grp.name = "Visual";
-        
-        UI_box.addGroup(tab_grp);
+
+		UI_box.addGroup(tab_grp);
 	}
 
-    public function characterListShit()
-    {
-        #if MODS_ALLOWED
+	public function characterListShit()
+	{
+		#if MODS_ALLOWED
 		var directories:Array<String> = [
 			Paths.mods('characters/'),
 			Paths.mods(Mods.currentModDirectory + '/characters/'),
@@ -311,5 +326,18 @@ class NewChartingState extends MusicBeatState
 		}
 		#end
 		tempArray = [];
-    }
+	}
+
+	public function updateSectionLines()
+	{
+		sectionLines.clear();
+
+		for (i in 0...5)
+		{
+			var beatsep:FlxSprite = new FlxSprite(gridBG.x, (GRID_SIZE * (4 * zoom)) * i).makeGraphic(1, 1, 0xFF8D0000);
+			beatsep.scale.x = gridBG.width;
+			beatsep.updateHitbox();
+			sectionLines.add(beatsep);
+		}
+	}
 }

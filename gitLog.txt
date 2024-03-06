@@ -16,3 +16,4 @@
 - Added cool intro tweens to gf and the press enter text (why does only the logo get it lmao)
 - Added new GF Title Sprite
 - New Chart Editor
+- Added Password State (thanks HeroEyad!)

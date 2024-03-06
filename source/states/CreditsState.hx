@@ -36,6 +36,9 @@ class CreditsState extends FlxState
 	var djotta:FlxSprite;
 	var djottaTXT:FlxText = new FlxText(0,0,0,"Djotta\n",16);
 
+	var haroeyad:FlxSprite;
+	var haroeyadT:FlxText = new FlxText(0,0,0,"HeroEyad\n",16);
+
 	var desktop:FlxSprite;
 	var terminal:FlxSprite;
 	var notepad:FlxSprite;
@@ -110,6 +113,14 @@ class CreditsState extends FlxState
 		djottaTXT.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(djottaTXT);
 
+		haroeyad = new FlxSprite(0, 0).loadGraphic(Paths.image('coolcreds/haro'));
+		haroeyad.screenCenter();
+		haroeyad.y += 120;
+		add(haroeyad);
+
+		haroeyadT.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(haroeyadT);
+
 		descBox = new AttachedSprite();
 		descBox.makeGraphic(1, 1, FlxColor.BLACK);
 		descBox.xAdd = -10;
@@ -181,6 +192,10 @@ class CreditsState extends FlxState
 		{
 			currentSelection = 'djotta';
 		}
+		else if (mouse.overlaps(haroeyad))
+		{
+			currentSelection = 'HeroEyad';
+		}
 		/*if (prevCurSel != currentSelection)
 				mouseClickAmount = 0;
 
@@ -197,6 +212,8 @@ class CreditsState extends FlxState
 						jtsf.setPosition(mouse.x - (jtsf.width / 2), mouse.y - (jtsf.height / 2));
 						case 'djotta':
 							djotta.setPosition(mouse.x - (djotta.width / 2), mouse.y - (djotta.height / 2));
+							case 'HeroEyad':
+								haroeyad.setPosition(mouse.x - (haroeyad.width / 2), mouse.y - (haroeyad.height / 2));
 			}
 		}
 

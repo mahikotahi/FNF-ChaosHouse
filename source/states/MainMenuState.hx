@@ -104,11 +104,16 @@ class MainMenuState extends MusicBeatState
 		add(desktopIcon);
 
 		var fnfVer:FlxText = new FlxText(0, 0, 0, "Chaos Desktop " + Application.current.meta.get('version'), 12);
-		#if debug
-		fnfVer.text = fnfVer.text += " [BETA]";
-		#end
 		fnfVer.scrollFactor.set();
 		fnfVer.setPosition(desktopIcon.x + desktopIcon.width + 8, FlxG.height - 32);
+
+		if (fnfVer.text.contains('[PROTOTYPE]'))
+		{
+			var amogus:String = Assets.getText(Paths.txt('curTask'));
+
+			fnfVer.text += ' ($amogus)';
+		}
+
 		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
 

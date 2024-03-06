@@ -1,1 +1,1 @@
-v3.0 [PROTOTYPE]
+v3.0
