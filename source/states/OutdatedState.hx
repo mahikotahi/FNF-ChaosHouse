@@ -10,6 +10,10 @@ class OutdatedState extends MusicBeatState
 	var warnText:FlxText;
 	var curVersion:String = Std.string(Application.current.meta.get('version'));
 
+	var debugText:FlxText;
+
+	var coolTXT:FlxText;
+
 
 	override function create()
 	{
@@ -18,11 +22,16 @@ class OutdatedState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		var coolname:Dynamic = (FlxG.save.data.pussyName) ? Main.usrName : 'Stupid!';
+		debugText = new FlxText(10,24, FlxG.width, '', 8);
+		debugText.scrollFactor.set();
+		add(debugText);
+
+		var coolname:Dynamic = (FlxG.save.data.pussyName) ? 'Stupid!' : Main.usrName;
 
 		var changes:Dynamic = '';
 		
 		var http = new haxe.Http("https://raw.githubusercontent.com/mahikotahi/FNF-ChaosHouse/main/gitVersion.txt");
+		var size:Float = 24;
 
 		http.onData = function (data:String)
 		{
@@ -36,6 +45,7 @@ class OutdatedState extends MusicBeatState
 
 			http.onError = function (error) {
 				trace('error: $error');
+				changes = '[NULL]';
 			}
 
 			http.request();
@@ -47,16 +57,30 @@ class OutdatedState extends MusicBeatState
 
 		http.request();
 
-		warnText = new FlxText(0, 0, 0,
-			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\the update  version is ${TitleState.updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
+		warnText = new FlxText(0, 0, FlxG.width,
+			"Hey "+ coolname +',\n\nYou are on  ${curVersion},\nthe update  version is ${TitleState.updateVersion},\nLooks like havent seen some github commits.\nI will List Them:\n\n'+changes+'\n\n(Disable this Menu in Desktop Settings)',
 			32);
 		warnText.setFormat("VCR OSD Mono", 12, FlxColor.WHITE, CENTER);
+		warnText.size = 32;
 		warnText.screenCenter();
 		add(warnText);
+
+		coolTXT = new FlxText(0,0,0, "PRESS Q or E!", 48);
+		coolTXT.screenCenter();
+		coolTXT.color = 0xFF0000;
+		add(coolTXT);
 	}
+
+	var camXchange:Float = 0;
+	var camYchange:Float = 0;
+
+	var debug:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		debugText.visible = debug;
+		debugText.text = 'cam Zoom: ${FlxG.camera.zoom}\ncam X change: $camXchange\ncam Y change: $camYchange\n';
+
 		if(!leftState) {
 			if (controls.ACCEPT) {
 				leftState = true;
@@ -75,6 +99,33 @@ class OutdatedState extends MusicBeatState
 					}
 				});
 			}
+
+			var change:Float = 0.1;
+
+			if (FlxG.keys.pressed.SHIFT)
+			{
+				change = 1;
+			}
+			if (FlxG.keys.justReleased.SEVEN)
+			{
+				debug = !debug;
+			}
+
+			if (FlxG.keys.justReleased.Q)
+			{
+				coolTXT.visible = false;
+				FlxG.camera.zoom += change;
+			}
+
+			if (FlxG.keys.justReleased.E)
+			{
+				coolTXT.visible = false;
+				FlxG.camera.zoom -= change;
+			}
+
+
+			FlxG.camera.x += camXchange;
+			FlxG.camera.y += camYchange;
 		}
 		super.update(elapsed);
 	}

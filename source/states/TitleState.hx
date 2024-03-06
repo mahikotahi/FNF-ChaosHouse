@@ -169,10 +169,13 @@ class TitleState extends MusicBeatState
 				var curVersion:String = Std.string(Application.current.meta.get('version'));
 
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+
 				if(updateVersion != curVersion) {
 					trace('versions arent matching!');
-					if(!curVersion.contains('[dev]')){viewChangelog = true;}
+
+					mustUpdate = true;
 				}
+
 			}
 
 			http.onError = function (error) {
@@ -257,6 +260,11 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
+
+		
+		FlxG.camera.flash(FlxColor.WHITE, 4);
+
+
 		Conductor.bpm = titleJSON.bpm;
 		persistentUpdate = true;
 
@@ -273,7 +281,7 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
+		logoBl = new FlxSprite(titleJSON.titlex, -1500);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.data.antialiasing;
 
@@ -284,7 +292,7 @@ class TitleState extends MusicBeatState
 		// logoBl.color = FlxColor.BLACK;
 
 		if(ClientPrefs.data.shaders) swagShader = new ColorSwap();
-		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
+		gfDance = new FlxSprite(-1500, titleJSON.gfy);
 		gfDance.antialiasing = ClientPrefs.data.antialiasing;
 
 		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;
@@ -312,9 +320,8 @@ class TitleState extends MusicBeatState
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
 			//EDIT THIS ONE IF YOU'RE MAKING A SOURCE CODE MOD!!!!
-				gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-				gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				gfDance.frames = Paths.getSparrowAtlas('TitleGirl');
+				gfDance.animation.addByPrefix('dance', 'GF Dancing Beat', 24, false);
 		}
 
 		//add(gfDance);
@@ -325,7 +332,7 @@ class TitleState extends MusicBeatState
 			logoBl.shader = swagShader.shader;
 		}
 
-		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
+		titleText = new FlxSprite(titleJSON.startx, 1500);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		var animFrames:Array<FlxFrame> = [];
 		@:privateAccess {
@@ -547,7 +554,7 @@ class TitleState extends MusicBeatState
 
 		if (initialized && pressedEnter && !skippedIntro)
 		{
-			FlxG.camera.flash(FlxColor.BLACK, 2);
+			//FlxG.camera.flash(FlxColor.WHITE, 2);
 			skipIntro();
 		}
 
@@ -603,13 +610,7 @@ class TitleState extends MusicBeatState
 		if(logoBl != null)
 			logoBl.animation.play('bump', true);
 
-		if(gfDance != null) {
-			danceLeft = !danceLeft;
-			if (danceLeft)
-				gfDance.animation.play('danceRight');
-			else
-				gfDance.animation.play('danceLeft');
-		}
+		gfDance.animation.play('dance');
 
 		if(!closedState) {
 			sickBeats++;
@@ -659,7 +660,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
-			//FlxG.camera.flash(FlxColor.WHITE, 2);
+			FlxG.camera.flash(FlxColor.WHITE, 2);
 			if (playJingle) //Ignore deez
 			{
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
@@ -737,9 +738,11 @@ class TitleState extends MusicBeatState
 		}
 
 		
-		FlxG.camera.flash(FlxColor.WHITE, 4);
+		//FlxG.camera.flash(FlxColor.WHITE, 4);
 
-		FlxTween.tween(logoBl, {y: -100}, 1.4, {ease: FlxEase.expoInOut});
+		FlxTween.tween(logoBl, {y: titleJSON.titley}, 1.4, {ease: FlxEase.expoInOut});
+		FlxTween.tween(gfDance, {x: titleJSON.gfx}, 1.4, {ease: FlxEase.expoInOut});
+		FlxTween.tween(titleText, {y: titleJSON.starty}, 1.4, {ease: FlxEase.expoInOut});
 
 		logoBl.angle = -4;
 
