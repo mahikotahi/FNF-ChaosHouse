@@ -82,6 +82,8 @@ class NewChartingState extends MusicBeatState
 	// song shit
 	var _song:SwagSong;
 
+	var playingSong:Bool = false;
+
 	override public function create()
 	{
 		trace('You are in the Chart Editor!! Woah!');
