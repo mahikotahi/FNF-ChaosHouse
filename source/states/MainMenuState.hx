@@ -374,16 +374,6 @@ class MainMenuState extends MusicBeatState
 
 					MusicBeatState.switchState(new AchievementDesk());
 
-				case 'mods':
-					trace('mods');
-
-					#if DISCORD_ALLOWED
-					// Updating Discord Rich Presence
-					DiscordClient.changePresence("Vim", null);
-					#end
-
-					MusicBeatState.switchState(new ModsMenuState());
-
 				default:
 					trace(currentSelection);
 					WindowAnimate = false;
