@@ -54,6 +54,8 @@ class NewChartingState extends MusicBeatState
 
 	// ui shit
 	var zoom:Int = 1;
+	var zoomList:Array<Float> = [0.25, 0.5, 1, 2, 3, 4, 6, 8, 12, 16, 24];
+	var curZoom:Int = 2;
 
 	var curSec:Int = 0;
 	var sectionBeats:Int = 4;
@@ -82,7 +84,12 @@ class NewChartingState extends MusicBeatState
 	// song shit
 	var _song:SwagSong;
 
+	var currentSongName:String;
+
 	var playingSong:Bool = false;
+
+	var vocals:FlxSound = null;
+	var opponentVocals:FlxSound = null;
 
 	override public function create()
 	{
@@ -192,7 +199,115 @@ class NewChartingState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			if (vocals != null)
+				vocals.play();
+			if (opponentVocals != null)
+				opponentVocals.play();
+			pauseAndSetVocalsTime();
+			if (!FlxG.sound.music.playing)
+			{
+				FlxG.sound.music.play();
+				if (vocals != null)
+					vocals.play();
+				if (opponentVocals != null)
+					opponentVocals.play();
+			}
+			else
+				FlxG.sound.music.pause();
+		}
+
+		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) / zoomList[curZoom] % (Conductor.stepCrochet * 16)) / (getSectionBeats() / 4);
+
 		super.update(elapsed);
+	}
+
+	function pauseAndSetVocalsTime()
+	{
+		if (vocals != null)
+		{
+			vocals.pause();
+			vocals.time = FlxG.sound.music.time;
+		}
+
+		if (opponentVocals != null)
+		{
+			opponentVocals.pause();
+			opponentVocals.time = FlxG.sound.music.time;
+		}
+	}
+
+	function loadSong():Void
+	{
+
+		var characterData:Dynamic = {
+			iconP1: null,
+			iconP2: null,
+			vocalsP1: null,
+			vocalsP2: null
+		};
+		
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+
+		if (vocals != null)
+		{
+			vocals.stop();
+			vocals.destroy();
+		}
+		if (opponentVocals != null)
+		{
+			opponentVocals.stop();
+			opponentVocals.destroy();
+		}
+
+		vocals = new FlxSound();
+		opponentVocals = new FlxSound();
+		try
+		{
+			var playerVocals = Paths.voices(currentSongName,
+				(characterData.vocalsP1 == null || characterData.vocalsP1.length < 1) ? 'Player' : characterData.vocalsP1);
+			vocals.loadEmbedded(playerVocals != null ? playerVocals : Paths.voices(currentSongName));
+		}
+		vocals.autoDestroy = false;
+		FlxG.sound.list.add(vocals);
+
+		opponentVocals = new FlxSound();
+		try
+		{
+			var oppVocals = Paths.voices(currentSongName,
+				(characterData.vocalsP2 == null || characterData.vocalsP2.length < 1) ? 'Opponent' : characterData.vocalsP2);
+			if (oppVocals != null)
+				opponentVocals.loadEmbedded(oppVocals);
+		}
+		opponentVocals.autoDestroy = false;
+		FlxG.sound.list.add(opponentVocals);
+
+		// generateSong();
+		FlxG.sound.music.pause();
+		Conductor.songPosition = sectionStartTime();
+		FlxG.sound.music.time = Conductor.songPosition;
+
+		var curTime:Float = 0;
+		// trace(_song.notes.length);
+		if (_song.notes.length <= 1) // First load ever
+		{
+			trace('first load ever!!');
+			while (curTime < FlxG.sound.music.length)
+			{
+				// addSection();
+				curTime += (60 / _song.bpm) * 4000;
+			}
+		}
+	}
+
+	function getYfromStrum(strumTime:Float, doZoomCalc:Bool = true):Float
+	{
+		var leZoom:Float = zoomList[curZoom];
+		if (!doZoomCalc)
+			leZoom = 1;
+		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
 	}
 
 	public function dataUI()
@@ -341,5 +456,34 @@ class NewChartingState extends MusicBeatState
 			beatsep.updateHitbox();
 			sectionLines.add(beatsep);
 		}
+	}
+
+	function sectionStartTime(add:Int = 0):Float
+	{
+		var daBPM:Float = _song.bpm;
+		var daPos:Float = 0;
+		for (i in 0...curSec + add)
+		{
+			if (_song.notes[i] != null)
+			{
+				if (_song.notes[i].changeBPM)
+				{
+					daBPM = _song.notes[i].bpm;
+				}
+				daPos += getSectionBeats(i) * (1000 * 60 / daBPM);
+			}
+		}
+		return daPos;
+	}
+
+	function getSectionBeats(?section:Null<Int> = null)
+	{
+		if (section == null)
+			section = curSec;
+		var val:Null<Float> = null;
+
+		if (_song.notes[section] != null)
+			val = _song.notes[section].sectionBeats;
+		return val != null ? val : 4;
 	}
 }

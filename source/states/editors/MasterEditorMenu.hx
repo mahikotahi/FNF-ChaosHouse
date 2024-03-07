@@ -39,6 +39,10 @@ class MasterEditorMenu extends MusicBeatState
 		DiscordClient.changePresence("Terminal", null);
 		#end
 
+		#if CHARTING
+		trace('yanke with no brim!!!!!!!!');
+		MusicBeatState.switchState(new states.editors.NewChartingState());
+		#end
 		
 		var bg:FlxSprite;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

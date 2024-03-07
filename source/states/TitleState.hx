@@ -190,9 +190,6 @@ class TitleState extends MusicBeatState
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
-		#elseif CHARTING
-		trace('yanke with no brim!!!!!!!!');
-		MusicBeatState.switchState(new states.editors.NewChartingState());
 		#else
 		if (FlxG.save.data.censorSysName == null) {
 			//FlxG.save.data.censorSysName = false;
