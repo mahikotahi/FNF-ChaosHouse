@@ -55,7 +55,7 @@ class MainMenuState extends MusicBeatState
 	{
 		var deskBG:FlxSprite = new FlxSprite(DeskBGShit.x, DeskBGShit.y);
 		deskBG.loadGraphic(Paths.image(DeskBGShit.imageLocation));
-		deskBG.scale.x = 1.1;
+		deskBG.scale.x = 1.5;
 		add(deskBG);
 
 		attempts = 0;
@@ -188,8 +188,6 @@ class MainMenuState extends MusicBeatState
 			if (FlxG.sound.music.volume < 0.8)
 			{
 				FlxG.sound.music.volume += 0.5 * elapsed;
-				if (FreeplayState.vocals != null)
-					FreeplayState.vocals.volume += 0.5 * elapsed;
 			}
 		}
 		catch (e)

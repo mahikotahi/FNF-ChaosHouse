@@ -18,7 +18,6 @@ import openfl.display.BitmapData;
 
 import shaders.ColorSwap;
 
-import states.StoryMenuState;
 import states.OutdatedState;
 import states.MainMenuState;
 
@@ -152,11 +151,6 @@ class TitleState extends MusicBeatState
 			}
 			persistentUpdate = true;
 			persistentDraw = true;
-		}
-
-		if (FlxG.save.data.weekCompleted != null)
-		{
-			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		}
 
 		if(ClientPrefs.data.checkForUpdates && !closedState) {
