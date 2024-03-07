@@ -22,8 +22,6 @@ import openfl.events.KeyboardEvent;
 import haxe.Json;
 import cutscenes.CutsceneHandler;
 import cutscenes.DialogueBoxPsych;
-import states.StoryMenuState;
-import states.FreeplayState;
 import states.editors.ChartingState;
 import states.editors.CharacterEditorState;
 import substates.PauseSubState;
@@ -2828,10 +2826,8 @@ class PlayState extends MusicBeatState
 					// if ()
 					if (!ClientPrefs.getGameplaySetting('practice') && !ClientPrefs.getGameplaySetting('botplay'))
 					{
-						StoryMenuState.weekCompleted.set(WeekData.weeksList[storyWeek], true);
 						Highscore.saveWeekScore(WeekData.getWeekFileName(), campaignScore, storyDifficulty);
 
-						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
 					}
 					changedDifficulty = false;

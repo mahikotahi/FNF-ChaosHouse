@@ -4,8 +4,6 @@ import backend.WeekData;
 import objects.Character;
 import flixel.FlxObject;
 import flixel.FlxSubState;
-import states.StoryMenuState;
-import states.FreeplayState;
 
 class Retry extends MusicBeatState
 {
