@@ -17,3 +17,4 @@
 - Added new GF Title Sprite
 - New Chart Editor
 - Added Password State (thanks HeroEyad!)
+- Fixed Tutorial Chart Slightly (old charts were not used to the no more must hit section thing)

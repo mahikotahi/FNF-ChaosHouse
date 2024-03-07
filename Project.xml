@@ -114,6 +114,7 @@
 
 	<!-- nu uh -->
 	<haxedef name="CHARTING" if="CHARTING"/>
+	<haxedef name="RANKS" if="RANKS"/>
 
 	<!-- hello djotta flow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1-->
 	

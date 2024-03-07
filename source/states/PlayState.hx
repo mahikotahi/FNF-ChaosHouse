@@ -2864,7 +2864,12 @@ class PlayState extends MusicBeatState
 				changedDifficulty = false;
 			}
 			transitioning = true;
+			
+			#if RANKS
+			openSubState(new substates.RankSub());
+			#else
 			MusicBeatState.switchState(new MainMenuState());
+			#end
 		}
 		return true;
 	}
